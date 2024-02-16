@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IconAppsComponent } from './icon-apps.component';
+import { HomizerComponent } from './homizer.component';
 
-describe('IconAppsComponent', () => {
-  let component: IconAppsComponent;
-  let fixture: ComponentFixture<IconAppsComponent>;
+describe('HomizerComponent', () => {
+  let component: HomizerComponent;
+  let fixture: ComponentFixture<HomizerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [IconAppsComponent]
+      declarations: [HomizerComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(IconAppsComponent);
+    fixture = TestBed.createComponent(HomizerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
