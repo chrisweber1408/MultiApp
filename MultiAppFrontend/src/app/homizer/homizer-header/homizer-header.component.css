@@ -1,0 +1,9 @@
+.homizer-header {
+    background-color: red;
+    font-size: 50px;
+    display: flex;
+}
+
+.homizer-headline {
+    padding: 10px;    
+}
