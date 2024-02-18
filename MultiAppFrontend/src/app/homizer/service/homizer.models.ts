@@ -1,5 +1,5 @@
 
-export class homizerItem {
+export class HomizerItem {
     public name: string;
     public description?: string;
     public image?: string;

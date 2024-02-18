@@ -1,8 +1,17 @@
 <div>
-    <input type="text">
+    <input type="text" [(ngModel)]="homizerItem.name" placeholder="Name">
 </div>
 <div>
-    <button>
+    <input type="text" [(ngModel)]="homizerItem.description" placeholder="Description">
+</div>
+<div>
+    <input type="text" [(ngModel)]="homizerItem.image" placeholder="Image URL">
+</div>
+<div>
+    <input type="number" [(ngModel)]="homizerItem.number" placeholder="Number">
+</div>
+<div>
+    <button (click)="onSaveHomizerItem(homizerItem.name, homizerItem.description, homizerItem.image, homizerItem.number)">
         Add
     </button>
 </div>
