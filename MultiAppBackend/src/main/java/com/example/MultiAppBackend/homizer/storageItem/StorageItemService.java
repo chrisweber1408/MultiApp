@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class StorageItemService {
 
-    private StorageItemRepo storageItemRepo;
+    private final StorageItemRepo storageItemRepo;
     public void saveStorageItem(StorageItem storageItem) {
         storageItemRepo.save(storageItem);
     }
