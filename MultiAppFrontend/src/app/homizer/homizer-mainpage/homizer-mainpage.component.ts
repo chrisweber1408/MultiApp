@@ -4,10 +4,10 @@ import { DataStorageService } from '../../shared/data-storage.service';
 
 @Component({
   selector: 'app-homizer-mainpage',
-  templateUrl: './homizer-item-mainpage.component.html',
-  styleUrl: './homizer-item-mainpage.component.css'
+  templateUrl: './homizer-mainpage.component.html',
+  styleUrl: './homizer-mainpage.component.css'
 })
-export class HomizerItemMainpageComponent {
+export class HomizerMainpageComponent {
   homizerItem: HomizerItem = new HomizerItem('');
 
   constructor(private dataStorageService: DataStorageService) {
