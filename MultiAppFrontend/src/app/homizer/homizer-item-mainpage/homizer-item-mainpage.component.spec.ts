@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HomizerMainpageComponent } from './homizer-mainpage.component';
+import { HomizerItemMainpageComponent } from './homizer-item-mainpage.component';
 
 describe('HomizerMainpageComponent', () => {
-  let component: HomizerMainpageComponent;
-  let fixture: ComponentFixture<HomizerMainpageComponent>;
+  let component: HomizerItemMainpageComponent;
+  let fixture: ComponentFixture<HomizerItemMainpageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HomizerMainpageComponent]
+      declarations: [HomizerItemMainpageComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(HomizerMainpageComponent);
+    fixture = TestBed.createComponent(HomizerItemMainpageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
