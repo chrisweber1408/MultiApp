@@ -10,6 +10,7 @@ import { HomizerItemMainpageComponent } from './homizer/homizer-item-mainpage/ho
 import { FormsModule } from '@angular/forms';
 import { HomizerService } from './homizer/homizer.service';
 import { HomizerStorageMainpageComponent } from './homizer/homizer-storage-mainpage/homizer-storage-mainpage.component';
+import { HomizerAddButtonComponent } from './homizer/homizer-add-button/homizer-add-button.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { HomizerStorageMainpageComponent } from './homizer/homizer-storage-mainp
     HomeComponent,
     HomizerHeaderComponent,
     HomizerItemMainpageComponent,
-    HomizerStorageMainpageComponent
+    HomizerStorageMainpageComponent,
+    HomizerAddButtonComponent
   ],
   imports: [
     BrowserModule,
