@@ -1,14 +1,12 @@
 <app-homizer-header></app-homizer-header>
 
-<div *ngIf="homizerItems">
-  <ul>
-    <li *ngFor="let homizerItem of homizerItems">
+<div class="homizer-item-list" *ngIf="homizerItems">
+    <div class="homizer-item" *ngFor="let homizerItem of homizerItems">
       <p>Name: {{ homizerItem.name }}</p>
       <p>Description: {{ homizerItem.description }}</p>
       <p>Image: {{ homizerItem.image }}</p>
       <p>Number: {{ homizerItem.number }}</p>
-    </li>
-  </ul>
+    </div>
 </div>
 
 
