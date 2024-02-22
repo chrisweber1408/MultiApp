@@ -9,6 +9,7 @@ import { HomizerHeaderComponent } from './homizer/homizer-header/homizer-header.
 import { HomizerItemMainpageComponent } from './homizer/homizer-item-mainpage/homizer-item-mainpage.component';
 import { FormsModule } from '@angular/forms';
 import { HomizerService } from './homizer/homizer.service';
+import { HomizerStorageMainpageComponent } from './homizer/homizer-storage-mainpage/homizer-storage-mainpage.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { HomizerService } from './homizer/homizer.service';
     HomizerComponent,
     HomeComponent,
     HomizerHeaderComponent,
-    HomizerItemMainpageComponent
+    HomizerItemMainpageComponent,
+    HomizerStorageMainpageComponent
   ],
   imports: [
     BrowserModule,
