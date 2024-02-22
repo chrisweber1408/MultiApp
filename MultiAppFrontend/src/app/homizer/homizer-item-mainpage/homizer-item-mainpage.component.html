@@ -3,12 +3,10 @@
 <div *ngIf="homizerItems">
   <ul>
     <li *ngFor="let homizerItem of homizerItems">
-      <!-- Hier können Sie die Eigenschaften Ihrer HomizerItem-Objekte anzeigen -->
       <p>Name: {{ homizerItem.name }}</p>
       <p>Description: {{ homizerItem.description }}</p>
       <p>Image: {{ homizerItem.image }}</p>
       <p>Number: {{ homizerItem.number }}</p>
-      <!-- Fügen Sie hier weitere Eigenschaften hinzu, je nachdem, was Sie darstellen möchten -->
     </li>
   </ul>
 </div>
