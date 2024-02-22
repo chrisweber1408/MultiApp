@@ -1,17 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HomizerItem } from '../service/homizer.models';
 import { DataStorageService } from '../../shared/data-storage.service';
 
 @Component({
   selector: 'app-homizer-mainpage',
   templateUrl: './homizer-item-mainpage.component.html',
-  styleUrl: './homizer-item-mainpage.component.css'
+  styleUrls: ['./homizer-item-mainpage.component.css']
 })
-export class HomizerItemMainpageComponent {
-  homizerItem: HomizerItem = new HomizerItem('');
-
+export class HomizerItemMainpageComponent implements OnInit {
+  homizerItems: HomizerItem;
   constructor(private dataStorageService: DataStorageService) {
 
+  }
+
+  ngOnInit(): void {
+    this.loadHomizerItems()
   }
 
   onSaveHomizerItem(name: string, description?: string, image?: string, number?: number){
@@ -20,4 +23,10 @@ export class HomizerItemMainpageComponent {
     this.dataStorageService.saveHomizerItem(item)
   }
 
+  loadHomizerItems(): void {
+    this.dataStorageService.loadHomizerItems().subscribe((items: HomizerItem) => {
+      this.homizerItems = items;
+    });
+  }
+  
 }

@@ -1,4 +1,25 @@
 <app-homizer-header></app-homizer-header>
+
+<div class="homizer-item-list" *ngIf="homizerItems">
+    <div class="homizer-item" *ngFor="let homizerItem of homizerItems">
+      <p>Name: {{ homizerItem.name }}</p>
+      <p>Description: {{ homizerItem.description }}</p>
+      <p>Image: {{ homizerItem.image }}</p>
+      <p>Number: {{ homizerItem.number }}</p>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- <div>
     <input type="text" [(ngModel)]="homizerItem.name" placeholder="Name">
 </div>
