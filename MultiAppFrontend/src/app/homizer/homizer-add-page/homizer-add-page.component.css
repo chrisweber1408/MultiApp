@@ -1,0 +1,17 @@
+.homizer-item-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.homizer-item-input-field {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 20px;
+}
+
+.homizer-item-add-button {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 20px;
+}
