@@ -12,10 +12,7 @@ export class DataStorageService {
     ) {}
 
     saveHomizerItem(item: HomizerItem) {
-        console.log(item)
-        this.http.post('http://localhost:8080/homizer/storageItem' ,item).subscribe(response => {
-            console.log(response)
-        })
+        this.http.post('http://localhost:8080/homizer/storageItem' ,item).subscribe( response => console.log(response))
     }
 
     loadHomizerItems(): Observable<HomizerItem>{
