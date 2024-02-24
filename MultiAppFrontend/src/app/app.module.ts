@@ -12,6 +12,7 @@ import { HomizerService } from './homizer/homizer.service';
 import { HomizerStorageMainpageComponent } from './homizer/homizer-storage-mainpage/homizer-storage-mainpage.component';
 import { HomizerAddButtonComponent } from './homizer/homizer-add-button/homizer-add-button.component';
 import { HomizerAddPageComponent } from './homizer/homizer-add-page/homizer-add-page.component';
+import { HomizerChoicePannelComponent } from './homizer/homizer-choice-pannel/homizer-choice-pannel.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { HomizerAddPageComponent } from './homizer/homizer-add-page/homizer-add-
     HomizerComponent,
     HomeComponent,
     HomizerHeaderComponent,
+    HomizerChoicePannelComponent,
     HomizerItemMainpageComponent,
     HomizerStorageMainpageComponent,
     HomizerAddButtonComponent,
