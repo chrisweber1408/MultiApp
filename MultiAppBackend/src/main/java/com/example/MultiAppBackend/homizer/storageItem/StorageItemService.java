@@ -17,4 +17,8 @@ public class StorageItemService {
     public List<StorageItem> getAllStorageItems() {
         return storageItemRepo.findAll();
     }
+
+    public StorageItem getOneStorageItem(String id) {
+         return storageItemRepo.findById(id).get();
+    }
 }

@@ -17,9 +17,8 @@ export class HomizerItemMainpageComponent implements OnInit {
     this.loadHomizerItems()
   }
 
-  onSaveHomizerItem(name: string, description?: string, image?: string, number?: number){
-    console.log('test')
-    const item: HomizerItem = new HomizerItem(name, description, image, number)
+  onSaveHomizerItem(id: string, name: string, description?: string, image?: string, number?: number){
+    const item: HomizerItem = new HomizerItem(id, name, description, image, number)
     this.dataStorageService.saveHomizerItem(item)
   }
 

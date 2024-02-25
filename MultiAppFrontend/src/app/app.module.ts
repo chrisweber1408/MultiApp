@@ -13,6 +13,7 @@ import { HomizerStorageMainpageComponent } from './homizer/homizer-storage-mainp
 import { HomizerAddButtonComponent } from './homizer/homizer-add-button/homizer-add-button.component';
 import { HomizerAddPageComponent } from './homizer/homizer-add-page/homizer-add-page.component';
 import { HomizerChoicePannelComponent } from './homizer/homizer-choice-pannel/homizer-choice-pannel.component';
+import { HomizerItemEditPageComponent } from './homizer/homizer-item-edit-page/homizer-item-edit-page.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { HomizerChoicePannelComponent } from './homizer/homizer-choice-pannel/ho
     HomizerItemMainpageComponent,
     HomizerStorageMainpageComponent,
     HomizerAddButtonComponent,
-    HomizerAddPageComponent
+    HomizerAddPageComponent,
+    HomizerItemEditPageComponent,
   ],
   imports: [
     BrowserModule,
