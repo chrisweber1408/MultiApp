@@ -1,8 +1,26 @@
 <app-homizer-header></app-homizer-header>
-
-<div class="homizer-item-edit" *ngIf="homizerItem">
-    <p>Name: {{ homizerItem.name }} </p>    
-    <p>Description: {{ homizerItem.description}} </p>    
-    <p>Image: {{ homizerItem.image}} </p>    
-    <p>Number: {{ homizerItem.number}} </p>    
+<div class="homizer-edit-input" *ngIf="homizerItem">
+    <div>
+        <input class="homizer-edit-input-field" type="text" [(ngModel)]="homizerItem.name" placeholder="Name" required>
+    </div>
+    <div>
+        <input class="homizer-edit-input-field" type="text" [(ngModel)]="homizerItem.description" placeholder="Description">
+    </div>
+    <div>
+        <input class="homizer-edit-input-field" type="text" [(ngModel)]="homizerItem.image" placeholder="Image URL">
+    </div>
+    <div>
+        <input class="homizer-edit-input-field" type="number" [(ngModel)]="homizerItem.number" placeholder="Number" required>
+    </div>
+    <div>
+        <button class="homizer-save-button" 
+        (click)="onEditHomizerItem(
+            homizerItem.id,
+            homizerItem.name,
+            homizerItem.description,
+            homizerItem.image,
+            homizerItem.number
+        )">Save</button>
+    </div>
 </div>
+

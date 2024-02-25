@@ -1,6 +1,5 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { HomizerService } from "../homizer/homizer.service";
 import { HomizerItem } from "../homizer/service/homizer.models";
 import { Observable } from "rxjs";
 
@@ -8,7 +7,6 @@ import { Observable } from "rxjs";
 export class DataStorageService {
     constructor(
         private http: HttpClient,
-        private homizerService: HomizerService
     ) {}
 
     saveHomizerItem(item: HomizerItem) {
@@ -17,6 +15,10 @@ export class DataStorageService {
 
     loadHomizerItems(): Observable<HomizerItem>{
         return this.http.get<HomizerItem>('http://localhost:8080/homizer/storageItem')
+    }
+
+    loadHomizerItem(id: string): Observable<HomizerItem> {
+        return this.http.get<HomizerItem>('http://localhost:8080/homizer/storageItem/' + id)
     }
     
 }

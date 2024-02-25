@@ -25,4 +25,10 @@ public class StorageItemController {
     public List<StorageItem> getAllStorageItems(){
         return storageItemService.getAllStorageItems();
     }
+
+    @GetMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public StorageItem getOneStorageItem(@PathVariable String id) {
+    return storageItemService.getOneStorageItem(id);
+    }
 }

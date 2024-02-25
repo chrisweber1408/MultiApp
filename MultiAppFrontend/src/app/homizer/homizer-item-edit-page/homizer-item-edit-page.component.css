@@ -1,0 +1,25 @@
+.homizer-edit-input {
+
+}
+
+.homizer-edit-input-field {
+
+}
+
+.homizer-edit-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.homizer-edit-input-field {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 20px;
+}
+
+.homizer-save-button {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 20px;
+}

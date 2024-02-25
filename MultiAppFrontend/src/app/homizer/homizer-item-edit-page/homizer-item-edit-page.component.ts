@@ -29,6 +29,16 @@ export class HomizerItemEditPageComponent implements OnInit {
       this.homizerItem = item
     });
   }
+
+  onEditHomizerItem(id: string, name: string, description: string, image: string, number: number){
+    this.homizerItem.id = id
+    this.homizerItem.name = name
+    this.homizerItem.description = description
+    this.homizerItem.image = image
+    this.homizerItem.number = number
+    this.dataStorageService.saveHomizerItem(this.homizerItem)
+    console.log("test")
+  }
   
 
 }
