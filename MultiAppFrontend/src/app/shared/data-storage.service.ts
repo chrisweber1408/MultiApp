@@ -20,5 +20,12 @@ export class DataStorageService {
     loadHomizerItem(id: string): Observable<HomizerItem> {
         return this.http.get<HomizerItem>('http://localhost:8080/homizer/storageItem/' + id)
     }
+
+    deleteHomizerItem(id: string) {
+    console.log(id)
+
+        this.http.delete('http://localhost:8080/homizer/storageItem/delete/' + id).subscribe(response => console.log(response))
+
+    }
     
 }

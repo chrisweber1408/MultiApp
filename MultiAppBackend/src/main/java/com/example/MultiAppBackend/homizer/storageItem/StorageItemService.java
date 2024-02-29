@@ -21,4 +21,8 @@ public class StorageItemService {
     public StorageItem getOneStorageItem(String id) {
          return storageItemRepo.findById(id).get();
     }
+
+    public void deleteStorageItem(String id) {
+        storageItemRepo.deleteById(id);
+    }
 }
