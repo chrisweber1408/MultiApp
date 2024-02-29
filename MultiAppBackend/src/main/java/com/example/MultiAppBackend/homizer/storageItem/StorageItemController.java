@@ -29,6 +29,13 @@ public class StorageItemController {
     @GetMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:4200")
     public StorageItem getOneStorageItem(@PathVariable String id) {
-    return storageItemService.getOneStorageItem(id);
+        return storageItemService.getOneStorageItem(id);
     }
+
+    @DeleteMapping("/delete/{id}")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public void deleteStorageItem(@PathVariable String id) {
+        storageItemService.deleteStorageItem(id);
+    }
+
 }

@@ -39,6 +39,10 @@ export class HomizerItemEditPageComponent implements OnInit {
     this.dataStorageService.saveHomizerItem(this.homizerItem)
     console.log("test")
   }
+
+  onDeleteHomizerItem(id: string){
+    this.dataStorageService.deleteHomizerItem(id)
+  }
   
 
 }
