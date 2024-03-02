@@ -2,6 +2,7 @@ package com.example.MultiAppBackend.homizer.storageItem;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +17,9 @@ public class StorageItemController {
     @PostMapping
     @CrossOrigin(origins = "http://localhost:4200")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveStorageItem(@RequestBody StorageItem storageItem){
+    public ResponseEntity<Void> saveStorageItem(@RequestBody StorageItem storageItem){
         storageItemService.saveStorageItem(storageItem);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
