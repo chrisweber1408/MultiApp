@@ -13,7 +13,9 @@
         <input class="homizer-item-input-field" type="number" [(ngModel)]="homizerItem.number" placeholder="Number" required>
     </div>
     <div>
-        <button class="homizer-item-add-button" (click)="onSaveHomizerItem(homizerItem.name, homizerItem.description, homizerItem.image, homizerItem.number)">
+        <button 
+        class="homizer-item-add-button" 
+        (click)="onSaveHomizerItem(homizerItem.name, homizerItem.description, homizerItem.image, homizerItem.number)">
             Add
         </button>
     </div>

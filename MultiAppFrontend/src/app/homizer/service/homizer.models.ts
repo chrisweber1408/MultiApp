@@ -6,7 +6,7 @@ export class HomizerItem {
     public image?: string;
     public number: number;
 
-    constructor(id: string, name: string, description?: string, image?: string, number?: number) {
+    constructor(name: string, description?: string, image?: string, number?: number, id?: string) {
         this.id = id;
         this.name = name;
         this.description = description;

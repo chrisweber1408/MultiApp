@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HomizerItem } from '../service/homizer.models';
 import { DataStorageService } from '../../shared/data-storage.service';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-homizer-add-page',
@@ -11,8 +12,8 @@ export class HomizerAddPageComponent {
 
   homizerItem: HomizerItem
 
-  constructor(private dataStorageService: DataStorageService) { // Injektion des DataStorageService über den Konstruktor
-    this.homizerItem = new HomizerItem('', '', ''); // Initialisierung des homizerItem-Objekts
+  constructor(private dataStorageService: DataStorageService, private router: Router) {
+    this.homizerItem = new HomizerItem('', '', '');
   }
 
   onSaveHomizerItem(name: string, description: string, image: string, number: number) {
@@ -20,7 +21,11 @@ export class HomizerAddPageComponent {
     this.homizerItem.description = description
     this.homizerItem.image = image
     this.homizerItem.number = number
-    this.dataStorageService.saveHomizerItem(this.homizerItem)
+    this.dataStorageService.saveHomizerItem(this.homizerItem).subscribe(
+      (response) => {
+        this.router.navigate(['/homizer-item'])
+      }
+    )
     }
 
 }

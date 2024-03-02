@@ -1,7 +1,7 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { HomizerItem } from "../homizer/service/homizer.models";
-import { Observable } from "rxjs";
+import { Observable, catchError, throwError } from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class DataStorageService {
@@ -9,8 +9,8 @@ export class DataStorageService {
         private http: HttpClient,
     ) {}
 
-    saveHomizerItem(item: HomizerItem) {
-        this.http.post('http://localhost:8080/homizer/storageItem' ,item).subscribe( response => console.log(response))
+    saveHomizerItem(item: HomizerItem): Observable<HttpResponse<any>> {
+        return this.http.post('http://localhost:8080/homizer/storageItem' ,item, {observe: 'response'})
     }
 
     loadHomizerItems(): Observable<HomizerItem>{
@@ -21,11 +21,8 @@ export class DataStorageService {
         return this.http.get<HomizerItem>('http://localhost:8080/homizer/storageItem/' + id)
     }
 
-    deleteHomizerItem(id: string) {
-    console.log(id)
-
-        this.http.delete('http://localhost:8080/homizer/storageItem/delete/' + id).subscribe(response => console.log(response))
-
+    deleteHomizerItem(id: string): Observable<HttpResponse<any>> {
+        return this.http.delete('http://localhost:8080/homizer/storageItem/delete/' + id, {observe: 'response'})
     }
     
 }

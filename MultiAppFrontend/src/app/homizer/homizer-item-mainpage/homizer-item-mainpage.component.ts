@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, Component, OnChanges, OnInit } from '@angular/core';
 import { HomizerItem } from '../service/homizer.models';
 import { DataStorageService } from '../../shared/data-storage.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-homizer-mainpage',
@@ -9,16 +10,17 @@ import { DataStorageService } from '../../shared/data-storage.service';
 })
 export class HomizerItemMainpageComponent implements OnInit {
   homizerItems: HomizerItem;
-  constructor(private dataStorageService: DataStorageService) {
+
+  constructor(private dataStorageService: DataStorageService, private activatedRoute: ActivatedRoute) {
 
   }
 
   ngOnInit(): void {
-    this.loadHomizerItems()
+      this.loadHomizerItems();
   }
 
-  onSaveHomizerItem(id: string, name: string, description?: string, image?: string, number?: number){
-    const item: HomizerItem = new HomizerItem(id, name, description, image, number)
+  onSaveHomizerItem(name: string, description?: string, image?: string, number?: number, id?: string){
+    const item: HomizerItem = new HomizerItem(name, description, image, number, id)
     this.dataStorageService.saveHomizerItem(item)
   }
 
