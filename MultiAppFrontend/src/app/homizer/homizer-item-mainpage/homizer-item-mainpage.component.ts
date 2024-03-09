@@ -24,10 +24,12 @@ export class HomizerItemMainpageComponent implements OnInit {
     this.dataStorageService.saveHomizerItem(item)
   }
 
-  loadHomizerItems(): void {
-    this.dataStorageService.loadHomizerItems().subscribe((items: HomizerItem) => {
-      this.homizerItems = items;
-    });
+  async loadHomizerItems(): Promise<HomizerItem[]> {
+    const items = await this.dataStorageService.loadHomizerItems();
+    console.log(items)
+    this.homizerItems = items
+    return items;
   }
+  
   
 }

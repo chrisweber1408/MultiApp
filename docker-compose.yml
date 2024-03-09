@@ -1,41 +1,48 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./MultiAppFrontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    expose:
+      - 80
+    networks:
+      - internalnet
 
-    version: '3'
-    services:
-      frontend:
-        build:
-          context: ./MultiAppFrontend
-          dockerfile: Dockerfile
-        ports:
-          - "80:80"
-      #      - "443:443"
+  backend:
+    build:
+      context: ./MultiAppBackend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: mysecretpassword
+    networks:
+      - internalnet
 
-      backend:
-        build:
-          context: ./MultiAppBackend
-          dockerfile: Dockerfile
-        ports:
-          - "8080:8080"
-        depends_on:
-          - postgres
-        environment:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
-          SPRING_DATASOURCE_USERNAME: postgres
-          SPRING_DATASOURCE_PASSWORD: mysecretpassword
-
-      postgres:
-        image: postgres:latest
-        container_name: postgres_db
-        ports:
-          - "5432:5432"
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: mysecretpassword
-          POSTGRES_DB: postgres
-        volumes:
-          - postgres-data:/var/lib/postgresql/data
-
-
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: postgres
     volumes:
-      postgres-data:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - internalnet
 
+volumes:
+  postgres-data:
 
+networks:
+  internalnet:
+    driver: bridge

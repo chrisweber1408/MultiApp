@@ -1,14 +1,20 @@
-FROM node:18-alpine as build-stage
+# Stage 1: Build Angular Application
+FROM node:latest as builder
+
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
+
 COPY . .
+
+# Install dependencies
+RUN npm install
+
+# Build the Angular app
 RUN npm run build
 
-# Stage 2: Serve the angular app with Nginx
-FROM nginx:alpine
-COPY --from=build /app/dist/multi-app-frontend /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-#COPY ./ssl /etc/nginx/ssl
+# Stage 2: Setup NGINX
+FROM nginx:1.21-alpine
 
-EXPOSE 4200
+# Copy built Angular app from the previous stage
+COPY --from=builder /app/dist/multi-app-frontend/browser /usr/share/nginx/html
+
+EXPOSE 80

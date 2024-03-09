@@ -21,7 +21,7 @@ export class HomizerAddPageComponent {
     this.homizerItem.description = description
     this.homizerItem.image = image
     this.homizerItem.number = number
-    this.dataStorageService.saveHomizerItem(this.homizerItem).subscribe(
+    this.dataStorageService.saveHomizerItem(this.homizerItem).then(
       (response) => {
         this.router.navigate(['/homizer-item'])
       }
