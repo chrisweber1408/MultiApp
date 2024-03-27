@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/homizer/storageItem")
+@RequestMapping("/api/homizer/storageItem/")
 @RequiredArgsConstructor
 public class StorageItemController {
 

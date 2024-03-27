@@ -3,6 +3,7 @@ import { HomizerItem } from '../service/homizer.models';
 import { DataStorageService } from '../../shared/data-storage.service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AxiosResponse } from 'axios';
 
 @Component({
   selector: 'app-homizer-item-edit-page',
@@ -26,8 +27,8 @@ export class HomizerItemEditPageComponent implements OnInit {
 
   loadHomizerItem(id: string): void {
     this.dataStorageService.loadHomizerItem(id)
-    .subscribe((item: HomizerItem) => {
-      this.homizerItem = item
+    .then((item: AxiosResponse<HomizerItem, any>) => {
+      this.homizerItem = item.data
     });
   }
 
@@ -37,16 +38,16 @@ export class HomizerItemEditPageComponent implements OnInit {
     this.homizerItem.description = description
     this.homizerItem.image = image
     this.homizerItem.number = number
-    this.dataStorageService.saveHomizerItem(this.homizerItem).subscribe(
-      (response) => {
+    this.dataStorageService.saveHomizerItem(this.homizerItem).then(
+      () => {
         this.router.navigate(['/homizer-item'])
       }
     )
   }
 
   onDeleteHomizerItem(id: string){
-    this.dataStorageService.deleteHomizerItem(id).subscribe(
-      (response) => {
+    this.dataStorageService.deleteHomizerItem(id).then(
+      () => {
         this.router.navigate(['/homizer-item'])
       }
     )
