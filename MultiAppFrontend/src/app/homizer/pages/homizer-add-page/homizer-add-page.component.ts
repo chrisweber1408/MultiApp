@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { HomizerItem } from '../service/homizer.models';
-import { DataStorageService } from '../../shared/data-storage.service';
+import { HomizerItem } from '../../service/homizer.models';
+import { DataStorageService } from '../../../shared/data-storage.service';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
