@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomizerComponent } from './homizer/homizer.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './home/pages/home-page/home.component';
 import { HomizerHeaderComponent } from './homizer/components/homizer-header/homizer-header.component';
 import { HomizerItemMainpageComponent } from './homizer/pages/homizer-item-mainpage/homizer-item-mainpage.component';
 import { FormsModule } from '@angular/forms';
@@ -14,6 +14,8 @@ import { HomizerAddButtonComponent } from './homizer/components/homizer-add-butt
 import { HomizerAddPageComponent } from './homizer/pages/homizer-add-page/homizer-add-page.component';
 import { HomizerChoicePannelComponent } from './homizer/components/homizer-choice-pannel/homizer-choice-pannel.component';
 import { HomizerItemEditPageComponent } from './homizer/pages/homizer-item-edit-page/homizer-item-edit-page.component';
+import { HomeHeaderComponent } from './home/components/home-header/home-header.component';
+import { HomeLoginComponent } from './home/pages/login-page/home-login.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { HomizerItemEditPageComponent } from './homizer/pages/homizer-item-edit-
     HomizerAddButtonComponent,
     HomizerAddPageComponent,
     HomizerItemEditPageComponent,
+    HomeHeaderComponent,
+    HomeLoginComponent,
   ],
   imports: [
     BrowserModule,

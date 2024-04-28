@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HomizerItem } from '../../service/homizer.models';
-import { DataStorageService } from '../../../shared/data-storage.service';
+import { DataStorageService } from '../../service/homizer-data-storage.service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AxiosResponse } from 'axios';

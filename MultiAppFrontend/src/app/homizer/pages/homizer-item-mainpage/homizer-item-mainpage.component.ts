@@ -1,6 +1,6 @@
 import { AfterContentChecked, Component, OnChanges, OnInit } from '@angular/core';
 import { HomizerItem } from '../../service/homizer.models';
-import { DataStorageService } from '../../../shared/data-storage.service';
+import { DataStorageService } from '../../service/homizer-data-storage.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

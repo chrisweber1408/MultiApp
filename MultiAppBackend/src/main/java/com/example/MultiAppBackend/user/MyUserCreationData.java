@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MyUserCreationData {
 
-    private String username;
+    private String email;
     private String password;
     private String passwordRepeat;
 

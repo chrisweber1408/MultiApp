@@ -1,0 +1,15 @@
+<app-home-header></app-home-header>
+<div class="input">
+    <div>
+        <input class="input-field" type="email" placeholder="Email" [(ngModel)]="loginData.email" required>
+    </div>
+    <div>
+        <input class="input-field" type="password" placeholder="Password" [(ngModel)]="loginData.password" required>
+    </div>
+    <div>
+        <button class="add-button"
+            (click)="onSendLogin(loginData.email, loginData.password)">
+                    Add
+        </button>
+    </div>
+</div>
