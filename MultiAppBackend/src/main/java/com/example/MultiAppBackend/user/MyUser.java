@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,7 +28,7 @@ public class MyUser implements UserDetails {
     private String email;
     private String password;
     private MyUserRole role;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "myUser")
     private List<Token> tokens;
 
     @Override
