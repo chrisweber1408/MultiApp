@@ -16,6 +16,7 @@ import { HomizerChoicePannelComponent } from './homizer/components/homizer-choic
 import { HomizerItemEditPageComponent } from './homizer/pages/homizer-item-edit-page/homizer-item-edit-page.component';
 import { HomeHeaderComponent } from './home/components/home-header/home-header.component';
 import { HomeLoginComponent } from './home/pages/login-page/home-login.component';
+import { HomeRegisterComponent } from './home/pages/home-register/home-register.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { HomeLoginComponent } from './home/pages/login-page/home-login.component
     HomizerItemEditPageComponent,
     HomeHeaderComponent,
     HomeLoginComponent,
+    HomeRegisterComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { LoginData } from '../../service/login.models';
-import { LoginDataStorageService } from '../../service/login-data-storage.service';
+import { LoginData } from '../../service/user.models';
+import { UserDataStorageService } from '../../service/user-data-storage.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,21 +10,18 @@ import { Router } from '@angular/router';
 })
 export class HomeLoginComponent {
 
-  loginData: LoginData;
+  loginDto: LoginData;
 
-  constructor(private loginDataStorageService: LoginDataStorageService, private router: Router) {
-    this.loginData = new LoginData('','');
+  constructor(private loginDataStorageService: UserDataStorageService, private router: Router) {
+    this.loginDto = new LoginData('','');
   }
 
-  onSendLogin(email: string, password: string) {
-    console.log(email);
-    this.loginData.email = email;
-    this.loginData.password = password;
-    this.loginDataStorageService.sendLogin(this.loginData).then(
-      () => {
-        this.router.navigate(['/home']);
-      }
-    );
+  onSendLogin(email: string, password: string) {    
+    this.loginDto.email = email;
+    this.loginDto.password = password;
+    this.loginDataStorageService.sendLogin(this.loginDto)
+    .then(data => localStorage.setItem("jwt", data.token))
+    .then(() => this.router.navigate(['/home']))
   }
 
 }
