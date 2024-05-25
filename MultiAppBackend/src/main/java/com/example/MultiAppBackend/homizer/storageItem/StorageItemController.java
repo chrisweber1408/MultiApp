@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/homizer/storageItem/")
@@ -24,8 +25,12 @@ public class StorageItemController {
 
     @GetMapping
     @CrossOrigin(origins = "http://localhost:4200")
-    public List<StorageItem> getAllStorageItems(){
-        return storageItemService.getAllStorageItems();
+    public ResponseEntity<List<StorageItem>> getAllStorageItems(){
+        try {
+            return ResponseEntity.ok(storageItemService.getAllStorageItems());
+        } catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @GetMapping("/{id}")
