@@ -1,6 +1,9 @@
 package com.example.MultiAppBackend.user;
 
 import com.example.MultiAppBackend.security.JwtService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,10 +29,17 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody UserLoginDto loginUserDto) {
+    public ResponseEntity<LoginResponse> authenticate(@RequestBody UserLoginDto loginUserDto, HttpServletResponse response) {
         MyUser authenticatedUser = authenticationService.authenticate(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
+
+        Cookie authenticationCookie = new Cookie("authentication", jwtToken);
+        authenticationCookie.setHttpOnly(true);
+        authenticationCookie.setMaxAge((int) jwtService.getExpirationTime());
+
+        response.addCookie(authenticationCookie);
+        response.setStatus(HttpStatus.OK.value());
 
         LoginResponse loginResponse = new LoginResponse().setToken(jwtToken).setExpiresIn(jwtService.getExpirationTime());
 

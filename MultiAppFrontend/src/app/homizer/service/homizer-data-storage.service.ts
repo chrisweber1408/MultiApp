@@ -1,14 +1,19 @@
 import { Injectable } from "@angular/core";
 import { HomizerItem } from "./homizer.models";
 import axios from "axios";
+import { CookieService } from "ngx-cookie-service";
 
 @Injectable({providedIn: 'root'})
 export class DataStorageService {
 
+    constructor(private cookieService: CookieService){
+
+    }
+
     requestConfig(){
         return {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("jwt")}`
+                Authorization: `Bearer ${this.cookieService.get("jwt")}`
             }
         }
     }

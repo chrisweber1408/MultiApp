@@ -1,7 +1,7 @@
 import { AfterContentChecked, Component, OnChanges, OnInit } from '@angular/core';
 import { HomizerItem } from '../../service/homizer.models';
 import { DataStorageService } from '../../service/homizer-data-storage.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-homizer-mainpage',
@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class HomizerItemMainpageComponent implements OnInit {
   homizerItems: HomizerItem;
 
-  constructor(private dataStorageService: DataStorageService, private activatedRoute: ActivatedRoute) {
+  constructor(private dataStorageService: DataStorageService, private activatedRoute: ActivatedRoute, private router: Router) {
 
   }
 
@@ -25,8 +25,12 @@ export class HomizerItemMainpageComponent implements OnInit {
   }
 
   async loadHomizerItems(): Promise<HomizerItem[]> {
-    const items = await this.dataStorageService.loadHomizerItems();
-    console.log(items)
+    const items = await this.dataStorageService.loadHomizerItems()
+      .catch(error => {
+        if(error.response?.status === 403) {
+          this.router.navigate(['/login'])
+        }
+      });
     this.homizerItems = items
     return items;
   }

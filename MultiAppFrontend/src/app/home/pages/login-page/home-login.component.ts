@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LoginData } from '../../service/user.models';
 import { UserDataStorageService } from '../../service/user-data-storage.service';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-home-login',
@@ -12,7 +13,7 @@ export class HomeLoginComponent {
 
   loginDto: LoginData;
 
-  constructor(private loginDataStorageService: UserDataStorageService, private router: Router) {
+  constructor(private loginDataStorageService: UserDataStorageService, private router: Router, private cookieService: CookieService) {
     this.loginDto = new LoginData('','');
   }
 
@@ -20,7 +21,7 @@ export class HomeLoginComponent {
     this.loginDto.email = email;
     this.loginDto.password = password;
     this.loginDataStorageService.sendLogin(this.loginDto)
-    .then(data => localStorage.setItem("jwt", data.token))
+    .then(data => this.cookieService.set("jwt", data.token))
     .then(() => this.router.navigate(['/home']))
   }
 
