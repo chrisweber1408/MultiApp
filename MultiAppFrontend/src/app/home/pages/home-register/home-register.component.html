@@ -1,0 +1,17 @@
+<app-header title="Homizer"></app-header>
+<div class="input">
+    <div>
+        <input class="input-field" type="email" placeholder="Email" [(ngModel)]="registerData.email" required>
+    </div>
+    <div>
+        <input class="input-field" type="password" placeholder="Password" [(ngModel)]="registerData.password" required>
+    </div>
+    <div>
+        <input class="input-field" type="password" placeholder="Password" [(ngModel)]="registerData.passwordRepeat" required>
+    </div>
+    <div>
+        <button class="add-button" (click)="onSendRegister(registerData.email, registerData.password, registerData.passwordRepeat)">
+                    Register
+        </button>
+    </div>
+</div>

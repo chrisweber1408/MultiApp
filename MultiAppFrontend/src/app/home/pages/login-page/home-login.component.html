@@ -1,0 +1,20 @@
+<app-header title="Multiapp"></app-header>
+<div class="input">
+    <div>
+        <input class="input-field" type="email" placeholder="Email" [(ngModel)]="loginDto.email" required>
+    </div>
+    <div>
+        <input class="input-field" type="password" placeholder="Password" [(ngModel)]="loginDto.password" required>
+    </div>
+    <div>
+        <button class="add-button"
+            (click)="onSendLogin(loginDto.email, loginDto.password)">
+                    Login
+        </button>
+    </div>
+    <div>
+        <button class="add-button"  routerLink="/register">
+            Register
+        </button>
+    </div>
+</div>
