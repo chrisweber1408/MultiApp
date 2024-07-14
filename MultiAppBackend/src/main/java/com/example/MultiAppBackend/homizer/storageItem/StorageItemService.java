@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +26,12 @@ public class StorageItemService {
     }
 
     public StorageItem getOneStorageItem(String id) {
-         return storageItemRepo.findById(id).get();
+        Optional<StorageItem> storageItem = storageItemRepo.findById(id);
+        if (storageItem.isPresent()){
+            return storageItem.get();
+        } else {
+            throw new NoSuchElementException("Item with id: " + id + " not found!");
+        }
     }
 
     public void deleteStorageItem(String id) {
