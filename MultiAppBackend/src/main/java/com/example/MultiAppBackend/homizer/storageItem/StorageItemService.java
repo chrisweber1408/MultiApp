@@ -1,6 +1,7 @@
 package com.example.MultiAppBackend.homizer.storageItem;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,8 +13,14 @@ import java.util.Optional;
 public class StorageItemService {
 
     private final StorageItemRepo storageItemRepo;
+
     public void saveStorageItem(StorageItem storageItem) {
-        storageItemRepo.save(storageItem);
+        if (storageItemRepo.findById(storageItem.getId()).isEmpty()) {
+            storageItemRepo.save(storageItem);
+        } else {
+            throw new DuplicateKeyException("Duplicated ID: " + storageItem.getId());
+        }
+
     }
 
     public List<StorageItem> getAllStorageItems() {

@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.dao.DuplicateKeyException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,6 +30,22 @@ class StorageItemServiceTest {
         storageItemService.saveStorageItem(storageItem);
         //Then
         Mockito.verify(storageItemRepo).save(storageItem);
+    }
+
+    @Test
+    void saveNoStorageItem() {
+        //Given
+        StorageItemRepo storageItemRepo = Mockito.mock(StorageItemRepo.class);
+        StorageItemService storageItemService = new StorageItemService(storageItemRepo);
+        StorageItem storageItem = StorageItem.builder()
+                .name("Test")
+                .description("Safe")
+                .image("Image")
+                .number(1)
+                .build();
+        Mockito.when(storageItemRepo.findById(storageItem.getId())).thenReturn(Optional.of(storageItem));
+        //When
+        Assertions.assertThatExceptionOfType(DuplicateKeyException.class).isThrownBy(() -> storageItemService.saveStorageItem(storageItem));
     }
 
     @Test
