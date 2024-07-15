@@ -93,12 +93,38 @@ class StorageItemServiceTest {
         StorageItemRepo storageItemRepo = Mockito.mock(StorageItemRepo.class);
         StorageItemService storageItemService = new StorageItemService(storageItemRepo);
         final String id = "testId";
-        Mockito.when(storageItemRepo.findById(id)).thenReturn(null);
+        Mockito.when(storageItemRepo.findById(id)).thenReturn(Optional.empty());
         //Then
-        Assertions.assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(storageItemService::getAllStorageItems);
+        Assertions.assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> storageItemService.getOneStorageItem(id));
     }
 
     @Test
     void deleteStorageItem() {
+        //Given
+        StorageItemRepo storageItemRepo = Mockito.mock(StorageItemRepo.class);
+        StorageItemService storageItemService = new StorageItemService(storageItemRepo);
+        final String id = "testId";
+        final StorageItem storageItem = StorageItem.builder()
+                .name("Test1")
+                .description("Safe1")
+                .image("Image1")
+                .number(1)
+                .build();
+        Mockito.when(storageItemRepo.findById(id)).thenReturn(Optional.of(storageItem));
+        //When
+        storageItemService.deleteStorageItem(id);
+        //Then
+        Mockito.verify(storageItemRepo).deleteById(id);
+    }
+
+    @Test
+    void deleteNoStorageItem(){
+        //Given
+        StorageItemRepo storageItemRepo = Mockito.mock(StorageItemRepo.class);
+        StorageItemService storageItemService = new StorageItemService(storageItemRepo);
+        final String id = "testId";
+        Mockito.when(storageItemRepo.findById(id)).thenReturn(Optional.empty());
+        //Then
+        Assertions.assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> storageItemService.deleteStorageItem(id));
     }
 }

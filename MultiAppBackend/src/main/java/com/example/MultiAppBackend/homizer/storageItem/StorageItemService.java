@@ -35,6 +35,11 @@ public class StorageItemService {
     }
 
     public void deleteStorageItem(String id) {
-        storageItemRepo.deleteById(id);
+        Optional<StorageItem> storageItem = storageItemRepo.findById(id);
+        if (storageItem.isPresent()){
+            storageItemRepo.deleteById(id);
+        } else {
+            throw new NoSuchElementException("Item with id: " + id + " not found!");
+        }
     }
 }
