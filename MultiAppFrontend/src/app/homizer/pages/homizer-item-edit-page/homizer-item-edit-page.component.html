@@ -13,7 +13,7 @@
         <input class="homizer-edit-input-field" type="number" [(ngModel)]="homizerItem.number" placeholder="Number" required>
     </div>
     <div>
-        <button class="homizer-save-button" 
+        <button class="homizer-button" 
         (click)="onEditHomizerItem(
             homizerItem.id,
             homizerItem.name,
@@ -24,7 +24,7 @@
         >Save</button>
     </div>
     <div>
-        <button
+        <button class="homizer-button" 
         (click)="onDeleteHomizerItem(
             homizerItem.id
         )"
