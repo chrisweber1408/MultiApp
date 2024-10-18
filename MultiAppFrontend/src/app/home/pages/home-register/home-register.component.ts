@@ -21,7 +21,7 @@ export class HomeRegisterComponent {
     this.registerData.password = password;
     this.registerData.passwordRepeat = passwordRepeat;
     this.loginDataStorageService.sendRegister(this.registerData)
-    ;
+    .then(() => this.router.navigate(['/home']))
   }
 
 }
