@@ -1,5 +1,6 @@
 package com.example.MultiAppBackend.homizer.storageItem;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,8 @@ public class StorageItem {
     private final String id = UUID.randomUUID().toString();
     private String name;
     private String description;
-    private String image;
     private Integer number;
+    @Column(name = "image", columnDefinition = "TEXT")
+    private String image;
 
 }

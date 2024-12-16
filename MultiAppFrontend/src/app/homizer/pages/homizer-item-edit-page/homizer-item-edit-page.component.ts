@@ -52,6 +52,6 @@ export class HomizerItemEditPageComponent implements OnInit {
       }
     )
   }
-  
+
 
 }

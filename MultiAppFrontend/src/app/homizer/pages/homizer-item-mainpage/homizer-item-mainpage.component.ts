@@ -34,6 +34,6 @@ export class HomizerItemMainpageComponent implements OnInit {
     this.homizerItems = items
     return items;
   }
-  
-  
+
+
 }
