@@ -26,10 +26,7 @@ export class HomizerAddPageComponent {
         this.homizerItem.image = reader.result;
       }
     })
-    console.log(reader.result);
-    console.log(file);
     reader.readAsDataURL(file);
-    console.log(reader.result);
   }
 
   onSaveHomizerItem(name: string, description: string, image: string, number: number) {

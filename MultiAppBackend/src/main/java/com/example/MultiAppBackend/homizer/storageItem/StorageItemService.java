@@ -15,12 +15,7 @@ public class StorageItemService {
     private final StorageItemRepo storageItemRepo;
 
     public void saveStorageItem(StorageItem storageItem) {
-        if (storageItemRepo.findById(storageItem.getId()).isEmpty()) {
-            storageItemRepo.save(storageItem);
-        } else {
-            throw new DuplicateKeyException("Duplicated ID: " + storageItem.getId());
-        }
-
+        storageItemRepo.save(storageItem);
     }
 
     public List<StorageItem> getAllStorageItems() {
@@ -34,7 +29,7 @@ public class StorageItemService {
 
     public StorageItem getOneStorageItem(String id) {
         Optional<StorageItem> storageItem = storageItemRepo.findById(id);
-        if (storageItem.isPresent()){
+        if (storageItem.isPresent()) {
             return storageItem.get();
         } else {
             throw new NoSuchElementException("Item with id: " + id + " not found!");
@@ -43,7 +38,7 @@ public class StorageItemService {
 
     public void deleteStorageItem(String id) {
         Optional<StorageItem> storageItem = storageItemRepo.findById(id);
-        if (storageItem.isPresent()){
+        if (storageItem.isPresent()) {
             storageItemRepo.deleteById(id);
         } else {
             throw new NoSuchElementException("Item with id: " + id + " not found!");
