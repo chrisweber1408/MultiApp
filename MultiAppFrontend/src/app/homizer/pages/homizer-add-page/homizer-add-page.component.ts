@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { HomizerItem } from '../../service/homizer.models';
-import { DataStorageService } from '../../service/homizer-data-storage.service';
-import { Router, RouterLink } from '@angular/router';
+import {Component} from '@angular/core';
+import {HomizerItem} from '../../service/homizer.models';
+import {DataStorageService} from '../../service/homizer-data-storage.service';
+import {Router} from '@angular/router';
+import {Observable, ReplaySubject} from "rxjs";
 
 @Component({
   selector: 'app-homizer-add-page',
@@ -11,9 +12,21 @@ import { Router, RouterLink } from '@angular/router';
 export class HomizerAddPageComponent {
 
   homizerItem: HomizerItem
+  test: File
 
   constructor(private dataStorageService: DataStorageService, private router: Router) {
-    this.homizerItem = new HomizerItem('', '', '');
+    this.homizerItem = new HomizerItem('');
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.addEventListener('load', (event) => {
+      if (typeof reader.result === 'string') {
+        this.homizerItem.image = reader.result;
+      }
+    })
+    reader.readAsDataURL(file);
   }
 
   onSaveHomizerItem(name: string, description: string, image: string, number: number) {
@@ -26,6 +39,5 @@ export class HomizerAddPageComponent {
         this.router.navigate(['/homizer-item'])
       }
     )
-    }
-
+  }
 }

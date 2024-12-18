@@ -1,17 +1,28 @@
 .item-input {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .input-field {
-    padding: 10px;
-    margin: 5px;
-    border-radius: 20px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 20px;
 }
 
-.homizer-item-add-button {
-    padding: 10px;
-    margin: 5px;
-    border-radius: 20px;
+.homizer-item-save-button {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 20px;
+}
+
+.homizer-item-input-field {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
 }

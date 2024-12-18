@@ -1,17 +1,11 @@
 .homizer-header {
-    background-color: rgba(0, 162, 255, 0.726);
-    font-size: 50px;
-    display: flex;
-    height: 100px;
-    width: 80%;
-    margin: auto;
-    border-radius: 25px;
-    margin-top: 10px;
-}
-
-.homizer-headline {
-    width: 100%;
-    text-align: center;
-    align-content: center;
+  background-color: rgba(0, 162, 255, 0.726);
+  font-size: 50px;
+  display: flex;
+  height: 100px;
+  margin: 10px;
+  border-radius: 25px;
+  justify-content: center;
+  align-items: center;
 }
 

@@ -18,17 +18,21 @@ public class StorageItemController {
     @PostMapping
     @CrossOrigin(origins = "http://localhost:4200")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> saveStorageItem(@RequestBody StorageItem storageItem){
-        storageItemService.saveStorageItem(storageItem);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<Void> saveStorageItem(@RequestBody StorageItem storageItem) {
+        try {
+            storageItemService.saveStorageItem(storageItem);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 
     @GetMapping
     @CrossOrigin(origins = "http://localhost:4200")
-    public ResponseEntity<List<StorageItem>> getAllStorageItems(){
+    public ResponseEntity<List<StorageItem>> getAllStorageItems() {
         try {
             return ResponseEntity.ok(storageItemService.getAllStorageItems());
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
