@@ -1,24 +1,26 @@
 .header-home {
-    background-color: red;
-    color: blue;
-    text-align: center;
-    font-size: 50px;
-    padding: 10px;
+  background-color: red;
+  color: blue;
+  text-align: center;
+  font-size: 50px;
+  padding: 10px;
 }
 
 .apps {
-    justify-content: center;
-    display: grid;
+  justify-content: center;
+  display: grid;
 }
 
 .homizer-app {
-    background-color: green;
-    color: blue;
-    text-align: center;
-    font-size: 50px;
-    padding: 10px;
-    cursor: pointer;
-    margin-top: 10px;
-    width: 250px;
-    border-radius: 25px;
+  background-color: rgba(90, 173, 245, 0.76);
+  color: #000000;
+  text-align: center;
+  font-size: 40px;
+  padding: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 250px;
+  border-radius: 25px;
+  height: 60px;
+  align-content: center;
 }
