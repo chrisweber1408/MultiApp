@@ -5,9 +5,10 @@ import {Router} from '@angular/router';
 import {Observable, ReplaySubject} from "rxjs";
 
 @Component({
-  selector: 'app-homizer-add-page',
-  templateUrl: './homizer-add-page.component.html',
-  styleUrl: './homizer-add-page.component.css'
+    selector: 'app-homizer-add-page',
+    templateUrl: './homizer-add-page.component.html',
+    styleUrl: './homizer-add-page.component.css',
+    standalone: false
 })
 export class HomizerAddPageComponent {
 

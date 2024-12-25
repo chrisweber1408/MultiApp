@@ -6,9 +6,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AxiosResponse } from 'axios';
 
 @Component({
-  selector: 'app-homizer-item-edit-page',
-  templateUrl: './homizer-item-edit-page.component.html',
-  styleUrl: './homizer-item-edit-page.component.css'
+    selector: 'app-homizer-item-edit-page',
+    templateUrl: './homizer-item-edit-page.component.html',
+    styleUrl: './homizer-item-edit-page.component.css',
+    standalone: false
 })
 export class HomizerItemEditPageComponent implements OnInit {
 

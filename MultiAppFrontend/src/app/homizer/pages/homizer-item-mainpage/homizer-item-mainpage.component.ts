@@ -4,9 +4,10 @@ import { DataStorageService } from '../../service/homizer-data-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-homizer-mainpage',
-  templateUrl: './homizer-item-mainpage.component.html',
-  styleUrls: ['./homizer-item-mainpage.component.css']
+    selector: 'app-homizer-mainpage',
+    templateUrl: './homizer-item-mainpage.component.html',
+    styleUrls: ['./homizer-item-mainpage.component.css'],
+    standalone: false
 })
 export class HomizerItemMainpageComponent implements OnInit {
   homizerItems: HomizerItem;
