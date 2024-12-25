@@ -2,13 +2,12 @@ import {Component} from '@angular/core';
 import {HomizerItem} from '../../service/homizer.models';
 import {DataStorageService} from '../../service/homizer-data-storage.service';
 import {Router} from '@angular/router';
-import {Observable, ReplaySubject} from "rxjs";
 
 @Component({
-    selector: 'app-homizer-add-page',
-    templateUrl: './homizer-add-page.component.html',
-    styleUrl: './homizer-add-page.component.css',
-    standalone: false
+  selector: 'app-homizer-add-page',
+  templateUrl: './homizer-add-page.component.html',
+  styleUrl: './homizer-add-page.component.css',
+  standalone: false
 })
 export class HomizerAddPageComponent {
 
