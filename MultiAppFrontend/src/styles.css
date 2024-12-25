@@ -1,31 +1,47 @@
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
 body {
-    background-color: rgb(85, 82, 82);
-    margin: 0;
-    display: grid;
+  background-color: rgba(20, 27, 39, 0.94);
+  margin: 0;
+  display: grid;
 }
 
 .input {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .input-field {
-    padding: 10px;
-    margin: 5px;
-    border-radius: 20px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 20px;
 }
 
 .add-button {
-    padding: 10px;
-    margin: 5px;
-    border-radius: 20px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 20px;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,10 +1,10 @@
 .homizer-item-list {
-    text-align: center;
+  text-align: center;
 }
 
 .homizer-item {
-    background-color: rgb(90, 173, 245);
-    margin: 10px;
-    padding: 1px;
-    border-radius: 25px;
+  background-color: rgba(90, 173, 245, 0.76);
+  margin: 10px;
+  padding: 1px;
+  border-radius: 25px;
 }

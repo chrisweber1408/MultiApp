@@ -1,20 +1,23 @@
 
 .homizer-choice {
-    display: flex;
-    color: aliceblue;
-    margin-top: 10px
+  display: flex;
+  color: aliceblue;
+  margin-top: 10px;
+  position: sticky;
+  top: 120px;
+  z-index: 1;
 }
 
 .homizer-choice-pannel {
-    width: 50%;
-    text-align: center;
-    background-color: blue;
-    margin: 10px;
-    padding: 5px;
-    border-radius: 10px;
+  width: 50%;
+  text-align: center;
+  background-color: blue;
+  margin: 10px;
+  padding: 5px;
+  border-radius: 10px;
 }
 
 .homizer-choice-pannel.selected {
-    background-color: rgb(255, 0, 0);
+  background-color: rgb(255, 0, 0);
 }
 
