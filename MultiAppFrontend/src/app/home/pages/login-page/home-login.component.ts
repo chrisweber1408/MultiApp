@@ -5,9 +5,10 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
-  selector: 'app-home-login',
-  templateUrl: './home-login.component.html',
-  styleUrl: './home-login.component.css'
+    selector: 'app-home-login',
+    templateUrl: './home-login.component.html',
+    styleUrl: './home-login.component.css',
+    standalone: false
 })
 export class HomeLoginComponent {
 
