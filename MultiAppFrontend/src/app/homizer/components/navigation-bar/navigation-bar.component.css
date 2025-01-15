@@ -1,0 +1,12 @@
+.homizer-add-item-container {
+  background-color: rgb(55, 69, 112);
+  height: 80px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
