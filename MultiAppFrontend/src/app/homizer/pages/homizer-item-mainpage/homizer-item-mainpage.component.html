@@ -1,12 +1,11 @@
 <app-header title="Homizer"></app-header>
-<app-homizer-choice-pannel></app-homizer-choice-pannel>
 
 <div class="homizer-item-list" *ngIf="homizerItems">
-    <div class="homizer-item" *ngFor="let homizerItem of homizerItems" [routerLink]="['/homizer-item-edit-page', homizerItem.id]">
+    <div class="homizer-item" *ngFor="let homizerItem of  homizerItems" [routerLink]="['/homizer-item-edit-page', homizerItem.id]">
       <p>Name: {{ homizerItem.name }}</p>
       <p>Description: {{ homizerItem.description }}</p>
       <p>Number: {{ homizerItem.number }}</p>
     </div>
 </div>
 
-<app-homizer-add-button></app-homizer-add-button>
+<app-navigation-bar title="homizer-item"></app-navigation-bar>

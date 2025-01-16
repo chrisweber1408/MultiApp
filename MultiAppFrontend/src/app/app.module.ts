@@ -8,35 +8,35 @@ import {HomeComponent} from './home/pages/home-page/home.component';
 import {HomizerItemMainpageComponent} from './homizer/pages/homizer-item-mainpage/homizer-item-mainpage.component';
 import {FormsModule} from '@angular/forms';
 import {HomizerService} from './homizer/homizer.service';
-import {HomizerAddButtonComponent} from './homizer/components/homizer-add-button/homizer-add-button.component';
 import {HomizerAddPageComponent} from './homizer/pages/homizer-add-page/homizer-add-page.component';
-import {HomizerChoicePannelComponent} from './homizer/components/homizer-choice-pannel/homizer-choice-pannel.component';
 import {HomizerItemEditPageComponent} from './homizer/pages/homizer-item-edit-page/homizer-item-edit-page.component';
 import {HomeHeaderComponent} from './home/components/app-header/app-header.component';
 import {HomeLoginComponent} from './home/pages/login-page/home-login.component';
 import {HomeRegisterComponent} from './home/pages/home-register/home-register.component';
 import {CookieService} from 'ngx-cookie-service';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {NavigationItemComponent} from './homizer/components/navigation-item/navigation-item.component';
+import {NavigationBarComponent} from './homizer/components/navigation-bar/navigation-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomizerComponent,
     HomeComponent,
-    HomizerChoicePannelComponent,
     HomizerItemMainpageComponent,
-    HomizerAddButtonComponent,
     HomizerAddPageComponent,
     HomizerItemEditPageComponent,
     HomeHeaderComponent,
     HomeLoginComponent,
     HomeRegisterComponent,
+    NavigationBarComponent,
+
   ],
   bootstrap: [
     AppComponent
   ], imports: [BrowserModule,
     AppRoutingModule,
-    FormsModule],
+    FormsModule, NavigationItemComponent],
   providers: [
     HomizerService,
     CookieService,

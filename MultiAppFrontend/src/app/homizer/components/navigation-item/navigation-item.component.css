@@ -1,13 +1,5 @@
-.homizer-add-item-container {
-  background-color: white;
-  height: 100px;
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-}
-
 .homizer-add-item {
-  background-color: rgba(255, 166, 0, 0.85);
+  background-color: rgb(149, 88, 255);
   width: 40px;
   height: 40px;
   display: flex;
@@ -17,4 +9,9 @@
   border-radius: 20px;
   padding: 10px;
   border: 2px solid black;
+}
+
+
+.homizer-add-item.active {
+  background-color: #60006e;
 }
