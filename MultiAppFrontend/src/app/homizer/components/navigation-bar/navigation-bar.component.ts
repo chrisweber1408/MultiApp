@@ -24,7 +24,7 @@ export class NavigationBarComponent implements OnInit {
           this.navigationItems = [
             {icon: 'home', link: '/home'},
             {icon: 'category', link: '/homizer-item'},
-            {icon: 'folder', link: '/homizer-item-edit'},
+            {icon: 'folder', link: '/homizer-storage'},
             {icon: 'add_circle', link: '/homizer-add-page'},
           ]
           break
@@ -33,7 +33,7 @@ export class NavigationBarComponent implements OnInit {
           this.navigationItems = [
             {icon: 'home', link: '/home'},
             {icon: 'category', link: '/homizer-item'},
-            {icon: 'folder', link: '/'},
+            {icon: 'folder', link: '/homizer-storage'},
             {icon: 'add_circle', link: '/homizer-add-page'},
           ]
           break

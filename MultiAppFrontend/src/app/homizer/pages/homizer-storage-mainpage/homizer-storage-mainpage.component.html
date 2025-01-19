@@ -1,0 +1,11 @@
+<app-header title="Homizer"></app-header>
+
+<div class="homizer-storage-list" *ngIf="homizerStorage">
+  <div class="homizer-storage" *ngFor="let homizerStorage of homizerStorage" [routerLink]="['/homizer-item-edit-page', homizerStorage.id]">
+    <p>Name: {{ homizerStorage.name }}</p>
+    <p>Description: {{ homizerStorage.description }}</p>
+    <p>Number: {{ homizerStorage.number }}</p>
+  </div>
+</div>
+
+<app-navigation-bar title="homizer-storage"></app-navigation-bar>

@@ -17,6 +17,7 @@ import {CookieService} from 'ngx-cookie-service';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {NavigationItemComponent} from './homizer/components/navigation-item/navigation-item.component';
 import {NavigationBarComponent} from './homizer/components/navigation-bar/navigation-bar.component';
+import { HomizerStorageMainpageComponent } from './homizer/pages/homizer-storage-mainpage/homizer-storage-mainpage.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import {NavigationBarComponent} from './homizer/components/navigation-bar/naviga
     HomeLoginComponent,
     HomeRegisterComponent,
     NavigationBarComponent,
+    HomizerStorageMainpageComponent,
 
   ],
   bootstrap: [
