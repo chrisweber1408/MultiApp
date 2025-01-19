@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {HomizerItem} from '../../service/homizer.models';
-import {DataStorageService} from '../../service/homizer-data-storage.service';
+import {DataService} from '../../service/homizer-data.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -14,7 +14,7 @@ export class HomizerAddPageComponent {
   homizerItem: HomizerItem
   test: File
 
-  constructor(private dataStorageService: DataStorageService, private router: Router) {
+  constructor(private dataStorageService: DataService, private router: Router) {
     this.homizerItem = new HomizerItem('');
   }
 
