@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/api/homizer/storageItem/")
+@RequestMapping("/api/homizer/item/")
 @RequiredArgsConstructor
 public class StorageItemController {
 

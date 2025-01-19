@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HomizerItem } from '../../service/homizer.models';
-import { DataStorageService } from '../../service/homizer-data-storage.service';
+import { DataService } from '../../service/homizer-data.service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AxiosResponse } from 'axios';
@@ -15,7 +15,7 @@ export class HomizerItemEditPageComponent implements OnInit {
 
   homizerItem: HomizerItem
   constructor(
-    private dataStorageService: DataStorageService,
+    private dataStorageService: DataService,
     private route: ActivatedRoute,
     private router: Router
     ) {

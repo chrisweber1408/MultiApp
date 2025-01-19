@@ -1,0 +1,11 @@
+.homizer-storage-list {
+  text-align: center;
+  margin-bottom: 90px;
+}
+
+.homizer-storage {
+  background-color: rgba(90, 173, 245, 0.76);
+  margin: 10px;
+  padding: 1px;
+  border-radius: 25px;
+}
