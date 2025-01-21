@@ -1,4 +1,4 @@
-package com.example.MultiAppBackend.homizer.storageItem;
+package com.example.MultiAppBackend.homizer.homizerItem;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,16 +11,16 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/api/homizer/item/")
 @RequiredArgsConstructor
-public class StorageItemController {
+public class HomizerItemController {
 
-    private final StorageItemService storageItemService;
+    private final HomizerItemService homizerItemService;
 
     @PostMapping
     @CrossOrigin(origins = "http://localhost:4200")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> saveStorageItem(@RequestBody StorageItem storageItem) {
+    public ResponseEntity<Void> saveHomizerItem(@RequestBody HomizerItem homizerItem) {
         try {
-            storageItemService.saveStorageItem(storageItem);
+            homizerItemService.saveHomizerItem(homizerItem);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -29,9 +29,9 @@ public class StorageItemController {
 
     @GetMapping
     @CrossOrigin(origins = "http://localhost:4200")
-    public ResponseEntity<List<StorageItem>> getAllStorageItems() {
+    public ResponseEntity<List<HomizerItem>> getAllHomizerItems() {
         try {
-            return ResponseEntity.ok(storageItemService.getAllStorageItems());
+            return ResponseEntity.ok(homizerItemService.getAllHomizerItems());
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -39,14 +39,14 @@ public class StorageItemController {
 
     @GetMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:4200")
-    public StorageItem getOneStorageItem(@PathVariable String id) {
-        return storageItemService.getOneStorageItem(id);
+    public HomizerItem getHomizerItemById(@PathVariable String id) {
+        return homizerItemService.getHomizerItemById(id);
     }
 
     @DeleteMapping("/delete/{id}")
     @CrossOrigin(origins = "http://localhost:4200")
-    public void deleteStorageItem(@PathVariable String id) {
-        storageItemService.deleteStorageItem(id);
+    public void deleteHomizerItemById(@PathVariable String id) {
+        homizerItemService.deleteHomizerItemById(id);
     }
 
 }
