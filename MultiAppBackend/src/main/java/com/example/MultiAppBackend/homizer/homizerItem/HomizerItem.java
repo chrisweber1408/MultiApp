@@ -1,4 +1,4 @@
-package com.example.MultiAppBackend.homizer.storageItem;
+package com.example.MultiAppBackend.homizer.homizerItem;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StorageItem {
+public class HomizerItem {
     @Id
     private final String id = UUID.randomUUID().toString();
     private String name;
