@@ -29,14 +29,14 @@
     </mat-form-field>
   </div>
   <div class="homizer-button">
-    <button mat-flat-button
+    <button mat-raised-button
             (click)="onSaveHomizerItem(homizerItem.name, homizerItem.description, homizerItem.image, homizerItem.number,selectedHomizerStorageId)">
       Add
     </button>
   </div>
   <div class="homizer-button">
     <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="onFileSelected($event)"/>
-    <button mat-flat-button color="primary" (click)="csvInput.click()">Add a picture</button>
+    <button mat-raised-button color="primary" (click)="csvInput.click()">Add a picture</button>
   </div>
   <div *ngIf="homizerItem.image">
     <label>Picture added!</label>

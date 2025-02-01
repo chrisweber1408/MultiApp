@@ -3,34 +3,28 @@
   <div>
     <img class="homizer-edit-image" src="{{homizerItem.image}}">
   </div>
-  <div>
-    <input class="homizer-edit-input-field" type="text" [(ngModel)]="homizerItem.name" placeholder="Name" required>
-  </div>
-  <div>
-    <input class="homizer-edit-input-field" type="text" [(ngModel)]="homizerItem.description" placeholder="Description">
-  </div>
-  <div>
-    <input class="homizer-edit-input-field" type="number" [(ngModel)]="homizerItem.number" placeholder="Number"
-           required>
-  </div>
-  <div>
-    <button class="homizer-button"
-            (click)="onEditHomizerItem(
-            homizerItem.id,
-            homizerItem.name,
-            homizerItem.description,
-            homizerItem.image,
-            homizerItem.number
-        )"
-    >Save
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput type="text" [(ngModel)]="homizerItem.name">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Description</mat-label>
+    <input matInput type="text" [(ngModel)]="homizerItem.description">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Number</mat-label>
+    <input matInput type="number" [(ngModel)]="homizerItem.number">
+  </mat-form-field>
+  <div class="homizer-button">
+    <button mat-raised-button
+            (click)="onEditHomizerItem(homizerItem.id, homizerItem.name, homizerItem.description, homizerItem.image, homizerItem.number)">
+      <mat-icon>save</mat-icon> Save
     </button>
   </div>
-  <div>
-    <button class="homizer-button"
-            (click)="onDeleteHomizerItem(
-            homizerItem.id
-        )"
-    >Delete
+  <div class="homizer-button">
+    <button mat-raised-button
+            (click)="onDeleteHomizerItem(homizerItem.id)">
+      <mat-icon>delete</mat-icon> Delete
     </button>
   </div>
 </div>
