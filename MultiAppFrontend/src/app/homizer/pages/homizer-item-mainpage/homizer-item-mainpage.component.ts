@@ -1,6 +1,6 @@
 import { AfterContentChecked, Component, OnChanges, OnInit } from '@angular/core';
-import { HomizerItem } from '../../service/homizer.models';
-import { DataService } from '../../service/homizer-data.service';
+import { HomizerItemDto } from '../../service/homizer.models';
+import { HomizerDataService } from '../../service/homizer-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -10,9 +10,9 @@ import { ActivatedRoute, Router } from '@angular/router';
     standalone: false
 })
 export class HomizerItemMainpageComponent implements OnInit {
-  homizerItems: HomizerItem;
+  homizerItems: HomizerItemDto;
 
-  constructor(private dataService: DataService, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private dataService: HomizerDataService, private activatedRoute: ActivatedRoute, private router: Router) {
 
   }
 
@@ -20,7 +20,7 @@ export class HomizerItemMainpageComponent implements OnInit {
       this.loadHomizerItems();
   }
 
-  async loadHomizerItems(): Promise<HomizerItem[]> {
+  async loadHomizerItems(): Promise<HomizerItemDto[]> {
     const items = await this.dataService.loadHomizerItems()
       .catch(error => {
         if(error.response?.status === 403) {
