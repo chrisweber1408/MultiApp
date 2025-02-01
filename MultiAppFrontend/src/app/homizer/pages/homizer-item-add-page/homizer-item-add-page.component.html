@@ -31,12 +31,16 @@
   <div class="homizer-button">
     <button mat-raised-button
             (click)="onSaveHomizerItem(homizerItem.name, homizerItem.description, homizerItem.image, homizerItem.number,selectedHomizerStorageId)">
-      Add
+      <mat-icon>save</mat-icon>
+      Save
     </button>
   </div>
   <div class="homizer-button">
-    <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="onFileSelected($event)"/>
-    <button mat-raised-button color="primary" (click)="csvInput.click()">Add a picture</button>
+    <input #csvInput hidden="hidden" type="file" onclick="this.value=null" (change)="onFileSelected($event)"/>
+    <button mat-raised-button (click)="csvInput.click()">
+      <mat-icon>attach_file_add</mat-icon>
+      Add a picture
+    </button>
   </div>
   <div *ngIf="homizerItem.image">
     <label>Picture added!</label>
