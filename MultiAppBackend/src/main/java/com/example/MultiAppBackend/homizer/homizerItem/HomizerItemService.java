@@ -1,5 +1,8 @@
 package com.example.MultiAppBackend.homizer.homizerItem;
 
+import com.example.MultiAppBackend.homizer.dto.HomizerItemDto;
+import com.example.MultiAppBackend.homizer.homizerStorage.HomizerStorage;
+import com.example.MultiAppBackend.homizer.homizerStorage.HomizerStorageRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +15,21 @@ import java.util.Optional;
 public class HomizerItemService {
 
   private final HomizerItemRepo homizerItemRepo;
+  private final HomizerStorageRepo homizerStorageRepo;
 
-  public void saveHomizerItem(HomizerItem homizerItem) {
+  public void saveHomizerItem(HomizerItemDto homizerItemDto) {
+    HomizerItem homizerItem = new HomizerItem();
+    if (null != homizerItemDto.getHomizerStorageId()) {
+      Optional<HomizerStorage> homizerStorage =
+          homizerStorageRepo.findById(homizerItemDto.getHomizerStorageId());
+      if (homizerStorage.isPresent()) {
+        homizerItem.setHomizerStorage(homizerStorage.get());
+      }
+    }
+    homizerItem.setName(homizerItemDto.getName());
+    homizerItem.setNumber(homizerItemDto.getNumber());
+    homizerItem.setImage(homizerItemDto.getImage());
+    homizerItem.setDescription(homizerItemDto.getDescription());
     homizerItemRepo.save(homizerItem);
   }
 

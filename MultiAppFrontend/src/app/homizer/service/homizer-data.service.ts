@@ -1,10 +1,10 @@
 import {Injectable} from "@angular/core";
-import {HomizerItem, HomizerStorage} from "./homizer.models";
+import {HomizerItemDto, HomizerStorage} from "./homizer.models";
 import axios from "axios";
 import {CookieService} from "ngx-cookie-service";
 
 @Injectable({providedIn: 'root'})
-export class DataService {
+export class HomizerDataService {
 
   constructor(private cookieService: CookieService) {
 
@@ -20,7 +20,7 @@ export class DataService {
 
   // Homizer-Item
 
-  saveHomizerItem(item: HomizerItem) {
+  saveHomizerItem(item: HomizerItemDto) {
     return axios.post('/api/homizer/item/', item, this.requestConfig())
   }
 
@@ -29,7 +29,7 @@ export class DataService {
   }
 
   loadHomizerItem(id: string) {
-    return axios.get<HomizerItem>('/api/homizer/item/' + id, this.requestConfig())
+    return axios.get<HomizerItemDto>('/api/homizer/item/' + id, this.requestConfig())
   }
 
   deleteHomizerItem(id: string) {
