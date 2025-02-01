@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {HomizerStorage} from "../../service/homizer.models";
-import {DataService} from "../../service/homizer-data.service";
+import {HomizerDataService} from "../../service/homizer-data.service";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
@@ -12,7 +12,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class HomizerStorageMainpageComponent implements OnInit {
   homizerStorage: HomizerStorage;
 
-  constructor(private dataStorage: DataService, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private dataStorage: HomizerDataService, private activatedRoute: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit() {
