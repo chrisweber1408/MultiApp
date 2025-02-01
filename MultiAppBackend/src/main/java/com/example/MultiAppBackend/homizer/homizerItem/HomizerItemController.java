@@ -2,6 +2,8 @@ package com.example.MultiAppBackend.homizer.homizerItem;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import com.example.MultiAppBackend.homizer.dto.HomizerItemDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,9 @@ public class HomizerItemController {
   @PostMapping
   @CrossOrigin(origins = "http://localhost:4200")
   @ResponseStatus(HttpStatus.CREATED)
-  public ResponseEntity<Void> saveHomizerItem(@RequestBody HomizerItem homizerItem) {
+  public ResponseEntity<Void> saveHomizerItem(@RequestBody HomizerItemDto homizerItemDto) {
     try {
-      homizerItemService.saveHomizerItem(homizerItem);
+      homizerItemService.saveHomizerItem(homizerItemDto);
       return ResponseEntity.status(HttpStatus.CREATED).build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.CONFLICT).build();

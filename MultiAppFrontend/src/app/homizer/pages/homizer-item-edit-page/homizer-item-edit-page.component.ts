@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HomizerItem } from '../../service/homizer.models';
-import { DataService } from '../../service/homizer-data.service';
+import { HomizerItemDto } from '../../service/homizer.models';
+import { HomizerDataService } from '../../service/homizer-data.service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AxiosResponse } from 'axios';
@@ -13,9 +13,9 @@ import { AxiosResponse } from 'axios';
 })
 export class HomizerItemEditPageComponent implements OnInit {
 
-  homizerItem: HomizerItem
+  homizerItem: HomizerItemDto
   constructor(
-    private dataStorageService: DataService,
+    private dataStorageService: HomizerDataService,
     private route: ActivatedRoute,
     private router: Router
     ) {
@@ -28,7 +28,7 @@ export class HomizerItemEditPageComponent implements OnInit {
 
   loadHomizerItem(id: string): void {
     this.dataStorageService.loadHomizerItem(id)
-    .then((item: AxiosResponse<HomizerItem, any>) => {
+    .then((item: AxiosResponse<HomizerItemDto, any>) => {
       this.homizerItem = item.data
     });
   }

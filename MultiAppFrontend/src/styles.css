@@ -1,5 +1,3 @@
-@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
-
 body {
   background-color: rgba(20, 27, 39, 0.94);
   margin: 0;
@@ -10,12 +8,21 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 20px;
+}
+
+.homizer-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.homizer-button {
+  margin: 10px;
 }
 
 .input-field {
-  padding: 10px;
-  margin: 5px;
-  border-radius: 20px;
 }
 
 .add-button {

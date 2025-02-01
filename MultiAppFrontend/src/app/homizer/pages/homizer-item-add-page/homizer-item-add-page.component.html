@@ -1,0 +1,46 @@
+<app-header title="Homizer-Item"></app-header>
+<div class="homizer-input">
+  <div class="input">
+    <mat-form-field class="input-field">
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="homizerItem.name">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="input-field">
+      <mat-label>Description</mat-label>
+      <input matInput [(ngModel)]="homizerItem.description">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="input-field">
+      <mat-label>Number</mat-label>
+      <input matInput [(ngModel)]="homizerItem.number">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Storage</mat-label>
+      <mat-select [(ngModel)]="selectedHomizerStorageId">
+        @for (storage of homizerStorage; track storage) {
+          <mat-option [value]="storage.name">{{ storage.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="homizer-button">
+    <button mat-flat-button
+            (click)="onSaveHomizerItem(homizerItem.name, homizerItem.description, homizerItem.image, homizerItem.number,selectedHomizerStorageId)">
+      Add
+    </button>
+  </div>
+  <div class="homizer-button">
+    <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="onFileSelected($event)"/>
+    <button mat-flat-button color="primary" (click)="csvInput.click()">Add a picture</button>
+  </div>
+  <div *ngIf="homizerItem.image">
+    <label>Picture added!</label>
+  </div>
+</div>
+
+<app-navigation-bar title="homizer-item"></app-navigation-bar>
