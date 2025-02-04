@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - S-008
 
 jobs:
   build:
@@ -27,34 +27,10 @@ jobs:
         working-directory: MultiAppBackend
         run: ./gradlew build -x test
 
+      - name: Install Dependencies
+        working-directory: MultiAppFrontend
+        run: npm install
+
       - name: Build Angular app
         working-directory: MultiAppFrontend
-        run: npm run build --prod
-
-      - name: Build Docker images
-        run: |
-          docker build -t your-docker-hub-username/spring-boot-app:latest -f MultiAppBackend/Dockerfile.springboot . # Pfad zum Dockerfile anpassen
-          docker build -t your-docker-hub-username/angular-app:latest -f MultiAppFrontend/Dockerfile.angular . # Pfad zum Dockerfile anpassen
-
-      - name: Push Docker images
-        run: |
-          docker login -u your-docker-hub-username -p ${{ secrets.DOCKER_PASSWORD }}
-          docker push your-docker-hub-username/spring-boot-app:latest
-          docker push your-docker-hub-username/angular-app:latest
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Deploy to k3s
-        uses: k3s-io/github-action@v1
-        with:
-          kubeconfig: ${{ secrets.K3S_KUBECONFIG }}
-          manifests: |
-            deployment.yaml
-            service.yaml
-            ingress.yaml
+        run: npm run build --omit=dev
