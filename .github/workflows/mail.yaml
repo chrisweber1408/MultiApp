@@ -56,20 +56,11 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-app-frontend:latest -f MultiAppFrontend/Dockerfile MultiAppFrontend
           docker push ${{ secrets.DOCKER_USERNAME }}/multi-app-frontend:latest
 
-  deploy:
-    needs: docker
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: SSH into Server and Deploy to Kubernetes
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            kubectl apply -f /home/${{ secrets.SERVER_USER }}/k8s/backend-deployment.yml
-            kubectl apply -f /home/${{ secrets.SERVER_USER }}/k8s/frontend-deployment.yml
-            kubectl apply -f /home/${{ secrets.SERVER_USER }}/k8s/ingress.yml
-            kubectl rollout restart deployment/backend
-            kubectl rollout restart deployment/frontend
+      - name: Build & Push PostgreSQL Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-app-postgres:latest \
+            --build-arg POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
+            --build-arg POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
+            --build-arg POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
+            -f Postgres/Dockerfile Postgres
+          docker push ${{ secrets.DOCKER_USERNAME }}/multi-app-postgres:latest
