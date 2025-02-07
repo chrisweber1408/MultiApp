@@ -1,0 +1,6 @@
+spec:
+  containers:
+    - name: backend
+      image: docker.io/${{ secrets.DOCKER_USERNAME }}/multi-app-backend:latest
+  imagePullSecrets:
+    - name: dockerhub-secret
