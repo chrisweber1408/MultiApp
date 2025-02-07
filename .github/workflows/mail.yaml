@@ -80,14 +80,14 @@ jobs:
 
       - name: Configure Kubeconfig
         run: |
-          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig.yaml
-          export KUBECONFIG=$(pwd)/kubeconfig.yaml
+          mkdir ${HOME}/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > ${HOME}/.kube/config
           kubectl cluster-info
 
       - name: 🔍 Test Kubernetes Connection
         run: |
-          kubectl --kubeconfig=$(pwd)/kubeconfig.yaml cluster-info
-          kubectl --kubeconfig=$(pwd)/kubeconfig.yaml get nodes
+          kubectl cluster-info
+          kubectl get nodes
 
       - name: Create Kubernetes Secret for DockerHub
         run: |
