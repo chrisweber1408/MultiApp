@@ -3,7 +3,7 @@ kind: Deployment     # Art der Ressource, hier ein Deployment
 metadata:
   name: multi-backend # Der Name des Deployments
 spec:
-  replicas: 3         # Anzahl der Replikate (wie viele Pods du haben willst)
+  replicas: 1         # Anzahl der Replikate (wie viele Pods du haben willst)
   selector:
     matchLabels:
       app: multi-backend # Das Label zum Identifizieren der Pods
