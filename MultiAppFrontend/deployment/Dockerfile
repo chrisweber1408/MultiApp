@@ -3,7 +3,7 @@ FROM node:latest as builder
 
 WORKDIR /app
 
-COPY . .
+COPY .. .
 
 # Install dependencies
 RUN npm install

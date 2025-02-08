@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-frontend
+spec:
+  replicas: 1  # Falls du Skalierung möchtest, kannst du das erhöhen
+  selector:
+    matchLabels:
+      app: multi-frontend
+  template:
+    metadata:
+      labels:
+        app: multi-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: docker.io/${{ secrets.DOCKER_USERNAME }}/multi-app-frontend:latest
+          ports:
+            - containerPort: 80  # NGINX läuft auf Port 80
+      imagePullSecrets:
+        - name: dockerhub-secret  # Falls das Image privat ist
