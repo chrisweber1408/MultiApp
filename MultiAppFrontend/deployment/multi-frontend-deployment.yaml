@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: docker.io/${{ secrets.DOCKER_USERNAME }}/multi-app-frontend:latest
+          image: docker.io/DOCKER_USERNAME_PLACEHOLDER/multi-app-frontend:latest
           ports:
             - containerPort: 80  # NGINX läuft auf Port 80
       imagePullSecrets:

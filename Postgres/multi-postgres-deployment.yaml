@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: docker.io/${{ secrets.DOCKER_USERNAME }}/multi-app-postgres:latest
+          image: docker.io/DOCKER_USERNAME_PLACEHOLDER/multi-app-postgres:latest
           ports:
             - containerPort: 5432
           env:
@@ -55,17 +55,6 @@ spec:
 
 ---
 apiVersion: v1
-kind: Secret
-metadata:
-  name: postgres-secret
-type: Opaque
-data:
-  POSTGRES_USER: {{ secrets.POSTGRES_USER }}
-  POSTGRES_PASSWORD: {{ secrets.POSTGRES_PASSWORD }}
-  POSTGRES_DB: {{ secrets.POSTGRES_DB }}
-
----
-apiVersion: v1
 kind: Service
 metadata:
   name: postgres-service
@@ -76,4 +65,3 @@ spec:
     - protocol: TCP
       port: 5432
       targetPort: 5432
-  clusterIP: None

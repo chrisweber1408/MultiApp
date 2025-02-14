@@ -1,4 +1,7 @@
 FROM openjdk:17
+
 WORKDIR /app
-COPY .. .
-CMD ["java", "-jar", "build/libs/MultiAppBackend-0.0.1-SNAPSHOT.jar"]
+
+COPY MultiAppBackend/build/libs/MultiAppBackend-0.0.1-SNAPSHOT.jar app.jar
+
+CMD ["java", "-jar", "app.jar"]

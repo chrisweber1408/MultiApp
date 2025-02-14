@@ -1,21 +1,39 @@
-apiVersion: apps/v1  # Definiert die API-Version für ein Deployment
-kind: Deployment     # Art der Ressource, hier ein Deployment
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: multi-backend # Der Name des Deployments
+  name: multi-app-backend
 spec:
-  replicas: 1         # Anzahl der Replikate (wie viele Pods du haben willst)
+  replicas: 1
   selector:
     matchLabels:
-      app: multi-backend # Das Label zum Identifizieren der Pods
+      app: multi-app-backend
   template:
     metadata:
       labels:
-        app: multi-backend # Labels für die Pods
+        app: multi-app-backend
     spec:
       containers:
         - name: backend
-          image: docker.io/${{ secrets.DOCKER_USERNAME }}/multi-app-backend:latest # Docker-Image
+          image: docker.io/DOCKER_USERNAME_PLACEHOLDER/multi-app-backend:latest
           ports:
-            - containerPort: 8080 # Port, der im Container freigegeben wird
+            - containerPort: 8080
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_DB
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres-service:5432/${POSTGRES_DB}"
       imagePullSecrets:
-        - name: dockerhub-secret # Secret für den Zugriff auf private Docker-Images
+        - name: dockerhub-secret
