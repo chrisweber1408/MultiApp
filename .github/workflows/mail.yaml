@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - S-008
+      - main
 
 jobs:
   build:
@@ -148,12 +148,5 @@ jobs:
           kubectl rollout status deployment/multi-app-backend --timeout=60s
           kubectl rollout restart deployment/multi-frontend
           kubectl rollout status deployment/multi-frontend --timeout=60s
-
-      - name: Add NGINX Ingress repo
-        run: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-
-      - name: Update Helm repos
-        run: helm repo update
-
-      - name: Install NGINX Ingress controller
-        run: helm install ingress-nginx ingress-nginx/ingress-nginx
+          kubectl apply -f MultiAppFrontend/deployment/multi-frontend-service.yaml
+          kubectl apply -f manifests/ingress.yaml

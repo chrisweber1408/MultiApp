@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: multi-frontend
 spec:
-  replicas: 1  # Falls du Skalierung möchtest, kannst du das erhöhen
+  replicas: 1
   selector:
     matchLabels:
       app: multi-frontend
@@ -16,6 +16,6 @@ spec:
         - name: frontend
           image: docker.io/DOCKER_USERNAME_PLACEHOLDER/multi-app-frontend:latest
           ports:
-            - containerPort: 80  # NGINX läuft auf Port 80
+            - containerPort: 80
       imagePullSecrets:
-        - name: dockerhub-secret  # Falls das Image privat ist
+        - name: dockerhub-secret
