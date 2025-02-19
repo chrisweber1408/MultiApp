@@ -135,12 +135,19 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
+          set -e
           kubectl apply -f Postgres/multi-postgres-deployment.yaml
+          kubectl rollout status deployment/postgres --timeout=60s
           kubectl apply -f MultiAppBackend/deployment/multi-backend-deployment.yaml
+          kubectl rollout status deployment/multi-app-backend --timeout=60s
           kubectl apply -f MultiAppFrontend/deployment/multi-frontend-deployment.yaml
+          kubectl rollout status deployment/multi-frontend --timeout=60s
           kubectl rollout restart deployment/postgres
-          kubectl rollout restart deployment/backend
-          kubectl rollout restart deployment/frontend
+          kubectl rollout status deployment/postgres --timeout=60s
+          kubectl rollout restart deployment/multi-app-backend
+          kubectl rollout status deployment/multi-app-backend --timeout=60s
+          kubectl rollout restart deployment/multi-frontend
+          kubectl rollout status deployment/multi-frontend --timeout=60s
 
       - name: Add NGINX Ingress repo
         run: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
