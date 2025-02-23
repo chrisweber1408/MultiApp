@@ -25,36 +25,128 @@ jobs:
 
       - name: Build Spring Boot app with Gradle
         working-directory: MultiAppBackend
-        run: ./gradlew build -x test
+        run: |
+          ./gradlew build -x test
+
+      - name: Speichere JAR-File als Artefakt
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-jar
+          path: MultiAppBackend/build/libs/MultiAppBackend-0.0.1-SNAPSHOT.jar
+
+
+      - name: Install Dependencies
+        working-directory: MultiAppFrontend
+        run: npm install
 
       - name: Build Angular app
         working-directory: MultiAppFrontend
-        run: npm run build --prod
+        run: npm run build --omit=dev
 
-      - name: Build Docker images
-        run: |
-          docker build -t your-docker-hub-username/spring-boot-app:latest -f MultiAppBackend/Dockerfile.springboot . # Pfad zum Dockerfile anpassen
-          docker build -t your-docker-hub-username/angular-app:latest -f MultiAppFrontend/Dockerfile.angular . # Pfad zum Dockerfile anpassen
-
-      - name: Push Docker images
-        run: |
-          docker login -u your-docker-hub-username -p ${{ secrets.DOCKER_PASSWORD }}
-          docker push your-docker-hub-username/spring-boot-app:latest
-          docker push your-docker-hub-username/angular-app:latest
-
-  deploy:
+  docker:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Deploy to k3s
-        uses: k3s-io/github-action@v1
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Debugging - Print working directory
+        run: pwd
+
+      - name: Lade JAR-File herunter
+        uses: actions/download-artifact@v4
         with:
-          kubeconfig: ${{ secrets.K3S_KUBECONFIG }}
-          manifests: |
-            deployment.yaml
-            service.yaml
-            ingress.yaml
+          name: backend-jar
+          path: MultiAppBackend/build/libs/
+
+      - name: Debugging - List files
+        run: |
+          ls -l MultiAppBackend
+
+      - name: Build & Push Spring Boot Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-app-backend:latest -f MultiAppBackend/deployment/Dockerfile .
+          docker push ${{ secrets.DOCKER_USERNAME }}/multi-app-backend:latest
+
+      - name: Build & Push Angular Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-app-frontend:latest -f MultiAppFrontend/deployment/Dockerfile MultiAppFrontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/multi-app-frontend:latest
+
+      - name: Build & Push PostgreSQL Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-app-postgres:latest \
+            --build-arg POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
+            --build-arg POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
+            --build-arg POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
+            -f Postgres/Dockerfile Postgres
+          docker push ${{ secrets.DOCKER_USERNAME }}/multi-app-postgres:latest
+
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Configure Kubeconfig
+        run: |
+          mkdir ${HOME}/.kube
+          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > ${HOME}/.kube/config
+          kubectl cluster-info
+
+      - name: 🔍 Test Kubernetes Connection
+        run: |
+          kubectl cluster-info
+          kubectl get nodes
+
+      - name: Create Kubernetes Secret for DockerHub
+        run: |
+          kubectl create secret docker-registry dockerhub-secret \
+          --docker-server=https://index.docker.io/v1/ \
+          --docker-username=${{ secrets.DOCKER_USERNAME }} \
+          --docker-password=${{ secrets.DOCKER_PASSWORD }} \
+          --docker-email=${{ secrets.DOCKER_EMAIL }} \
+          --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Replace Docker Username in Deployment YAML
+        run: |
+          sed -i "s|DOCKER_USERNAME_PLACEHOLDER|${{ secrets.DOCKER_USERNAME }}|g" Postgres/multi-postgres-deployment.yaml
+          sed -i "s|DOCKER_USERNAME_PLACEHOLDER|${{ secrets.DOCKER_USERNAME }}|g" MultiAppBackend/deployment/multi-backend-deployment.yaml
+          sed -i "s|DOCKER_USERNAME_PLACEHOLDER|${{ secrets.DOCKER_USERNAME }}|g" MultiAppFrontend/deployment/multi-frontend-deployment.yaml
+
+      - name: Update Kubernetes Secret
+        run: |
+          kubectl create secret generic postgres-secret --dry-run=client -o yaml \
+            --from-literal=POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
+            --from-literal=POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
+            --from-literal=POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
+          | kubectl apply -f -
+
+      - name: Deploy to Kubernetes
+        run: |
+          set -e
+          kubectl apply -f Postgres/multi-postgres-deployment.yaml
+          kubectl rollout status deployment/postgres --timeout=60s
+          kubectl apply -f MultiAppBackend/deployment/multi-backend-deployment.yaml
+          kubectl rollout status deployment/multi-app-backend --timeout=60s
+          kubectl apply -f MultiAppFrontend/deployment/multi-frontend-deployment.yaml
+          kubectl rollout status deployment/multi-frontend --timeout=60s
+          kubectl rollout restart deployment/postgres
+          kubectl rollout status deployment/postgres --timeout=60s
+          kubectl rollout restart deployment/multi-app-backend
+          kubectl rollout status deployment/multi-app-backend --timeout=60s
+          kubectl rollout restart deployment/multi-frontend
+          kubectl rollout status deployment/multi-frontend --timeout=60s
+          kubectl apply -f MultiAppFrontend/deployment/multi-frontend-service.yaml
+          kubectl apply -f manifests/ingress.yaml

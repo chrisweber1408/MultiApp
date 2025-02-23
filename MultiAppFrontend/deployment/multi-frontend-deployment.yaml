@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi-frontend
+  template:
+    metadata:
+      labels:
+        app: multi-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: docker.io/DOCKER_USERNAME_PLACEHOLDER/multi-app-frontend:latest
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: dockerhub-secret

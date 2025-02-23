@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-app-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi-app-backend
+  template:
+    metadata:
+      labels:
+        app: multi-app-backend
+    spec:
+      containers:
+        - name: backend
+          image: docker.io/DOCKER_USERNAME_PLACEHOLDER/multi-app-backend:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_DB
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres-service:5432/${POSTGRES_DB}"
+      imagePullSecrets:
+        - name: dockerhub-secret
