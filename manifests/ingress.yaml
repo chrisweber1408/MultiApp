@@ -3,15 +3,15 @@ kind: Ingress
 metadata:
   name: meine-website-ingress
 spec:
-  ingressClassName: nginx  # Verweist auf den NGINX Ingress-Controller
+  ingressClassName: nginx # Verweist auf den NGINX Ingress-Controller
   rules:
-    - host: www.multi-application.de  # Der Hostname, unter dem die Anwendung erreichbar ist
+    - host: www.multi-application.de # Der Hostname, unter dem die Anwendung erreichbar ist
       http:
         paths:
-          - path: /  # Der Pfad, unter dem die Anwendung erreichbar ist
+          - path: / # oder den genauen Pfad zu deinem Backend
             pathType: Prefix
             backend:
               service:
-                name: multi-frontend  # Der Service, der die Anfragen verarbeiten soll
+                name: multi-app-backend # Hier Backend Service einfügen
                 port:
-                  number: 80  # Der Port des Services
+                  number: 8080 # Hier den Backend Port einfügen
