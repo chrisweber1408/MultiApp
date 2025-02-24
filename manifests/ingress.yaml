@@ -8,10 +8,10 @@ spec:
     - host: www.multi-application.de # Der Hostname, unter dem die Anwendung erreichbar ist
       http:
         paths:
-          - path: / # oder den genauen Pfad zu deinem Backend
+          - path: /api # oder den genauen Pfad zu deinem Backend
             pathType: Prefix
             backend:
               service:
                 name: multi-app-backend # Hier Backend Service einfügen
                 port:
-                  number: 8080 # Hier den Backend Port einfügen
+                  number: 80 # Hier den Backend Port einfügen
