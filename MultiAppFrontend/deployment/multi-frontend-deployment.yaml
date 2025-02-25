@@ -19,3 +19,19 @@ spec:
             - containerPort: 80
       imagePullSecrets:
         - name: dockerhub-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: multi-frontend
+  namespace: default
+spec:
+  selector:
+    app: multi-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+

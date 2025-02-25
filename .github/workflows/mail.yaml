@@ -148,6 +148,4 @@ jobs:
           kubectl rollout status deployment/multi-app-backend --timeout=60s
           kubectl rollout restart deployment/multi-frontend
           kubectl rollout status deployment/multi-frontend --timeout=60s
-          kubectl apply -f MultiAppFrontend/deployment/multi-frontend-service.yaml
-          kubectl apply -f MultiAppBackend/deployment/multi-backend-service.yaml
           kubectl apply -f manifests/ingress.yaml
