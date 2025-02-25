@@ -2,16 +2,27 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: meine-website-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
 spec:
-  ingressClassName: nginx # Verweist auf den NGINX Ingress-Controller
   rules:
-    - host: www.multi-application.de # Der Hostname, unter dem die Anwendung erreichbar ist
+    - host: www.multi-application.de
       http:
         paths:
-          - path: /api # oder den genauen Pfad zu deinem Backend
-            pathType: Prefix
+          - pathType: Prefix
+            path: /
             backend:
               service:
-                name: multi-app-backend # Hier Backend Service einfügen
+                name: multi-frontend
                 port:
-                  number: 80 # Hier den Backend Port einfügen
+                  number: 80
+    - host: www.multi-application.de
+      http:
+        paths:
+          - pathType: Prefix
+            path: /api/
+            backend:
+              service:
+                name: multi-app-backend
+                port:
+                  number: 8080
