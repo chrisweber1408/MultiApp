@@ -37,3 +37,16 @@ spec:
               value: "jdbc:postgresql://postgres-service:5432/${POSTGRES_DB}"
       imagePullSecrets:
         - name: dockerhub-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: multi-app-backend
+spec:
+  selector:
+    app: multi-app-backend
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
