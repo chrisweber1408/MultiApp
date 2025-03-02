@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HomizerStorage} from "../../service/homizer.models";
+import {HomizerStorageDto} from "../../service/homizer.models";
 import {HomizerDataService} from "../../service/homizer-data.service";
 import {ActivatedRoute, Router} from "@angular/router";
 
@@ -10,7 +10,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrl: './homizer-storage-mainpage.component.css'
 })
 export class HomizerStorageMainpageComponent implements OnInit {
-  homizerStorage: HomizerStorage;
+  homizerStorageDto: HomizerStorageDto;
 
   constructor(private dataStorage: HomizerDataService, private activatedRoute: ActivatedRoute, private router: Router) {
   }
@@ -19,14 +19,14 @@ export class HomizerStorageMainpageComponent implements OnInit {
     this.loadHomizerStorages()
   }
 
-  async loadHomizerStorages(): Promise<HomizerStorage[]> {
+  async loadHomizerStorages(): Promise<HomizerStorageDto[]> {
     const storages = await this.dataStorage.loadHomizerStorages()
       .catch(error => {
         if (error.response?.status === 403) {
           this.router.navigate(['/login']);
         }
       })
-    this.homizerStorage = storages;
+    this.homizerStorageDto = storages;
     return storages;
   }
 

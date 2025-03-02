@@ -12,15 +12,9 @@
       <input matInput [(ngModel)]="homizerStorage.description">
     </mat-form-field>
   </div>
-  <div>
-    <mat-form-field class="input-field">
-      <mat-label>Number</mat-label>
-      <input matInput [(ngModel)]="homizerStorage.number">
-    </mat-form-field>
-  </div>
   <div class="homizer-button">
     <button mat-raised-button
-            (click)="onSavehomizerStorage(homizerStorage.name, homizerStorage.description, homizerStorage.image, homizerStorage.number)">
+            (click)="onSavehomizerStorage(homizerStorage.name, homizerStorage.description, homizerStorage.image)">
       <mat-icon>save</mat-icon>
       Save
     </button>
