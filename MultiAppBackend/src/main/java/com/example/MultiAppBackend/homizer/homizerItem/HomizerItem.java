@@ -1,10 +1,8 @@
 package com.example.MultiAppBackend.homizer.homizerItem;
 
 import com.example.MultiAppBackend.homizer.homizerStorage.HomizerStorage;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import com.example.MultiAppBackend.user.MyUser;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,5 +24,12 @@ public class HomizerItem {
   @Column(name = "image", columnDefinition = "TEXT")
   private String image;
 
-  @ManyToOne private HomizerStorage homizerStorage;
+  @ManyToOne
+  @JoinColumn(name = "homizer_storage_id")
+  private HomizerStorage homizerStorage;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private MyUser user;
+
 }
