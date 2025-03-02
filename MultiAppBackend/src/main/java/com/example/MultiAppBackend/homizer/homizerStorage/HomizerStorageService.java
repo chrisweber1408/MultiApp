@@ -16,14 +16,30 @@ public class HomizerStorageService {
   private final HomizerStorageRepo homizerStorageRepo;
   private final MyUserRepository myUserRepository;
 
-  public void saveHomizerStorage(HomizerStorage homizerStorage, MyUser myUser) {
+  public void saveHomizerStorage(HomizerStorageDto homizerStorageDto, MyUser myUser) {
+    HomizerStorage homizerStorage = new HomizerStorage();
+    if (null != homizerStorageDto.getId()){
+      Optional<HomizerStorage> optionalHomizerStorage = homizerStorageRepo.findById(homizerStorageDto.getId());
+      if (optionalHomizerStorage.isPresent()) {
+        homizerStorage = optionalHomizerStorage.get();
+        homizerStorage.setName(homizerStorageDto.getName());
+        homizerStorage.setImage(homizerStorageDto.getImage());
+        homizerStorage.setUser(myUser);
+        homizerStorage.setDescription(homizerStorageDto.getDescription());
+      }
+    } else  {
+      homizerStorage.setName(homizerStorageDto.getName());
+      homizerStorage.setImage(homizerStorageDto.getImage());
+      homizerStorage.setUser(myUser);
+      homizerStorage.setDescription(homizerStorageDto.getDescription());
+    }
     myUser.addHomizerStorage(homizerStorage);
     myUserRepository.save(myUser);
     homizerStorageRepo.save(homizerStorage);
   }
 
-  public List<HomizerStorage> getAllHomizerStorages() {
-    List<HomizerStorage> homizerStorages = homizerStorageRepo.findAll();
+  public List<HomizerStorage> getAllHomizerStoragesfromUser(MyUser myUser) {
+    List<HomizerStorage> homizerStorages = homizerStorageRepo.findByUserId(myUser.getId());
     if (!homizerStorages.isEmpty()) {
       return homizerStorages;
     } else {

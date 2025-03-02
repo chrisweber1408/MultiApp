@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {HomizerStorage} from "../../service/homizer.models";
+import {HomizerStorageDto} from "../../service/homizer.models";
 import {HomizerDataService} from "../../service/homizer-data.service";
 import {Router} from "@angular/router";
 
@@ -12,10 +12,10 @@ import {Router} from "@angular/router";
 })
 export class HomizerStorageAddPageComponent {
 
-  homizerStorage: HomizerStorage
+  homizerStorage: HomizerStorageDto
 
   constructor(private homizerDataService: HomizerDataService, private router: Router) {
-    this.homizerStorage = new HomizerStorage('');
+    this.homizerStorage = new HomizerStorageDto('');
   }
 
   onFileSelected(event: any) {
@@ -29,11 +29,10 @@ export class HomizerStorageAddPageComponent {
     reader.readAsDataURL(file);
   }
 
-  onSavehomizerStorage(name: string, description: string, image: string, number: number) {
+  onSavehomizerStorage(name: string, description: string, image: string) {
     this.homizerStorage.name = name
     this.homizerStorage.description = description
     this.homizerStorage.image = image
-    this.homizerStorage.number = number
     this.homizerDataService.saveHomizerStorage(this.homizerStorage).then(
       (response) => {
         this.router.navigate(['/homizer-item'])

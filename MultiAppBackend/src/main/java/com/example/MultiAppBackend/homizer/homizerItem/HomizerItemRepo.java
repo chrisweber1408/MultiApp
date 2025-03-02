@@ -8,6 +8,5 @@ import java.util.List;
 @Repository
 public interface HomizerItemRepo extends JpaRepository<HomizerItem, String> {
 
-    List<HomizerItem> findByUserId(String userId);
-
+  List<HomizerItem> findByUserId(String userId);
 }

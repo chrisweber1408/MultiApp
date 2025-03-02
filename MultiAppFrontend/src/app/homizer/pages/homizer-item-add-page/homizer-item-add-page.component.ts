@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HomizerItemDto, HomizerStorage} from '../../service/homizer.models';
+import {HomizerItemDto, HomizerStorageDto} from '../../service/homizer.models';
 import {HomizerDataService} from '../../service/homizer-data.service';
 import {Router} from '@angular/router';
 
@@ -12,7 +12,7 @@ import {Router} from '@angular/router';
 export class HomizerItemAddPageComponent implements OnInit {
 
   homizerItem: HomizerItemDto
-  homizerStorage: HomizerStorage[] = [];
+  homizerStorage: HomizerStorageDto[] = [];
   selectedHomizerStorageId: string
 
 
@@ -48,7 +48,7 @@ export class HomizerItemAddPageComponent implements OnInit {
     this.loadHomizerStorages()
   }
 
-  async loadHomizerStorages(): Promise<HomizerStorage[]> {
+  async loadHomizerStorages(): Promise<HomizerStorageDto[]> {
     const storages = await this.homizerDataService.loadHomizerStorages()
       .catch(error => {
         if (error.response?.status === 403) {

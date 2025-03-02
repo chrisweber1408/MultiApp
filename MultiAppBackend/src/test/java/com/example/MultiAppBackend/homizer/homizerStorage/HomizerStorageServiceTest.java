@@ -19,16 +19,19 @@ class HomizerStorageServiceTest {
     MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
     HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
     MyUser myUser = new MyUser();
+    HomizerStorageDto homizerStorageDto =
+        HomizerStorageDto.builder().name("Test").description("Safe").image("Image").build();
+
     HomizerStorage homizerStorage =
-        HomizerStorage.builder().name("Test").description("Safe").image("Image").build();
+            HomizerStorage.builder().name("Test").description("Safe").image("Image").build();
     // When
-    homizerStorageService.saveHomizerStorage(homizerStorage, myUser);
+    homizerStorageService.saveHomizerStorage(homizerStorageDto, myUser);
     // Then
     Mockito.verify(homizerStorageRepo).save(homizerStorage);
   }
 
   @Test
-  void getAllHomizerStorages() {
+  void getAllHomizerStoragesfromUser() {
     // Given
     HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
     MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
@@ -38,8 +41,9 @@ class HomizerStorageServiceTest {
     HomizerStorage homizerStorage2 =
         HomizerStorage.builder().name("Test2").description("Safe2").image("Image2").build();
     Mockito.when(homizerStorageRepo.findAll()).thenReturn(List.of(homizerStorage, homizerStorage2));
+    MyUser myUser = new MyUser();
     // When
-    List<HomizerStorage> allHomizerStorages = homizerStorageService.getAllHomizerStorages();
+    List<HomizerStorage> allHomizerStorages = homizerStorageService.getAllHomizerStoragesfromUser(myUser);
     // Then
     Assertions.assertThat(allHomizerStorages).hasSize(2);
   }
@@ -50,10 +54,11 @@ class HomizerStorageServiceTest {
     HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
     MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
     HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
+    MyUser myUser = new MyUser();
     Mockito.when(homizerStorageRepo.findAll()).thenReturn(List.of());
     // Then
     Assertions.assertThatExceptionOfType(NoSuchElementException.class)
-        .isThrownBy(homizerStorageService::getAllHomizerStorages);
+        .isThrownBy(() -> homizerStorageService.getAllHomizerStoragesfromUser(myUser));
   }
 
   @Test

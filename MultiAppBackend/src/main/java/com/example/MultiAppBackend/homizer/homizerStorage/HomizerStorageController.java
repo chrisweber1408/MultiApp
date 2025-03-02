@@ -22,10 +22,11 @@ public class HomizerStorageController {
   @PostMapping
   @CrossOrigin(origins = "http://localhost:4200")
   @ResponseStatus(HttpStatus.CREATED)
-  public ResponseEntity<Void> saveHomizerStorage(@RequestBody HomizerStorage homizerStorage, Principal principal) {
+  public ResponseEntity<Void> saveHomizerStorage(
+      @RequestBody HomizerStorageDto homizerStorageDto, Principal principal) {
     try {
-      MyUser myUser = myUserRepository.findById(principal.getName()).orElseThrow();
-      homizerStorageService.saveHomizerStorage(homizerStorage, myUser);
+      MyUser myUser = myUserRepository.findByEmail(principal.getName()).orElseThrow();
+      homizerStorageService.saveHomizerStorage(homizerStorageDto, myUser);
       return ResponseEntity.status(HttpStatus.CREATED).build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -34,9 +35,10 @@ public class HomizerStorageController {
 
   @GetMapping
   @CrossOrigin(origins = "http://localhost:4200")
-  public ResponseEntity<List<HomizerStorage>> getAllHomizerStorages() {
+  public ResponseEntity<List<HomizerStorage>> getAllHomizerStoragesFromUser(Principal principal) {
     try {
-      return ResponseEntity.ok(homizerStorageService.getAllHomizerStorages());
+      MyUser myUser = myUserRepository.findByEmail(principal.getName()).orElseThrow();
+      return ResponseEntity.ok(homizerStorageService.getAllHomizerStoragesfromUser(myUser));
     } catch (NoSuchElementException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }

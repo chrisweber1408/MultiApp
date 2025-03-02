@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HomizerItemDto, HomizerStorage} from "./homizer.models";
+import {HomizerItemDto, HomizerStorageDto} from "./homizer.models";
 import axios from "axios";
 import {CookieService} from "ngx-cookie-service";
 
@@ -38,7 +38,7 @@ export class HomizerDataService {
 
   // Homizer-Storage
 
-  saveHomizerStorage(storage: HomizerStorage) {
+  saveHomizerStorage(storage: HomizerStorageDto) {
     return axios.post('/api/homizer/storage/', storage, this.requestConfig())
   }
 
