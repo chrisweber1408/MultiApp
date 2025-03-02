@@ -1,6 +1,5 @@
 package com.example.MultiAppBackend.homizer.homizerItem;
 
-import com.example.MultiAppBackend.homizer.dto.HomizerItemDto;
 import com.example.MultiAppBackend.homizer.homizerStorage.HomizerStorage;
 import com.example.MultiAppBackend.homizer.homizerStorage.HomizerStorageRepo;
 import com.example.MultiAppBackend.user.MyUser;

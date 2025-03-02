@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import com.example.MultiAppBackend.homizer.dto.HomizerItemDto;
 import com.example.MultiAppBackend.user.MyUser;
 import com.example.MultiAppBackend.user.MyUserRepository;
 import lombok.RequiredArgsConstructor;
