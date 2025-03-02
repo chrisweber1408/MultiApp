@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import com.example.MultiAppBackend.homizer.dto.HomizerItemDto;
 import com.example.MultiAppBackend.homizer.homizerStorage.HomizerStorageRepo;
 import com.example.MultiAppBackend.user.MyUser;
 import com.example.MultiAppBackend.user.MyUserRepository;

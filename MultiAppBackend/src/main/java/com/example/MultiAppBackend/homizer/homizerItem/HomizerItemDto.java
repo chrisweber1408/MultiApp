@@ -1,4 +1,4 @@
-package com.example.MultiAppBackend.homizer.dto;
+package com.example.MultiAppBackend.homizer.homizerItem;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
