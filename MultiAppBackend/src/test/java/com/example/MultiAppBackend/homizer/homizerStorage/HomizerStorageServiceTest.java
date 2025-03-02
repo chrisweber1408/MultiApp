@@ -3,6 +3,9 @@ package com.example.MultiAppBackend.homizer.homizerStorage;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import com.example.MultiAppBackend.user.MyUser;
+import com.example.MultiAppBackend.user.MyUserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,11 +16,13 @@ class HomizerStorageServiceTest {
   void saveHomizerStorage() {
     // Given
     HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
-    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo);
+    MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
+    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
+    MyUser myUser = new MyUser();
     HomizerStorage homizerStorage =
         HomizerStorage.builder().name("Test").description("Safe").image("Image").build();
     // When
-    homizerStorageService.saveHomizerStorage(homizerStorage);
+    homizerStorageService.saveHomizerStorage(homizerStorage, myUser);
     // Then
     Mockito.verify(homizerStorageRepo).save(homizerStorage);
   }
@@ -26,7 +31,8 @@ class HomizerStorageServiceTest {
   void getAllHomizerStorages() {
     // Given
     HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
-    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo);
+    MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
+    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
     HomizerStorage homizerStorage =
         HomizerStorage.builder().name("Test").description("Safe").image("Image").build();
     HomizerStorage homizerStorage2 =
@@ -42,7 +48,8 @@ class HomizerStorageServiceTest {
   void getNoHomizerStorages() {
     // Given
     HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
-    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo);
+    MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
+    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
     Mockito.when(homizerStorageRepo.findAll()).thenReturn(List.of());
     // Then
     Assertions.assertThatExceptionOfType(NoSuchElementException.class)
@@ -53,7 +60,8 @@ class HomizerStorageServiceTest {
   void getHomizerStorageById() {
     // Given
     HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
-    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo);
+    MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
+    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
     final String id = "testId";
     final HomizerStorage homizerStorage =
         HomizerStorage.builder().name("Test1").description("Safe1").image("Image1").build();
@@ -70,7 +78,8 @@ class HomizerStorageServiceTest {
   void getNoStorageItem() {
     // Given
     HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
-    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo);
+    MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
+    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
     final String id = "testId";
     Mockito.when(homizerStorageRepo.findById(id)).thenReturn(Optional.empty());
     // Then
@@ -82,7 +91,8 @@ class HomizerStorageServiceTest {
   void deleteHomizerItemById() {
     // Given
     HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
-    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo);
+    MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
+    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
     final String id = "testId";
     final HomizerStorage homizerItem =
         HomizerStorage.builder().name("Test1").description("Safe1").image("Image1").build();
@@ -97,7 +107,8 @@ class HomizerStorageServiceTest {
   void deleteNoStorageItem() {
     // Given
     HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
-    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo);
+    MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
+    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
     final String id = "testId";
     Mockito.when(homizerStorageRepo.findById(id)).thenReturn(Optional.empty());
     // Then

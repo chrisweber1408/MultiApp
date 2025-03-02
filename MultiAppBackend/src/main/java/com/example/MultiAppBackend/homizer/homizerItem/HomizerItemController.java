@@ -1,9 +1,12 @@
 package com.example.MultiAppBackend.homizer.homizerItem;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.example.MultiAppBackend.homizer.dto.HomizerItemDto;
+import com.example.MultiAppBackend.user.MyUser;
+import com.example.MultiAppBackend.user.MyUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +18,16 @@ import org.springframework.web.bind.annotation.*;
 public class HomizerItemController {
 
   private final HomizerItemService homizerItemService;
+  private final MyUserRepository myUserRepository;
 
   @PostMapping
   @CrossOrigin(origins = "http://localhost:4200")
   @ResponseStatus(HttpStatus.CREATED)
-  public ResponseEntity<Void> saveHomizerItem(@RequestBody HomizerItemDto homizerItemDto) {
+  public ResponseEntity<Void> saveHomizerItem(
+      @RequestBody HomizerItemDto homizerItemDto, Principal principal) {
     try {
-      homizerItemService.saveHomizerItem(homizerItemDto);
+      MyUser myUser = myUserRepository.findByEmail(principal.getName()).orElseThrow();
+      homizerItemService.saveHomizerItem(homizerItemDto, myUser);
       return ResponseEntity.status(HttpStatus.CREATED).build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -30,9 +36,10 @@ public class HomizerItemController {
 
   @GetMapping
   @CrossOrigin(origins = "http://localhost:4200")
-  public ResponseEntity<List<HomizerItem>> getAllHomizerItems() {
+  public ResponseEntity<List<HomizerItem>> getAllHomizerItems(Principal principal) {
     try {
-      return ResponseEntity.ok(homizerItemService.getAllHomizerItems());
+      MyUser myUser = myUserRepository.findByEmail(principal.getName()).orElseThrow();
+      return ResponseEntity.ok(homizerItemService.getAllHomizerItemsFromUser(myUser));
     } catch (NoSuchElementException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }

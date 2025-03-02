@@ -1,14 +1,12 @@
 package com.example.MultiAppBackend.homizer.homizerStorage;
 
 import com.example.MultiAppBackend.homizer.homizerItem.HomizerItem;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.example.MultiAppBackend.user.MyUser;
+import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.OneToMany;
 import lombok.*;
 
 @Entity
@@ -26,4 +24,9 @@ public class HomizerStorage {
   private String image;
 
   @OneToMany private List<HomizerItem> homizerItems;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private MyUser user;
+
 }
