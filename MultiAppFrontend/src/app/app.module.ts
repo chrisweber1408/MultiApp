@@ -29,7 +29,7 @@ import {
 import {
   HomizerStorageAddPageComponent
 } from './homizer/pages/homizer-storage-add-page/homizer-storage-add-page.component';
-import {MatButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {MatIcon} from "@angular/material/icon";
 
@@ -52,20 +52,21 @@ import {MatIcon} from "@angular/material/icon";
   bootstrap: [
     AppComponent
   ], imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    NavigationItemComponent,
-    MatFormFieldModule,
-    MatButtonToggleModule,
-    MatRadioModule,
-    MatDatepickerModule,
-    MatInputModule,
-    MatButton,
-    MatSelect,
-    MatOption,
-    MatIcon
-  ],
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        NavigationItemComponent,
+        MatFormFieldModule,
+        MatButtonToggleModule,
+        MatRadioModule,
+        MatDatepickerModule,
+        MatInputModule,
+        MatButton,
+        MatSelect,
+        MatOption,
+        MatIcon,
+        MatIconButton
+    ],
   providers: [
     HomizerService,
     CookieService,
