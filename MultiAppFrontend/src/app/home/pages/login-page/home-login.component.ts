@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, signal} from '@angular/core';
 import { LoginData } from '../../service/user.models';
 import { UserDataStorageService } from '../../service/user-data-storage.service';
 import { Router } from '@angular/router';
@@ -18,7 +18,7 @@ export class HomeLoginComponent {
     this.loginDto = new LoginData('','');
   }
 
-  onSendLogin(email: string, password: string) {    
+  onSendLogin(email: string, password: string) {
     this.loginDto.email = email;
     this.loginDto.password = password;
     this.loginDataStorageService.sendLogin(this.loginDto)

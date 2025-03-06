@@ -1,20 +1,30 @@
 <app-header title="Multiapp"></app-header>
 <div class="input">
-    <div>
-        <input class="input-field" type="email" placeholder="Email" [(ngModel)]="loginDto.email" required>
-    </div>
-    <div>
-        <input class="input-field" type="password" placeholder="Password" [(ngModel)]="loginDto.password" required>
-    </div>
-    <div>
-        <button class="add-button"
+  <div>
+    <mat-form-field class="input-field">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="loginDto.email">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="input-field">
+      <mat-label>Password</mat-label>
+      <input matInput [(ngModel)]="loginDto.password" [type]="'password'"/>
+    </mat-form-field>
+  </div>
+  <div>
+    <button mat-raised-button
             (click)="onSendLogin(loginDto.email, loginDto.password)">
-                    Login
-        </button>
-    </div>
-    <div>
-        <button class="add-button"  routerLink="/register">
-            Register
-        </button>
-    </div>
+      <mat-icon>login</mat-icon>
+      Login
+    </button>
+  </div>
+  <br>
+  <div>
+    <button mat-raised-button routerLink="/register"
+            (click)="onSendLogin(loginDto.email, loginDto.password)">
+      <mat-icon>person_add</mat-icon>
+      New Account
+    </button>
+  </div>
 </div>

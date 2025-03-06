@@ -1,17 +1,26 @@
 <app-header title="Homizer"></app-header>
 <div class="input">
-    <div>
-        <input class="input-field" type="email" placeholder="Email" [(ngModel)]="registerData.email" required>
-    </div>
-    <div>
-        <input class="input-field" type="password" placeholder="Password" [(ngModel)]="registerData.password" required>
-    </div>
-    <div>
-        <input class="input-field" type="password" placeholder="Password" [(ngModel)]="registerData.passwordRepeat" required>
-    </div>
-    <div>
-        <button class="add-button" (click)="onSendRegister(registerData.email, registerData.password, registerData.passwordRepeat)">
-                    Register
-        </button>
-    </div>
+  <div>
+    <mat-form-field class="input-field">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="registerData.email">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="input-field">
+      <mat-label>Password</mat-label>
+      <input matInput [(ngModel)]="registerData.password" [type]="'password'"/>
+    </mat-form-field>
+  </div>
+  <mat-form-field class="input-field">
+    <mat-label>Password</mat-label>
+    <input matInput [(ngModel)]="registerData.passwordRepeat" [type]="'password'"/>
+  </mat-form-field>
+  <div>
+    <button mat-raised-button routerLink="/register"
+            (click)="onSendRegister(registerData.email, registerData.password, registerData.passwordRepeat)">
+      <mat-icon>how_to_reg</mat-icon>
+      New Account
+    </button>
+  </div>
 </div>
