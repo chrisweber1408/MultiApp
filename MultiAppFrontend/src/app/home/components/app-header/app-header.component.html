@@ -1,5 +1,7 @@
 <div class="homizer-header" routerLink="/home">
-    <div>
-        {{ title }}
-    </div>
+  <div class="title">{{ title }}</div>
+  <mat-icon *ngIf="isLoggedIn()" class="logout-btn"
+          routerLink="/login" (click)="logout()">
+    <mat-icon>logout</mat-icon>
+  </mat-icon>
 </div>
