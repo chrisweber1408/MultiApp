@@ -125,27 +125,30 @@ jobs:
           sed -i "s|DOCKER_USERNAME_PLACEHOLDER|${{ secrets.DOCKER_USERNAME }}|g" MultiAppBackend/deployment/multi-backend-deployment.yaml
           sed -i "s|DOCKER_USERNAME_PLACEHOLDER|${{ secrets.DOCKER_USERNAME }}|g" MultiAppFrontend/deployment/multi-frontend-deployment.yaml
 
+      - name: Deploy Namespace
+        run: kubectl apply -f manifests/namespace.yaml
+
       - name: Update Kubernetes Secret
         run: |
           kubectl create secret generic postgres-secret --dry-run=client -o yaml \
             --from-literal=POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
             --from-literal=POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
             --from-literal=POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
-          | kubectl apply -f -
+          | kubectl apply -f - -n multi-app
 
       - name: Deploy to Kubernetes
         run: |
           set -e
           kubectl apply -f Postgres/multi-postgres-deployment.yaml
-          kubectl rollout status deployment/postgres --timeout=60s
+          kubectl rollout status deployment/postgres -n multi-app --timeout=60s
           kubectl apply -f MultiAppBackend/deployment/multi-backend-deployment.yaml
-          kubectl rollout status deployment/multi-app-backend --timeout=60s
+          kubectl rollout status deployment/multi-app-backend -n multi-app --timeout=60s
           kubectl apply -f MultiAppFrontend/deployment/multi-frontend-deployment.yaml
-          kubectl rollout status deployment/multi-frontend --timeout=60s
-          kubectl rollout restart deployment/postgres
-          kubectl rollout status deployment/postgres --timeout=60s
-          kubectl rollout restart deployment/multi-app-backend
-          kubectl rollout status deployment/multi-app-backend --timeout=60s
-          kubectl rollout restart deployment/multi-frontend
-          kubectl rollout status deployment/multi-frontend --timeout=60s
+          kubectl rollout status deployment/multi-frontend -n multi-app --timeout=60s
+          kubectl rollout restart deployment/postgres -n multi-app
+          kubectl rollout status deployment/postgres -n multi-app --timeout=60s
+          kubectl rollout restart deployment/multi-app-backend -n multi-app
+          kubectl rollout status deployment/multi-app-backend -n multi-app --timeout=60s
+          kubectl rollout restart deployment/multi-frontend -n multi-app
+          kubectl rollout status deployment/multi-frontend -n multi-app --timeout=60s
           kubectl apply -f manifests/ingress.yaml
