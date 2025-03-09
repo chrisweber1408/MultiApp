@@ -1,123 +1,126 @@
 package com.example.MultiAppBackend.homizer.homizerStorage;
 
+import com.example.MultiAppBackend.user.MyUser;
+import com.example.MultiAppBackend.user.MyUserRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import com.example.MultiAppBackend.user.MyUser;
-import com.example.MultiAppBackend.user.MyUserRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class HomizerStorageServiceTest {
 
-  @Test
-  void saveHomizerStorage() {
-    // Given
-    HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
-    MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
-    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
-    MyUser myUser = new MyUser();
-    HomizerStorageDto homizerStorageDto =
-        HomizerStorageDto.builder().name("Test").description("Safe").image("Image").build();
+  @Mock
+  private HomizerStorageRepo homizerStorageRepo;
 
-    HomizerStorage homizerStorage =
-            HomizerStorage.builder().name("Test").description("Safe").image("Image").build();
-    // When
+  @Mock
+  private MyUserRepository myUserRepository;
+
+  @InjectMocks
+  private HomizerStorageService homizerStorageService;
+
+  private MyUser myUser;
+  private HomizerStorage homizerStorage;
+  private HomizerStorageDto homizerStorageDto;
+
+  @BeforeEach
+  void setUp() {
+    myUser = new MyUser();
+
+    homizerStorage = new HomizerStorage();
+    homizerStorage.setName("Test Storage");
+    homizerStorage.setUser(myUser);
+
+    homizerStorageDto = new HomizerStorageDto();
+    homizerStorageDto.setId("storage123");
+    homizerStorageDto.setName("Updated Storage");
+    homizerStorageDto.setImage("image.png");
+    homizerStorageDto.setDescription("Updated Description");
+  }
+
+  @Test
+  void shouldSaveNewHomizerStorage() {
+    when(homizerStorageRepo.findById(anyString())).thenReturn(Optional.empty());
+    when(homizerStorageRepo.save(any(HomizerStorage.class))).thenReturn(homizerStorage);
+    when(myUserRepository.save(any(MyUser.class))).thenReturn(myUser);
+
     homizerStorageService.saveHomizerStorage(homizerStorageDto, myUser);
-    // Then
-    Mockito.verify(homizerStorageRepo).save(homizerStorage);
+
+    verify(homizerStorageRepo, times(1)).save(any(HomizerStorage.class));
+    verify(myUserRepository, times(1)).save(any(MyUser.class));
   }
 
   @Test
-  void getAllHomizerStoragesfromUser() {
-    // Given
-    HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
-    MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
-    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
-    HomizerStorage homizerStorage =
-        HomizerStorage.builder().name("Test").description("Safe").image("Image").build();
-    HomizerStorage homizerStorage2 =
-        HomizerStorage.builder().name("Test2").description("Safe2").image("Image2").build();
-    Mockito.when(homizerStorageRepo.findAll()).thenReturn(List.of(homizerStorage, homizerStorage2));
-    MyUser myUser = new MyUser();
-    // When
-    List<HomizerStorage> allHomizerStorages = homizerStorageService.getAllHomizerStoragesfromUser(myUser);
-    // Then
-    Assertions.assertThat(allHomizerStorages).hasSize(2);
+  void shouldUpdateExistingHomizerStorage() {
+    when(homizerStorageRepo.findById("storage123")).thenReturn(Optional.of(homizerStorage));
+    when(homizerStorageRepo.save(any(HomizerStorage.class))).thenReturn(homizerStorage);
+    when(myUserRepository.save(any(MyUser.class))).thenReturn(myUser);
+
+    homizerStorageService.saveHomizerStorage(homizerStorageDto, myUser);
+
+    assertEquals("Updated Storage", homizerStorage.getName());
+    assertEquals("Updated Description", homizerStorage.getDescription());
+    verify(homizerStorageRepo, times(1)).save(any(HomizerStorage.class));
   }
 
   @Test
-  void getNoHomizerStorages() {
-    // Given
-    HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
-    MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
-    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
-    MyUser myUser = new MyUser();
-    Mockito.when(homizerStorageRepo.findAll()).thenReturn(List.of());
-    // Then
-    Assertions.assertThatExceptionOfType(NoSuchElementException.class)
-        .isThrownBy(() -> homizerStorageService.getAllHomizerStoragesfromUser(myUser));
+  void shouldReturnAllHomizerStoragesFromUser() {
+    when(homizerStorageRepo.findByUserId(myUser.getId())).thenReturn(List.of(homizerStorage));
+
+    List<HomizerStorage> result = homizerStorageService.getAllHomizerStoragesfromUser(myUser);
+
+    assertFalse(result.isEmpty());
+    assertEquals(1, result.size());
+    assertEquals("Test Storage", result.get(0).getName());
   }
 
   @Test
-  void getHomizerStorageById() {
-    // Given
-    HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
-    MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
-    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
-    final String id = "testId";
-    final HomizerStorage homizerStorage =
-        HomizerStorage.builder().name("Test1").description("Safe1").image("Image1").build();
-    Mockito.when(homizerStorageRepo.findById(id)).thenReturn(Optional.of(homizerStorage));
-    // When
-    HomizerStorage oneHomizerStorage = homizerStorageService.getHomizerStorageById(id);
-    // Then
-    Assertions.assertThat(oneHomizerStorage.getName()).isEqualTo("Test1");
-    Assertions.assertThat(oneHomizerStorage.getDescription()).isEqualTo("Safe1");
-    Assertions.assertThat(oneHomizerStorage.getImage()).isEqualTo("Image1");
+  void shouldThrowExceptionWhenUserHasNoStorages() {
+    when(homizerStorageRepo.findByUserId(myUser.getId())).thenReturn(List.of());
+
+    assertThrows(NoSuchElementException.class, () -> homizerStorageService.getAllHomizerStoragesfromUser(myUser));
   }
 
   @Test
-  void getNoStorageItem() {
-    // Given
-    HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
-    MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
-    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
-    final String id = "testId";
-    Mockito.when(homizerStorageRepo.findById(id)).thenReturn(Optional.empty());
-    // Then
-    Assertions.assertThatExceptionOfType(NoSuchElementException.class)
-        .isThrownBy(() -> homizerStorageService.getHomizerStorageById(id));
+  void shouldFindHomizerStorageById() {
+    when(homizerStorageRepo.findById("storage123")).thenReturn(Optional.of(homizerStorage));
+
+    HomizerStorage result = homizerStorageService.getHomizerStorageById("storage123");
+
+    assertNotNull(result);
+    assertEquals("Test Storage", result.getName());
   }
 
   @Test
-  void deleteHomizerItemById() {
-    // Given
-    HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
-    MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
-    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
-    final String id = "testId";
-    final HomizerStorage homizerItem =
-        HomizerStorage.builder().name("Test1").description("Safe1").image("Image1").build();
-    Mockito.when(homizerStorageRepo.findById(id)).thenReturn(Optional.of(homizerItem));
-    // When
-    homizerStorageService.deleteHomizerStorageById(id);
-    // Then
-    Mockito.verify(homizerStorageRepo).deleteById(id);
+  void shouldThrowExceptionWhenHomizerStorageNotFound() {
+    when(homizerStorageRepo.findById("invalid-id")).thenReturn(Optional.empty());
+
+    assertThrows(NoSuchElementException.class, () -> homizerStorageService.getHomizerStorageById("invalid-id"));
   }
 
   @Test
-  void deleteNoStorageItem() {
-    // Given
-    HomizerStorageRepo homizerStorageRepo = Mockito.mock(HomizerStorageRepo.class);
-    MyUserRepository myUserRepository = Mockito.mock(MyUserRepository.class);
-    HomizerStorageService homizerStorageService = new HomizerStorageService(homizerStorageRepo, myUserRepository);
-    final String id = "testId";
-    Mockito.when(homizerStorageRepo.findById(id)).thenReturn(Optional.empty());
-    // Then
-    Assertions.assertThatExceptionOfType(NoSuchElementException.class)
-        .isThrownBy(() -> homizerStorageService.deleteHomizerStorageById(id));
+  void shouldDeleteHomizerStorageById() {
+    when(homizerStorageRepo.findById("storage123")).thenReturn(Optional.of(homizerStorage));
+    doNothing().when(homizerStorageRepo).deleteById("storage123");
+
+    homizerStorageService.deleteHomizerStorageById("storage123");
+
+    verify(homizerStorageRepo, times(1)).deleteById("storage123");
+  }
+
+  @Test
+  void shouldThrowExceptionWhenDeletingNonExistentHomizerStorage() {
+    when(homizerStorageRepo.findById("invalid-id")).thenReturn(Optional.empty());
+
+    assertThrows(NoSuchElementException.class, () -> homizerStorageService.deleteHomizerStorageById("invalid-id"));
   }
 }
