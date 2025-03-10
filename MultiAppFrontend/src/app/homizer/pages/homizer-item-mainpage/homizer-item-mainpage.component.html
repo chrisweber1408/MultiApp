@@ -1,11 +1,19 @@
 <app-header title="Homizer-Item"></app-header>
 
-<div class="homizer-item-list" *ngIf="homizerItems">
-    <div class="homizer-item" *ngFor="let homizerItem of  homizerItems" [routerLink]="['/homizer-item-edit-page', homizerItem.id]">
-      <p>Name: {{ homizerItem.name }}</p>
-      <p>Description: {{ homizerItem.description }}</p>
-      <p>Number: {{ homizerItem.number }}</p>
-    </div>
+<div class="homizer-item-list" *ngIf="homizerItems && homizerItems.length > 0; else noItems">
+  <div class="homizer-item" *ngFor="let homizerItem of homizerItems"
+       [routerLink]="['/homizer-item-edit-page', homizerItem.id]">
+    <p>Name: {{ homizerItem.name }}</p>
+    <p>Description: {{ homizerItem.description }}</p>
+    <p>Number: {{ homizerItem.number }}</p>
+  </div>
 </div>
+
+<ng-template #noItems>
+  <div class="empty-homizer-item">
+    Homizer-Item-List is empty!
+  </div>
+</ng-template>
+
 
 <app-navigation-bar title="homizer-item"></app-navigation-bar>

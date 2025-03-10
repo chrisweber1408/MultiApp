@@ -10,9 +10,9 @@ import { ActivatedRoute, Router } from '@angular/router';
     standalone: false
 })
 export class HomizerItemMainpageComponent implements OnInit {
-  homizerItems: HomizerItemDto;
+  homizerItems: HomizerItemDto[];
 
-  constructor(private dataService: HomizerDataService, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private dataService: HomizerDataService, private router: Router) {
 
   }
 

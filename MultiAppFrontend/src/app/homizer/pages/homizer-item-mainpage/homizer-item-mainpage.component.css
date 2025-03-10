@@ -9,3 +9,14 @@
   padding: 1px;
   border-radius: 25px;
 }
+
+.empty-homizer-item {
+  background-color: rgba(251, 61, 61, 0.76);
+  margin: 10px;
+  padding: 20px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
