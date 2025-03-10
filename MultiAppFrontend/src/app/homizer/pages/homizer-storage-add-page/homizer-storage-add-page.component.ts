@@ -35,7 +35,7 @@ export class HomizerStorageAddPageComponent {
     this.homizerStorage.image = image
     this.homizerDataService.saveHomizerStorage(this.homizerStorage).then(
       (response) => {
-        this.router.navigate(['/homizer-item'])
+        this.router.navigate(['/homizer-storage'])
       }
     )
   }

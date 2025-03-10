@@ -10,9 +10,9 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrl: './homizer-storage-mainpage.component.css'
 })
 export class HomizerStorageMainpageComponent implements OnInit {
-  homizerStorageDto: HomizerStorageDto;
+  homizerStorageDto: HomizerStorageDto[];
 
-  constructor(private dataStorage: HomizerDataService, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private dataStorage: HomizerDataService, private router: Router) {
   }
 
   ngOnInit() {
