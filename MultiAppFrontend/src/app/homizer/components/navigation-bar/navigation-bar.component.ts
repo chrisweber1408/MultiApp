@@ -17,7 +17,6 @@ export class NavigationBarComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      console.log(this.title)
       switch (this.title) {
         case 'homizer-item': {
           this.navigationItems = [

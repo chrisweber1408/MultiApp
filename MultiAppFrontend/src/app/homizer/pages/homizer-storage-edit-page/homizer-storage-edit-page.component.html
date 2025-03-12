@@ -1,0 +1,31 @@
+<app-header title="Homizer-Item"></app-header>
+<div class="homizer-edit-input" *ngIf="homizerStorage">
+  <div>
+    <img class="homizer-edit-image" src="{{homizerStorage.image}}">
+  </div>
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput type="text" [(ngModel)]="homizerStorage.name">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Description</mat-label>
+    <input matInput type="text" [(ngModel)]="homizerStorage.description">
+  </mat-form-field>
+  <div class="homizer-button">
+    <button mat-raised-button
+            (click)="onEditHomizerStorage(homizerStorage.id, homizerStorage.name, homizerStorage.description, homizerStorage.image)">
+      <mat-icon>save</mat-icon>
+      Save
+    </button>
+  </div>
+  <div class="homizer-button">
+    <button mat-raised-button
+            (click)="onDeleteHomizerStoragge(homizerStorage.id)">
+      <mat-icon>delete</mat-icon>
+      Delete
+    </button>
+  </div>
+</div>
+
+<app-navigation-bar title="homizer-item"></app-navigation-bar>
+

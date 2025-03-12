@@ -20,11 +20,13 @@ public class HomizerItemService {
   private final MyUserRepository myUserRepository;
 
   public void saveHomizerItem(HomizerItemDto homizerItemDto, MyUser myUser) {
-    HomizerItem homizerItem = new HomizerItem();
+    HomizerItem homizerItem;
+    Optional<HomizerItem> optionalHomizerItem = homizerItemRepo.findById(homizerItemDto.getId());
+      homizerItem = optionalHomizerItem.orElseGet(HomizerItem::new);
     if (null != homizerItemDto.getHomizerStorageId()) {
       Optional<HomizerStorage> homizerStorage =
           homizerStorageRepo.findById(homizerItemDto.getHomizerStorageId());
-        homizerStorage.ifPresent(homizerItem::setHomizerStorage);
+      homizerStorage.ifPresent(homizerItem::setHomizerStorage);
     }
     homizerItem.setName(homizerItemDto.getName());
     homizerItem.setNumber(homizerItemDto.getNumber());
