@@ -32,6 +32,9 @@ import {
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {MatIcon} from "@angular/material/icon";
+import {
+  HomizerStorageEditPageComponent
+} from './homizer/pages/homizer-storage-edit-page/homizer-storage-edit-page.component';
 
 @NgModule({
   declarations: [
@@ -47,26 +50,27 @@ import {MatIcon} from "@angular/material/icon";
     NavigationBarComponent,
     HomizerStorageMainpageComponent,
     HomizerStorageAddPageComponent,
+    HomizerStorageEditPageComponent,
 
   ],
   bootstrap: [
     AppComponent
   ], imports: [
-        BrowserModule,
-        AppRoutingModule,
-        FormsModule,
-        NavigationItemComponent,
-        MatFormFieldModule,
-        MatButtonToggleModule,
-        MatRadioModule,
-        MatDatepickerModule,
-        MatInputModule,
-        MatButton,
-        MatSelect,
-        MatOption,
-        MatIcon,
-        MatIconButton
-    ],
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    NavigationItemComponent,
+    MatFormFieldModule,
+    MatButtonToggleModule,
+    MatRadioModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatButton,
+    MatSelect,
+    MatOption,
+    MatIcon,
+    MatIconButton
+  ],
   providers: [
     HomizerService,
     CookieService,

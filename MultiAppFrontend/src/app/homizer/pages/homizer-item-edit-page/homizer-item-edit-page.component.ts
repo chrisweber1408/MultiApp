@@ -1,24 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { HomizerItemDto } from '../../service/homizer.models';
-import { HomizerDataService } from '../../service/homizer-data.service';
-import { Observable } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AxiosResponse } from 'axios';
+import {Component, OnInit} from '@angular/core';
+import {HomizerItemDto} from '../../service/homizer.models';
+import {HomizerDataService} from '../../service/homizer-data.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AxiosResponse} from 'axios';
 
 @Component({
-    selector: 'app-homizer-item-edit-page',
-    templateUrl: './homizer-item-edit-page.component.html',
-    styleUrl: './homizer-item-edit-page.component.css',
-    standalone: false
+  selector: 'app-homizer-item-edit-page',
+  templateUrl: './homizer-item-edit-page.component.html',
+  styleUrl: './homizer-item-edit-page.component.css',
+  standalone: false
 })
 export class HomizerItemEditPageComponent implements OnInit {
 
   homizerItem: HomizerItemDto
+
   constructor(
     private dataStorageService: HomizerDataService,
     private route: ActivatedRoute,
     private router: Router
-    ) {
+  ) {
 
   }
 
@@ -28,12 +28,12 @@ export class HomizerItemEditPageComponent implements OnInit {
 
   loadHomizerItem(id: string): void {
     this.dataStorageService.loadHomizerItem(id)
-    .then((item: AxiosResponse<HomizerItemDto, any>) => {
-      this.homizerItem = item.data
-    });
+      .then((item: AxiosResponse<HomizerItemDto, any>) => {
+        this.homizerItem = item.data
+      });
   }
 
-  onEditHomizerItem(id: string, name: string, description: string, image: string, number: number){
+  onEditHomizerItem(id: string, name: string, description: string, image: string, number: number) {
     this.homizerItem.id = id
     this.homizerItem.name = name
     this.homizerItem.description = description
@@ -46,7 +46,7 @@ export class HomizerItemEditPageComponent implements OnInit {
     )
   }
 
-  onDeleteHomizerItem(id: string){
+  onDeleteHomizerItem(id: string) {
     this.dataStorageService.deleteHomizerItem(id).then(
       () => {
         this.router.navigate(['/homizer-item'])

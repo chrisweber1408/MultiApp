@@ -12,6 +12,9 @@ import {
 import {
   HomizerStorageAddPageComponent
 } from "./homizer/pages/homizer-storage-add-page/homizer-storage-add-page.component";
+import {
+  HomizerStorageEditPageComponent
+} from "./homizer/pages/homizer-storage-edit-page/homizer-storage-edit-page.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -23,6 +26,7 @@ const routes: Routes = [
   {path: 'homizer-item-edit-page/:id', component: HomizerItemEditPageComponent},
   {path: 'homizer-storage', component: HomizerStorageMainpageComponent},
   {path: 'homizer-storage-add-page', component: HomizerStorageAddPageComponent},
+  {path: 'homizer-storage-edit-page/:id', component: HomizerStorageEditPageComponent},
 ];
 
 @NgModule({
