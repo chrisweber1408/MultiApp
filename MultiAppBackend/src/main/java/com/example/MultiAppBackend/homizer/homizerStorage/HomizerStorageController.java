@@ -46,7 +46,7 @@ public class HomizerStorageController {
 
   @GetMapping("/{id}")
   @CrossOrigin(origins = "http://localhost:4200")
-  public HomizerStorage getHomizerStorageById(@PathVariable String id) {
+  public HomizerStorageDto getHomizerStorageById(@PathVariable String id) {
     return homizerStorageService.getHomizerStorageById(id);
   }
 
