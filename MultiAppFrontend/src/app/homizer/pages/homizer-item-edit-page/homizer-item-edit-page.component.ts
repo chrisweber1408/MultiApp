@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HomizerItemDto} from '../../service/homizer.models';
+import {HomizerItemDto, HomizerStorageDto} from '../../service/homizer.models';
 import {HomizerDataService} from '../../service/homizer-data.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AxiosResponse} from 'axios';
@@ -13,9 +13,11 @@ import {AxiosResponse} from 'axios';
 export class HomizerItemEditPageComponent implements OnInit {
 
   homizerItem: HomizerItemDto
+  homizerStorageDtos: HomizerStorageDto[] = [];
+
 
   constructor(
-    private dataStorageService: HomizerDataService,
+    private homizerDataService: HomizerDataService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -24,22 +26,26 @@ export class HomizerItemEditPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadHomizerItem(this.route.snapshot.paramMap.get('id'))
+    this.loadHomizerStorages()
   }
 
   loadHomizerItem(id: string): void {
-    this.dataStorageService.loadHomizerItem(id)
+    this.homizerDataService.loadHomizerItem(id)
       .then((item: AxiosResponse<HomizerItemDto, any>) => {
         this.homizerItem = item.data
       });
   }
 
-  onEditHomizerItem(id: string, name: string, description: string, image: string, number: number) {
+
+
+  onEditHomizerItem(id: string, name: string, description: string, image: string, number: number, homizerStorageId: string): void {
     this.homizerItem.id = id
     this.homizerItem.name = name
     this.homizerItem.description = description
     this.homizerItem.image = image
     this.homizerItem.number = number
-    this.dataStorageService.saveHomizerItem(this.homizerItem).then(
+    this.homizerItem.homizerStorageId = homizerStorageId
+    this.homizerDataService.saveHomizerItem(this.homizerItem).then(
       () => {
         this.router.navigate(['/homizer-item'])
       }
@@ -47,11 +53,23 @@ export class HomizerItemEditPageComponent implements OnInit {
   }
 
   onDeleteHomizerItem(id: string) {
-    this.dataStorageService.deleteHomizerItem(id).then(
+    this.homizerDataService.deleteHomizerItem(id).then(
       () => {
         this.router.navigate(['/homizer-item'])
       }
     )
+  }
+
+
+  async loadHomizerStorages(): Promise<HomizerStorageDto[]> {
+    const storages = await this.homizerDataService.loadHomizerStorages()
+      .catch(error => {
+        if (error.response?.status === 403) {
+          this.router.navigate(['/login'])
+        }
+      })
+    this.homizerStorageDtos = storages
+    return storages
   }
 
 

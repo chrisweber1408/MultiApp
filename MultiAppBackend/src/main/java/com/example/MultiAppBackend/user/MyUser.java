@@ -28,24 +28,6 @@ public class MyUser implements UserDetails {
   private String password;
   private List<String> roles;
 
-  private List<String> homizerStorageIds;
-
-  private List<String> homizerItemIds;
-
-  public void addHomizerStorage(HomizerStorage homizerStorage) {
-    if (this.homizerStorageIds == null) {
-      this.homizerStorageIds = new ArrayList<>();
-    }
-    this.homizerStorageIds.add(homizerStorage.getId());
-  }
-
-  public void addHomizerItem(HomizerItem homizerItem) {
-    if (homizerItemIds == null) {
-      homizerItemIds = new ArrayList<>();
-    }
-    homizerItemIds.add(homizerItem.getId());
-  }
-
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return List.of();

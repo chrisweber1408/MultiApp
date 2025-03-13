@@ -15,16 +15,26 @@
     <mat-label>Number</mat-label>
     <input matInput type="number" [(ngModel)]="homizerItem.number">
   </mat-form-field>
+  <mat-form-field>
+    <mat-label>Storage</mat-label>
+    <mat-select [(ngModel)]="homizerItem.homizerStorageId">
+      @for (storage of homizerStorageDtos; track storage) {
+        <mat-option [value]="storage.id">{{ storage.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
   <div class="homizer-button">
     <button mat-raised-button
-            (click)="onEditHomizerItem(homizerItem.id, homizerItem.name, homizerItem.description, homizerItem.image, homizerItem.number)">
-      <mat-icon>save</mat-icon> Save
+            (click)="onEditHomizerItem(homizerItem.id, homizerItem.name, homizerItem.description, homizerItem.image, homizerItem.number, homizerItem.homizerStorageId)">
+      <mat-icon>save</mat-icon>
+      Save
     </button>
   </div>
   <div class="homizer-button">
     <button mat-raised-button
             (click)="onDeleteHomizerItem(homizerItem.id)">
-      <mat-icon>delete</mat-icon> Delete
+      <mat-icon>delete</mat-icon>
+      Delete
     </button>
   </div>
 </div>
