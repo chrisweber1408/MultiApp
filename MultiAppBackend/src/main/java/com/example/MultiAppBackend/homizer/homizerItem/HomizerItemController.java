@@ -46,7 +46,7 @@ public class HomizerItemController {
 
   @GetMapping("/{id}")
   @CrossOrigin(origins = "http://localhost:4200")
-  public HomizerItem getHomizerItemById(@PathVariable String id) {
+  public HomizerItemDto getHomizerItemById(@PathVariable String id) {
     return homizerItemService.getHomizerItemById(id);
   }
 

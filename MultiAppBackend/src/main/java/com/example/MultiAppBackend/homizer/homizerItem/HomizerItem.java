@@ -14,7 +14,6 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class HomizerItem {
   @Id private final String id = UUID.randomUUID().toString();
   private String name;

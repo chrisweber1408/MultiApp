@@ -33,7 +33,6 @@ public class HomizerStorageService {
       homizerStorage.setUser(myUser);
       homizerStorage.setDescription(homizerStorageDto.getDescription());
     }
-    myUser.addHomizerStorage(homizerStorage);
     myUserRepository.save(myUser);
     homizerStorageRepo.save(homizerStorage);
   }

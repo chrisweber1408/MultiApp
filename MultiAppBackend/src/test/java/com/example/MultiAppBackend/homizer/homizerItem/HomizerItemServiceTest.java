@@ -104,7 +104,7 @@ class HomizerItemServiceTest {
   void shouldFindHomizerItemById() {
     when(homizerItemRepo.findById("item123")).thenReturn(Optional.of(homizerItem));
 
-    HomizerItem result = homizerItemService.getHomizerItemById("item123");
+    HomizerItemDto result = homizerItemService.getHomizerItemById("item123");
 
     assertNotNull(result);
     assertEquals("Test Item", result.getName());
