@@ -12,13 +12,18 @@
     <input matInput type="text" [(ngModel)]="homizerStorage.description">
   </mat-form-field>
   <div class="homizer-button">
+    <input #csvInput hidden="hidden" type="file" onclick="this.value=null" (change)="onFileSelected($event)"/>
+    <button mat-raised-button (click)="csvInput.click()">
+      <mat-icon>attach_file_add</mat-icon>
+      Add a picture
+    </button>
+  </div>
+  <div class="homizer-button">
     <button mat-raised-button
             (click)="onEditHomizerStorage(homizerStorage.id, homizerStorage.name, homizerStorage.description, homizerStorage.image)">
       <mat-icon>save</mat-icon>
       Save
     </button>
-  </div>
-  <div class="homizer-button">
     <button mat-raised-button
             (click)="onDeleteHomizerStoragge(homizerStorage.id)">
       <mat-icon>delete</mat-icon>
