@@ -60,7 +60,9 @@ public class HomizerItemService {
       homizerItemDto.setDescription(homizerItem.getDescription());
       homizerItemDto.setImage(homizerItem.getImage());
       homizerItemDto.setId(homizerItem.getId());
-      homizerItemDto.setHomizerStorageId(homizerItem.getHomizerStorage().getId());
+      if (null != homizerItem.getHomizerStorage()) {
+        homizerItemDto.setHomizerStorageId(homizerItem.getHomizerStorage().getId());
+      }
       return homizerItemDto;
     } else {
       throw new NoSuchElementException("Item with id: " + id + " not found!");
