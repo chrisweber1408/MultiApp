@@ -46,10 +46,16 @@ public class HomizerStorageService {
     }
   }
 
-  public HomizerStorage getHomizerStorageById(String id) {
-    Optional<HomizerStorage> homizerStorage = homizerStorageRepo.findById(id);
-    if (homizerStorage.isPresent()) {
-      return homizerStorage.get();
+  public HomizerStorageDto getHomizerStorageById(String id) {
+    Optional<HomizerStorage> optionalHomizerStorage = homizerStorageRepo.findById(id);
+    if (optionalHomizerStorage.isPresent()) {
+      HomizerStorage homizerStorage = optionalHomizerStorage.get();
+      HomizerStorageDto homizerStorageDto = new HomizerStorageDto();
+      homizerStorageDto.setId(homizerStorage.getId());
+      homizerStorageDto.setName(homizerStorage.getName());
+      homizerStorageDto.setDescription(homizerStorage.getDescription());
+      homizerStorageDto.setImage(homizerStorage.getImage());
+      return homizerStorageDto;
     } else {
       throw new NoSuchElementException("Storage with id: " + id + " not found!");
     }

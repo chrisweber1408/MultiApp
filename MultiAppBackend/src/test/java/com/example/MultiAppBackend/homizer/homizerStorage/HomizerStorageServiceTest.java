@@ -94,7 +94,7 @@ class HomizerStorageServiceTest {
   void shouldFindHomizerStorageById() {
     when(homizerStorageRepo.findById("storage123")).thenReturn(Optional.of(homizerStorage));
 
-    HomizerStorage result = homizerStorageService.getHomizerStorageById("storage123");
+    HomizerStorageDto result = homizerStorageService.getHomizerStorageById("storage123");
 
     assertNotNull(result);
     assertEquals("Test Storage", result.getName());
