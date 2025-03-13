@@ -55,4 +55,15 @@ export class HomizerStorageEditPageComponent implements OnInit {
     )
   }
 
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.addEventListener('load', (event) => {
+      if (typeof reader.result === 'string') {
+        this.homizerStorage.image = reader.result;
+      }
+    })
+    reader.readAsDataURL(file);
+  }
+
 }

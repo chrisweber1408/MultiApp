@@ -20,6 +20,8 @@ body {
 
 .homizer-button {
   margin: 10px;
+  display: flex;
+  gap: 20px;
 }
 
 .input-field {
