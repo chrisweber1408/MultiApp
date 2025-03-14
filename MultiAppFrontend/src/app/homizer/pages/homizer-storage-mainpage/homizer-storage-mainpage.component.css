@@ -4,10 +4,7 @@
 }
 
 .homizer-storage {
-  background-color: rgba(90, 173, 245, 0.76);
-  margin: 10px;
-  padding: 1px;
-  border-radius: 25px;
+
 }
 
 .empty-homizer-storage {
@@ -19,3 +16,40 @@
   align-items: center;
   justify-content: center;
 }
+
+.homizer-storage {
+  background-color: rgba(90, 173, 245, 0.76);
+  margin: 10px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center; /* Vertikal zentriert */
+  justify-content: space-between; /* Platz zwischen Text und Bild */
+  padding: 1px;
+  height: 120px;
+}
+
+.homizer-storage-content {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.homizer-storage-text {
+  flex: 2; /* Text nimmt zwei Drittel des Platzes ein */
+  text-align: left;
+  margin-left: 10px;
+}
+
+.homizer-storage-image {
+  flex: 1; /* Bild nimmt das letzte Drittel ein */
+  display: flex;
+  justify-content: flex-end; /* Bild wird am rechten Rand platziert */
+  margin-right: 10px;
+}
+
+.homizer-storage-image img {
+  max-width: 100px; /* Größe des Bildes anpassen */
+  height: auto;
+  border-radius: 5px;
+}
+
