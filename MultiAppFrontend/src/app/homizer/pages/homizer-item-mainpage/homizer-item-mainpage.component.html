@@ -10,7 +10,7 @@
 </div>
 
 <ng-template #noItems>
-  <div class="empty-homizer-item">
+  <div class="empty-homizer-item" *ngIf="showNoItemsMessage">
     Homizer-Item-List is empty!
   </div>
 </ng-template>

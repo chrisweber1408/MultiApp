@@ -9,7 +9,7 @@
 </div>
 
 <ng-template #noItems>
-  <div class="empty-homizer-storage">
+  <div class="empty-homizer-storage" *ngIf="showNoStoragesMessage">
     Homizer-Storage-List is empty!
   </div>
 </ng-template>

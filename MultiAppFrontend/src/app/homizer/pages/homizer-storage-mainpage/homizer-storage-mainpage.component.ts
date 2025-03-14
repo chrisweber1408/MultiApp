@@ -11,12 +11,18 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class HomizerStorageMainpageComponent implements OnInit {
   homizerStorageDto: HomizerStorageDto[];
+  showNoStoragesMessage = false;
 
   constructor(private dataStorage: HomizerDataService, private router: Router) {
   }
 
   ngOnInit() {
     this.loadHomizerStorages()
+    if (!this.homizerStorageDto) {
+      setTimeout(() => {
+        this.showNoStoragesMessage = true;
+      }, 250);
+    }
   }
 
   async loadHomizerStorages(): Promise<HomizerStorageDto[]> {
