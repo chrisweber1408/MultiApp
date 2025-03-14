@@ -3,8 +3,19 @@
 <div class="homizer-storage-list" *ngIf="homizerStorageDto && homizerStorageDto.length > 0; else noItems">
   <div class="homizer-storage" *ngFor="let homizerStorage of homizerStorageDto"
        [routerLink]="['/homizer-storage-edit-page', homizerStorage.id]">
-    <p>Name: {{ homizerStorage.name }}</p>
-    <p>Description: {{ homizerStorage.description }}</p>
+
+    <div class="homizer-storage-content">
+      <div class="homizer-storage-text">
+        <p>Name: {{ homizerStorage.name }}</p>
+        <p>Description: {{ homizerStorage.description }}</p>
+      </div>
+
+      <!-- Bild wird nur angezeigt, wenn es vorhanden ist -->
+      <div class="homizer-storage-image" *ngIf="homizerStorage.image">
+        <img [src]="homizerStorage.image" alt="Homizer Storage Image">
+      </div>
+    </div>
+
   </div>
 </div>
 
