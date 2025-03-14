@@ -51,6 +51,6 @@ export class HomizerDataService {
   }
 
   deleteHomizerStorage(id: string) {
-    return axios.delete('/api/homizer/storage/delete' + id, this.requestConfig())
+    return axios.delete('/api/homizer/storage/delete/' + id, this.requestConfig())
   }
 }
