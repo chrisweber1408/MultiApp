@@ -3,6 +3,8 @@ import {HomizerDataService} from '../../service/homizer-data.service';
 import {AxiosResponse} from "axios";
 import {HomizerStorageDto} from "../../service/homizer.models";
 import {ActivatedRoute, Router} from "@angular/router";
+import {ImageViewDialogComponent} from "../../components/image-view-dialog/image-view-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 
 @Component({
@@ -19,7 +21,8 @@ export class HomizerStorageEditPageComponent implements OnInit {
   constructor(
     private dataStorageService: HomizerDataService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {
 
   }
@@ -64,6 +67,13 @@ export class HomizerStorageEditPageComponent implements OnInit {
       }
     })
     reader.readAsDataURL(file);
+  }
+
+  openImageDialog(imageUrl: string): void {
+    this.dialog.open(ImageViewDialogComponent, {
+      data: {image: imageUrl},
+      panelClass: 'full-screen-dialog'
+    });
   }
 
 }
