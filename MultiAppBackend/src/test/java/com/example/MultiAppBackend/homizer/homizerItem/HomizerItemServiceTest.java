@@ -86,7 +86,7 @@ class HomizerItemServiceTest {
   void shouldReturnAllHomizerItemsFromUser() {
     when(homizerItemRepo.findByUserId(myUser.getId())).thenReturn(List.of(homizerItem));
 
-    List<HomizerItem> result = homizerItemService.getAllHomizerItemsFromUser(myUser);
+    List<HomizerItemDto> result = homizerItemService.getAllHomizerItemsFromUser(myUser);
 
     assertFalse(result.isEmpty());
     assertEquals(1, result.size());

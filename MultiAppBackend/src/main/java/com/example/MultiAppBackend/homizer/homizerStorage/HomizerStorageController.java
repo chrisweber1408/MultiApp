@@ -35,7 +35,7 @@ public class HomizerStorageController {
 
   @GetMapping
   @CrossOrigin(origins = "http://localhost:4200")
-  public ResponseEntity<List<HomizerStorage>> getAllHomizerStoragesFromUser(Principal principal) {
+  public ResponseEntity<List<HomizerStorageDto>> getAllHomizerStoragesFromUser(Principal principal) {
     try {
       MyUser myUser = myUserRepository.findByEmail(principal.getName()).orElseThrow();
       return ResponseEntity.ok(homizerStorageService.getAllHomizerStoragesfromUser(myUser));

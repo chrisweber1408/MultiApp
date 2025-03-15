@@ -35,7 +35,7 @@ public class HomizerItemController {
 
   @GetMapping
   @CrossOrigin(origins = "http://localhost:4200")
-  public ResponseEntity<List<HomizerItem>> getAllHomizerItemsFromUser(Principal principal) {
+  public ResponseEntity<List<HomizerItemDto>> getAllHomizerItemsFromUser(Principal principal) {
     try {
       MyUser myUser = myUserRepository.findByEmail(principal.getName()).orElseThrow();
       return ResponseEntity.ok(homizerItemService.getAllHomizerItemsFromUser(myUser));

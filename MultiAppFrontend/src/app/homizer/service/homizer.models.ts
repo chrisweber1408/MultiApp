@@ -5,6 +5,7 @@ export class HomizerItemDto {
   public image?: string;
   public number?: number;
   public homizerStorageId?: string;
+  public homizerStorageName?: string;
 
   constructor(name: string, description?: string, image?: string, number?: number, id?: string) {
     this.id = id;
