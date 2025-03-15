@@ -22,10 +22,10 @@
   margin: 10px;
   border-radius: 25px;
   display: flex;
-  align-items: center; /* Vertikal zentriert */
-  justify-content: space-between; /* Platz zwischen Text und Bild */
+  align-items: center;
+  justify-content: space-between;
   padding: 1px;
-  height: 120px;
+  height: 150px;
 }
 
 .homizer-storage-content {
@@ -35,20 +35,21 @@
 }
 
 .homizer-storage-text {
-  flex: 2; /* Text nimmt zwei Drittel des Platzes ein */
+  flex: 2;
   text-align: left;
   margin-left: 10px;
 }
 
 .homizer-storage-image {
-  flex: 1; /* Bild nimmt das letzte Drittel ein */
+  flex: 1;
   display: flex;
-  justify-content: flex-end; /* Bild wird am rechten Rand platziert */
+  justify-content: flex-end;
   margin-right: 10px;
 }
 
 .homizer-storage-image img {
-  max-width: 100px; /* Größe des Bildes anpassen */
+  max-height: 130px;
+  max-width: 130px;
   height: auto;
   border-radius: 5px;
 }
