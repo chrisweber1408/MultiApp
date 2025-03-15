@@ -21,7 +21,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 120px;
+  height: 150px;
 }
 
 .homizer-item-content {
@@ -44,8 +44,8 @@
 }
 
 .homizer-item-image img {
-  max-width: 100px;
-  height: auto;
+  max-height: 130px;
+  max-width: 130px;
   border-radius: 5px;
 }
 
