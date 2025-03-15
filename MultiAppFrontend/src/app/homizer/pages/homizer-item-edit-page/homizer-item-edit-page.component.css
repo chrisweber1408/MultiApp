@@ -13,7 +13,8 @@
 
 .homizer-edit-image {
   max-height: 200px;
-  padding: 10px;
-  margin: 5px;
+  max-width: 80%;
+  margin: 15px auto;
   border-radius: 20px;
+  display: block;
 }

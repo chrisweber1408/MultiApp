@@ -1,7 +1,7 @@
 <app-header title="Homizer-Item"></app-header>
 <div class="homizer-edit-input" *ngIf="homizerStorage">
   <div>
-    <img class="homizer-edit-image" src="{{homizerStorage.image}}">
+    <img class="homizer-edit-image" src="{{homizerStorage.image}}" (click)="openImageDialog(homizerStorage.image)">
   </div>
   <mat-form-field appearance="fill">
     <mat-label>Name</mat-label>

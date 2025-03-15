@@ -35,6 +35,7 @@ import {MatIcon} from "@angular/material/icon";
 import {
   HomizerStorageEditPageComponent
 } from './homizer/pages/homizer-storage-edit-page/homizer-storage-edit-page.component';
+import { ImageViewDialogComponent } from './homizer/components/image-view-dialog/image-view-dialog.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import {
     HomizerStorageMainpageComponent,
     HomizerStorageAddPageComponent,
     HomizerStorageEditPageComponent,
+    ImageViewDialogComponent,
 
   ],
   bootstrap: [
