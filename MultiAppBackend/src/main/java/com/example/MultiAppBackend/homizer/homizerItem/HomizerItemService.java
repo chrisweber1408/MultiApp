@@ -42,10 +42,15 @@ public class HomizerItemService {
     myUserRepository.save(myUser);
   }
 
-  public List<HomizerItem> getAllHomizerItemsFromUser(MyUser myUser) {
+  public List<HomizerItemDto> getAllHomizerItemsFromUser(MyUser myUser) {
     List<HomizerItem> homizerItems = homizerItemRepo.findByUserId(myUser.getId());
     if (!homizerItems.isEmpty()) {
-      return homizerItems;
+      List<HomizerItemDto> allHomizerItemDtoFromUser = new java.util.ArrayList<>(List.of());
+      for (HomizerItem homizerItem : homizerItems) {
+        HomizerItemDto homizerItemDto = createHomizerItemDto(homizerItem);
+        allHomizerItemDtoFromUser.add(homizerItemDto);
+      }
+      return allHomizerItemDtoFromUser;
     } else {
       throw new NoSuchElementException("List is empty");
     }
@@ -76,5 +81,18 @@ public class HomizerItemService {
     } else {
       throw new NoSuchElementException("Item with id: " + id + " not found!");
     }
+  }
+
+  private static HomizerItemDto createHomizerItemDto(HomizerItem homizerItem) {
+    HomizerItemDto homizerItemDto = new HomizerItemDto();
+    homizerItemDto.setId(homizerItem.getId());
+    homizerItemDto.setName(homizerItem.getName());
+    homizerItemDto.setDescription(homizerItem.getDescription());
+    homizerItemDto.setNumber(homizerItem.getNumber());
+    homizerItemDto.setImage(homizerItem.getImage());
+    if (null != homizerItem.getHomizerStorage()) {
+      homizerItemDto.setHomizerStorageName(homizerItem.getHomizerStorage().getName());
+    }
+    return homizerItemDto;
   }
 }

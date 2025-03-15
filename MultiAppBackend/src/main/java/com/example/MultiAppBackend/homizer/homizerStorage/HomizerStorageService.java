@@ -1,5 +1,7 @@
 package com.example.MultiAppBackend.homizer.homizerStorage;
 
+import com.example.MultiAppBackend.homizer.homizerItem.HomizerItem;
+import com.example.MultiAppBackend.homizer.homizerItem.HomizerItemDto;
 import com.example.MultiAppBackend.user.MyUser;
 import com.example.MultiAppBackend.user.MyUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,10 +39,15 @@ public class HomizerStorageService {
     homizerStorageRepo.save(homizerStorage);
   }
 
-  public List<HomizerStorage> getAllHomizerStoragesfromUser(MyUser myUser) {
+  public List<HomizerStorageDto> getAllHomizerStoragesfromUser(MyUser myUser) {
     List<HomizerStorage> homizerStorages = homizerStorageRepo.findByUserId(myUser.getId());
     if (!homizerStorages.isEmpty()) {
-      return homizerStorages;
+      List<HomizerStorageDto> allHomizerItemDtoFromUser = new java.util.ArrayList<>(List.of());
+      for (HomizerStorage homizerStorage : homizerStorages) {
+        HomizerStorageDto homizerStorageDto = createHomizerStorageDto(homizerStorage);
+        allHomizerItemDtoFromUser.add(homizerStorageDto);
+      }
+      return allHomizerItemDtoFromUser;
     } else {
       throw new NoSuchElementException("List is empty");
     }
@@ -69,4 +76,14 @@ public class HomizerStorageService {
       throw new NoSuchElementException("Storage with id: " + id + " not found!");
     }
   }
+
+  private static HomizerStorageDto createHomizerStorageDto(HomizerStorage homizerStorage) {
+    HomizerStorageDto homizerStorageDto = new HomizerStorageDto();
+    homizerStorageDto.setId(homizerStorage.getId());
+    homizerStorageDto.setName(homizerStorage.getName());
+    homizerStorageDto.setDescription(homizerStorage.getDescription());
+    homizerStorageDto.setImage(homizerStorage.getImage());
+    return homizerStorageDto;
+  }
+
 }

@@ -76,7 +76,7 @@ class HomizerStorageServiceTest {
   void shouldReturnAllHomizerStoragesFromUser() {
     when(homizerStorageRepo.findByUserId(myUser.getId())).thenReturn(List.of(homizerStorage));
 
-    List<HomizerStorage> result = homizerStorageService.getAllHomizerStoragesfromUser(myUser);
+    List<HomizerStorageDto> result = homizerStorageService.getAllHomizerStoragesfromUser(myUser);
 
     assertFalse(result.isEmpty());
     assertEquals(1, result.size());

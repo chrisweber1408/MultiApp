@@ -17,4 +17,5 @@ public class HomizerItemDto {
     private Integer number;
     private String image;
     private String homizerStorageId;
+    private String homizerStorageName;
 }
