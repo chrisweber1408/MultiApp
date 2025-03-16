@@ -19,6 +19,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+
       - name: Grant execute permission to gradlew
         working-directory: MultiAppBackend
         run: chmod +x ./gradlew
@@ -31,6 +32,8 @@ jobs:
         working-directory: MultiAppBackend
         run: |
           ./gradlew build -x test
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
       - name: Speichere JAR-File als Artefakt
         uses: actions/upload-artifact@v4
@@ -139,6 +142,7 @@ jobs:
             --from-literal=POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
             --from-literal=POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
           | kubectl apply -f - -n multi-app
+          kubectl create secret generic jwt-secret --from-literal=JWT_SECRET="${{ secrets.JWT_SECRET }}" -n multi-app
 
       - name: Deploy to Kubernetes
         run: |
