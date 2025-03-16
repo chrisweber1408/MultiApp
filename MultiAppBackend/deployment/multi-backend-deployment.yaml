@@ -36,6 +36,12 @@ spec:
                   key: POSTGRES_DB
             - name: SPRING_DATASOURCE_URL
               value: "jdbc:postgresql://postgres-service:5432/${POSTGRES_DB}"
+            - name: JWT_SECRET
+              valueFrom:
+                  secretKeyRef:
+                    name: jwt-secret
+                    key: JWT_SECRET
+
       imagePullSecrets:
         - name: dockerhub-secret
 ---
