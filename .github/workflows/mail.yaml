@@ -142,7 +142,9 @@ jobs:
             --from-literal=POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
             --from-literal=POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
           | kubectl apply -f - -n multi-app
-          kubectl apply -f MultiAppBackend/deployment/jwt-secret.yaml -n multi-app
+          kubectl create secret generic jwt-secret --dry-run=client -o yaml \
+          --from-literal=JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+          -n multi-app | kubectl replace -f - -n multi-app
 
       - name: Deploy to Kubernetes
         run: |
