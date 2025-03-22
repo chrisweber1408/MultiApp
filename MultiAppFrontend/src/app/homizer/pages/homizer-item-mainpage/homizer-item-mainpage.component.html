@@ -1,7 +1,14 @@
 <app-header title="Homizer-Item"></app-header>
 
-<div class="homizer-item-list" *ngIf="homizerItems && homizerItems.length > 0; else noItems">
-  <div class="homizer-item" *ngFor="let homizerItem of homizerItems"
+<div class="item-filter-container">
+  <mat-form-field appearance="fill">
+    <mat-label>Item search</mat-label>
+    <input matInput type="text" id="filterInput" [(ngModel)]="filterText" (input)="applyFilter()">
+  </mat-form-field>
+</div>
+
+<div class="homizer-item-list" *ngIf="filteredHomizerItems && filteredHomizerItems.length > 0; else noItems">
+  <div class="homizer-item" *ngFor="let homizerItem of filteredHomizerItems"
        [routerLink]="['/homizer-item-edit-page', homizerItem.id]">
 
     <div class="homizer-item-content">
@@ -20,12 +27,10 @@
   </div>
 </div>
 
-
 <ng-template #noItems>
   <div class="empty-homizer-item" *ngIf="showNoItemsMessage">
     Homizer-Item-List is empty!
   </div>
 </ng-template>
-
 
 <app-navigation-bar title="homizer-item"></app-navigation-bar>
