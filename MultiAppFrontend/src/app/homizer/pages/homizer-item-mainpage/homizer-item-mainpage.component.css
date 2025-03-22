@@ -49,3 +49,10 @@
   border-radius: 5px;
 }
 
+.item-filter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: -20px;
+}
