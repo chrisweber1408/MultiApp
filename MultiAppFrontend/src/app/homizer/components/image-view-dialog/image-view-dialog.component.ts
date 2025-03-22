@@ -14,4 +14,9 @@ export class ImageViewDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: { image: string }
   ) {
   }
+
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
 }
