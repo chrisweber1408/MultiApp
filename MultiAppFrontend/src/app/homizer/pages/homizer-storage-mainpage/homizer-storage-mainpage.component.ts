@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HomizerStorageDto} from "../../service/homizer.models";
 import {HomizerDataService} from "../../service/homizer-data.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-homizer-storage-mainpage',
@@ -10,15 +10,17 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrl: './homizer-storage-mainpage.component.css'
 })
 export class HomizerStorageMainpageComponent implements OnInit {
-  homizerStorageDto: HomizerStorageDto[];
+  homizerStorages: HomizerStorageDto[];
   showNoStoragesMessage = false;
+  filterText: string;
+  filteredHomizerStorages: HomizerStorageDto[];
 
   constructor(private dataStorage: HomizerDataService, private router: Router) {
   }
 
   ngOnInit() {
     this.loadHomizerStorages()
-    if (!this.homizerStorageDto) {
+    if (!this.homizerStorages) {
       setTimeout(() => {
         this.showNoStoragesMessage = true;
       }, 250);
@@ -32,8 +34,14 @@ export class HomizerStorageMainpageComponent implements OnInit {
           this.router.navigate(['/login']);
         }
       })
-    this.homizerStorageDto = storages;
+    this.homizerStorages = storages;
+    this.filteredHomizerStorages = storages;
     return storages;
+  }
+
+  applyFilter(): void {
+    this.filteredHomizerStorages = this.homizerStorages.filter(storage =>
+      storage.name.toLowerCase().includes(this.filterText.toLowerCase()))
   }
 
 }

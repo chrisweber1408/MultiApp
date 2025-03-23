@@ -1,7 +1,14 @@
 <app-header title="Homizer-Storage"></app-header>
 
-<div class="homizer-storage-list" *ngIf="homizerStorageDto && homizerStorageDto.length > 0; else noItems">
-  <div class="homizer-storage" *ngFor="let homizerStorage of homizerStorageDto"
+<div class="storage-filter-container">
+  <mat-form-field appearance="fill">
+    <mat-label>Storage search</mat-label>
+    <input matInput type="text" id="filterInput" [(ngModel)]="filterText" (input)="applyFilter()">
+  </mat-form-field>
+</div>
+
+<div class="homizer-storage-list" *ngIf="homizerStorages && homizerStorages.length > 0; else noItems">
+  <div class="homizer-storage" *ngFor="let homizerStorage of filteredHomizerStorages"
        [routerLink]="['/homizer-storage-edit-page', homizerStorage.id]">
 
     <div class="homizer-storage-content">
@@ -10,7 +17,6 @@
         <p>Description: {{ homizerStorage.description }}</p>
       </div>
 
-      <!-- Bild wird nur angezeigt, wenn es vorhanden ist -->
       <div class="homizer-storage-image" *ngIf="homizerStorage.image">
         <img [src]="homizerStorage.image" alt="Homizer Storage Image">
       </div>
