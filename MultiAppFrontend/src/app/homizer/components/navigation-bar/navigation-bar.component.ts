@@ -20,7 +20,7 @@ export class NavigationBarComponent implements OnInit {
       switch (this.title) {
         case 'homizer-item': {
           this.navigationItems = [
-            {icon: 'undo', link: '/home'},
+            {icon: 'home', link: '/home'},
             {icon: 'category', link: '/homizer-item'},
             {icon: 'folder', link: '/homizer-storage'},
             {icon: 'add_circle', link: '/homizer-item-add-page'},
@@ -29,7 +29,7 @@ export class NavigationBarComponent implements OnInit {
         }
         case 'homizer-storage': {
           this.navigationItems = [
-            {icon: 'undo', link: '/home'},
+            {icon: 'home', link: '/home'},
             {icon: 'category', link: '/homizer-item'},
             {icon: 'folder', link: '/homizer-storage'},
             {icon: 'add_circle', link: '/homizer-storage-add-page'},
