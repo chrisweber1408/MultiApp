@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^19.0.5",
     "@angular/router": "^19.0.5",
     "axios": "^1.7.9",
+    "browser-image-compression": "^2.0.2",
     "ngx-cookie-service": "^19.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - S-018
+      - main
 
 jobs:
   build:

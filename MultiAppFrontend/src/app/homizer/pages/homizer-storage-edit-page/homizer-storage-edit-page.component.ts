@@ -5,6 +5,7 @@ import {HomizerStorageDto} from "../../service/homizer.models";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ImageViewDialogComponent} from "../../components/image-view-dialog/image-view-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import imageCompression from "browser-image-compression";
 
 
 @Component({
@@ -58,15 +59,26 @@ export class HomizerStorageEditPageComponent implements OnInit {
     )
   }
 
-  onFileSelected(event: any) {
+  async onFileSelected(event: any) {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.addEventListener('load', (event) => {
-      if (typeof reader.result === 'string') {
-        this.homizerStorage.image = reader.result;
-      }
-    })
-    reader.readAsDataURL(file);
+
+    try {
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 0.8,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      });
+
+      const reader = new FileReader();
+      reader.addEventListener('load', (event) => {
+        if (typeof reader.result === 'string') {
+          this.homizerStorage.image = reader.result;
+        }
+      });
+      reader.readAsDataURL(compressedFile);
+    } catch (error) {
+      console.error('Bildkomprimierung fehlgeschlagen:', error);
+    }
   }
 
   openImageDialog(imageUrl: string): void {
