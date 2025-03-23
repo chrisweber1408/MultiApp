@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AxiosResponse} from 'axios';
 import {MatDialog} from "@angular/material/dialog";
 import {ImageViewDialogComponent} from "../../components/image-view-dialog/image-view-dialog.component";
+import imageCompression from "browser-image-compression";
 
 @Component({
   selector: 'app-homizer-item-edit-page',
@@ -74,15 +75,26 @@ export class HomizerItemEditPageComponent implements OnInit {
     return storages
   }
 
-  onFileSelected(event: any) {
+  async onFileSelected(event: any) {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.addEventListener('load', (event) => {
-      if (typeof reader.result === 'string') {
-        this.homizerItem.image = reader.result;
-      }
-    })
-    reader.readAsDataURL(file);
+
+    try {
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 0.8,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      });
+
+      const reader = new FileReader();
+      reader.addEventListener('load', (event) => {
+        if (typeof reader.result === 'string') {
+          this.homizerItem.image = reader.result;
+        }
+      });
+      reader.readAsDataURL(compressedFile);
+    } catch (error) {
+      console.error('Bildkomprimierung fehlgeschlagen:', error);
+    }
   }
 
   openImageDialog(imageUrl: string): void {

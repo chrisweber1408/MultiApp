@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HomizerItemDto, HomizerStorageDto} from '../../service/homizer.models';
 import {HomizerDataService} from '../../service/homizer-data.service';
 import {Router} from '@angular/router';
+import imageCompression from 'browser-image-compression';
 
 @Component({
   selector: 'app-homizer-item-add-page',
@@ -20,15 +21,26 @@ export class HomizerItemAddPageComponent implements OnInit {
     this.homizerItem = new HomizerItemDto('');
   }
 
-  onFileSelected(event: any) {
+  async onFileSelected(event: any) {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.addEventListener('load', (event) => {
-      if (typeof reader.result === 'string') {
-        this.homizerItem.image = reader.result;
-      }
-    })
-    reader.readAsDataURL(file);
+
+    try {
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 0.8,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      });
+
+      const reader = new FileReader();
+      reader.addEventListener('load', (event) => {
+        if (typeof reader.result === 'string') {
+          this.homizerItem.image = reader.result;
+        }
+      });
+      reader.readAsDataURL(compressedFile);
+    } catch (error) {
+      console.error('Bildkomprimierung fehlgeschlagen:', error);
+    }
   }
 
   onSaveHomizerItem(name: string, description: string, image: string, number: number, homizerStorageId?: string) {
