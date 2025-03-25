@@ -32,5 +32,31 @@
   </div>
 </div>
 
+<div class="homizer-item-list" *ngIf="homizerItems && homizerItems.length > 0; else noItems">
+  <div class="homizer-item" *ngFor="let homizerItem of homizerItems"
+       [routerLink]="['/homizer-item-edit-page', homizerItem.id]">
+
+    <div class="homizer-item-content">
+      <div class="homizer-item-text">
+        <p>Name: {{ homizerItem.name }}</p>
+        <p>Description: {{ homizerItem.description }}</p>
+        <p>Number: {{ homizerItem.number }}</p>
+        <p>Storage: {{ homizerItem.homizerStorageName }}</p>
+      </div>
+
+      <div class="homizer-item-image" *ngIf="homizerItem.image">
+        <img [src]="homizerItem.image" alt="Homizer Item Image">
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #noItems>
+  <div class="empty-homizer-item" *ngIf="showNoItemsMessage">
+    No items in this storage!
+  </div>
+</ng-template>
+
 <app-navigation-bar title="homizer-item"></app-navigation-bar>
 

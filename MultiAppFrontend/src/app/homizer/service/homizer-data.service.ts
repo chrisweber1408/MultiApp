@@ -36,6 +36,10 @@ export class HomizerDataService {
     return axios.delete('/api/homizer/item/delete/' + id, this.requestConfig())
   }
 
+  async loadHomizerItemsForStorage(id: string) {
+    return (await axios.get('/api/homizer/items/' + id, this.requestConfig())).data
+  }
+
   // Homizer-Storage
 
   saveHomizerStorage(storage: HomizerStorageDto) {
