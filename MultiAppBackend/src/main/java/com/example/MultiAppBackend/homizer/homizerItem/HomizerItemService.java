@@ -83,6 +83,16 @@ public class HomizerItemService {
     }
   }
 
+  public List<HomizerItemDto> getAllHomizerItemsInStorage(String id) {
+    List<HomizerItem> homizerItemsInStorage = homizerItemRepo.findByHomizerStorageId(id);
+    List<HomizerItemDto> allHomizerItemDtoInStorage = new java.util.ArrayList<>(List.of());
+    for (HomizerItem homizerItem : homizerItemsInStorage) {
+      HomizerItemDto homizerItemDto = createHomizerItemDto(homizerItem);
+      allHomizerItemDtoInStorage.add(homizerItemDto);
+    }
+    return allHomizerItemDtoInStorage;
+  }
+
   private static HomizerItemDto createHomizerItemDto(HomizerItem homizerItem) {
     HomizerItemDto homizerItemDto = new HomizerItemDto();
     homizerItemDto.setId(homizerItem.getId());

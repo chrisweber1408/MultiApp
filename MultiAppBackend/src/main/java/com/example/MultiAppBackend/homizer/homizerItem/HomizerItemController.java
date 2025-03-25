@@ -12,14 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/homizer/item/")
+@RequestMapping("/api/homizer/")
 @RequiredArgsConstructor
 public class HomizerItemController {
 
   private final HomizerItemService homizerItemService;
   private final MyUserRepository myUserRepository;
 
-  @PostMapping
+  @PostMapping("item/")
   @CrossOrigin(origins = "http://localhost:4200")
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<Void> saveHomizerItem(
@@ -33,7 +33,7 @@ public class HomizerItemController {
     }
   }
 
-  @GetMapping
+  @GetMapping("item/")
   @CrossOrigin(origins = "http://localhost:4200")
   public ResponseEntity<List<HomizerItemDto>> getAllHomizerItemsFromUser(Principal principal) {
     try {
@@ -44,15 +44,21 @@ public class HomizerItemController {
     }
   }
 
-  @GetMapping("/{id}")
+  @GetMapping("item/{id}")
   @CrossOrigin(origins = "http://localhost:4200")
   public HomizerItemDto getHomizerItemById(@PathVariable String id) {
     return homizerItemService.getHomizerItemById(id);
   }
 
-  @DeleteMapping("/delete/{id}")
+  @DeleteMapping("item/delete/{id}")
   @CrossOrigin(origins = "http://localhost:4200")
   public void deleteHomizerItemById(@PathVariable String id) {
     homizerItemService.deleteHomizerItemById(id);
+  }
+
+  @GetMapping("items/{id}")
+  @CrossOrigin(origins = "http://localhost:4200")
+  public List<HomizerItemDto> getAllHomizerItemsInStorage(@PathVariable String id) {
+    return homizerItemService.getAllHomizerItemsInStorage(id);
   }
 }
