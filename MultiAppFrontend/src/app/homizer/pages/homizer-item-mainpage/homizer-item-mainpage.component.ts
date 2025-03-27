@@ -6,7 +6,10 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'app-homizer-mainpage',
   templateUrl: './homizer-item-mainpage.component.html',
-  styleUrls: ['./homizer-item-mainpage.component.css'],
+  styleUrls: [
+    './homizer-item-mainpage.component.css',
+    '../../homizer-styles.css'
+  ],
   standalone: false
 })
 export class HomizerItemMainpageComponent implements OnInit {

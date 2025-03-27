@@ -7,7 +7,10 @@ import {Router} from "@angular/router";
   selector: 'app-homizer-storage-mainpage',
   standalone: false,
   templateUrl: './homizer-storage-mainpage.component.html',
-  styleUrl: './homizer-storage-mainpage.component.css'
+  styleUrls: [
+    './homizer-storage-mainpage.component.css',
+    '../../homizer-styles.css'
+  ]
 })
 export class HomizerStorageMainpageComponent implements OnInit {
   homizerStorages: HomizerStorageDto[];
