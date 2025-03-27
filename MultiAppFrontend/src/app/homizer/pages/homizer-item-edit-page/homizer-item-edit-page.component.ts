@@ -10,8 +10,11 @@ import imageCompression from "browser-image-compression";
 @Component({
   selector: 'app-homizer-item-edit-page',
   templateUrl: './homizer-item-edit-page.component.html',
-  styleUrl: './homizer-item-edit-page.component.css',
-  standalone: false
+  standalone: false,
+  styleUrls: [
+    './homizer-item-edit-page.component.css',
+    '../../homizer-styles.css'
+  ]
 })
 export class HomizerItemEditPageComponent implements OnInit {
 

@@ -11,9 +11,11 @@ import imageCompression from "browser-image-compression";
 @Component({
   selector: 'app-homizer-storage-edit-page',
   standalone: false,
-
   templateUrl: './homizer-storage-edit-page.component.html',
-  styleUrl: './homizer-storage-edit-page.component.css'
+  styleUrls: [
+    './homizer-storage-edit-page.component.css',
+    '../../homizer-styles.css'
+    ]
 })
 export class HomizerStorageEditPageComponent implements OnInit {
 

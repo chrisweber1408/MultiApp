@@ -1,18 +1,18 @@
 <app-header title="Homizer-Storage"></app-header>
 
-<div class="storage-filter-container">
+<div class="item-and-storage-filter-container">
   <mat-form-field appearance="fill">
     <mat-label>Storage search</mat-label>
     <input matInput type="text" id="filterInput" [(ngModel)]="filterText" (input)="applyFilter()">
   </mat-form-field>
 </div>
 
-<div class="homizer-storage-list" *ngIf="homizerStorages && homizerStorages.length > 0; else noItems">
-  <div class="homizer-storage" *ngFor="let homizerStorage of filteredHomizerStorages"
+<div class="homizer-item-and-storage-list" *ngIf="homizerStorages && homizerStorages.length > 0; else noItems">
+  <div class="homizer-item-and-storage" *ngFor="let homizerStorage of filteredHomizerStorages"
        [routerLink]="['/homizer-storage-edit-page', homizerStorage.id]">
 
-    <div class="homizer-storage-content">
-      <div class="homizer-storage-text">
+    <div class="homizer-item-and-storage-content">
+      <div class="homizer-item-and-storage-text">
         <p>Name: {{ homizerStorage.name }}</p>
         <p>Description: {{ homizerStorage.description }}</p>
       </div>
@@ -26,7 +26,7 @@
 </div>
 
 <ng-template #noItems>
-  <div class="empty-homizer-storage" *ngIf="showNoStoragesMessage">
+  <div class="empty-homizer-item-and-storage" *ngIf="showNoStoragesMessage">
     Homizer-Storage-List is empty!
   </div>
 </ng-template>
