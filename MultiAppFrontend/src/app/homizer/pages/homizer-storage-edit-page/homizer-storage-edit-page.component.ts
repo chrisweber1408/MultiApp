@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HomizerDataService} from '../../service/homizer-data.service';
 import {AxiosResponse} from "axios";
-import {HomizerStorageDto} from "../../service/homizer.models";
+import {HomizerItemDto, HomizerStorageDto} from "../../service/homizer.models";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ImageViewDialogComponent} from "../../components/image-view-dialog/image-view-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -11,13 +11,16 @@ import imageCompression from "browser-image-compression";
 @Component({
   selector: 'app-homizer-storage-edit-page',
   standalone: false,
-
   templateUrl: './homizer-storage-edit-page.component.html',
-  styleUrl: './homizer-storage-edit-page.component.css'
+  styleUrls: [
+    './homizer-storage-edit-page.component.css',
+    '../../homizer-styles.css'
+    ]
 })
 export class HomizerStorageEditPageComponent implements OnInit {
 
   homizerStorage: HomizerStorageDto
+  homizerItems: HomizerItemDto[]
 
   constructor(
     private dataStorageService: HomizerDataService,
@@ -30,6 +33,7 @@ export class HomizerStorageEditPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadHomizerStorage(this.route.snapshot.paramMap.get('id'))
+    this.loadHomizerItemsForStorage(this.route.snapshot.paramMap.get('id'))
   }
 
   loadHomizerStorage(id: string): void {
@@ -86,6 +90,18 @@ export class HomizerStorageEditPageComponent implements OnInit {
       data: {image: imageUrl},
       panelClass: 'full-screen-dialog'
     });
+  }
+
+  async loadHomizerItemsForStorage(id: string): Promise<HomizerItemDto[]> {
+    const items = await this.dataStorageService.loadHomizerItemsForStorage(id)
+      .catch(error => {
+        if (error.response?.status === 403) {
+          this.router.navigate(['/login'])
+        }
+      });
+    this.homizerItems = items
+    this.homizerItems = items.sort((a: { name: string; }, b: { name: any; }) => a.name.localeCompare(b.name));
+    return items;
   }
 
 }

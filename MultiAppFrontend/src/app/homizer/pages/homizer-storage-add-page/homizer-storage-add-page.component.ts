@@ -7,9 +7,11 @@ import imageCompression from "browser-image-compression";
 @Component({
   selector: 'app-homizer-storage-add-page',
   standalone: false,
-
   templateUrl: './homizer-storage-add-page.component.html',
-  styleUrl: './homizer-storage-add-page.component.css'
+  styleUrls: [
+    './homizer-storage-add-page.component.css',
+    '../../homizer-styles.css'
+  ]
 })
 export class HomizerStorageAddPageComponent {
 

@@ -9,4 +9,6 @@ import java.util.List;
 public interface HomizerItemRepo extends JpaRepository<HomizerItem, String> {
 
   List<HomizerItem> findByUserId(String userId);
+
+  List<HomizerItem> findByHomizerStorageId(String homizerStrorageId);
 }

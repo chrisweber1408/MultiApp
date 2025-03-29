@@ -7,8 +7,10 @@ import imageCompression from 'browser-image-compression';
 @Component({
   selector: 'app-homizer-item-add-page',
   templateUrl: './homizer-item-add-page.component.html',
-  styleUrl: './homizer-item-add-page.component.css',
-  standalone: false
+  standalone: false,
+  styleUrls: ['./homizer-item-add-page.component.css',
+    '../../homizer-styles.css'
+  ]
 })
 export class HomizerItemAddPageComponent implements OnInit {
 

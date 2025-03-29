@@ -10,13 +10,17 @@ import imageCompression from "browser-image-compression";
 @Component({
   selector: 'app-homizer-item-edit-page',
   templateUrl: './homizer-item-edit-page.component.html',
-  styleUrl: './homizer-item-edit-page.component.css',
-  standalone: false
+  standalone: false,
+  styleUrls: [
+    './homizer-item-edit-page.component.css',
+    '../../homizer-styles.css'
+  ]
 })
 export class HomizerItemEditPageComponent implements OnInit {
 
   homizerItem: HomizerItemDto
   homizerStorageDtos: HomizerStorageDto[] = [];
+  homizerStorage: HomizerStorageDto;
 
 
   constructor(
@@ -29,15 +33,22 @@ export class HomizerItemEditPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadHomizerItem(this.route.snapshot.paramMap.get('id'))
-    this.loadHomizerStorages()
+    this.loadHomizerItem(this.route.snapshot.paramMap.get('id')).then(() => {
+      this.loadHomizerStorages().then(() => {
+        if (this.homizerItem?.homizerStorageId) {
+          this.loadHomizerStorage(this.homizerItem.homizerStorageId);
+        }
+      });
+    });
   }
 
-  loadHomizerItem(id: string): void {
-    this.homizerDataService.loadHomizerItem(id)
-      .then((item: AxiosResponse<HomizerItemDto, any>) => {
-        this.homizerItem = item.data
-      });
+  async loadHomizerItem(id: string): Promise<void> {
+    try {
+      const item = await this.homizerDataService.loadHomizerItem(id);
+      this.homizerItem = item.data;
+    } catch (error) {
+      console.error('Failed to load Homizer item:', error);
+    }
   }
 
 
@@ -102,6 +113,13 @@ export class HomizerItemEditPageComponent implements OnInit {
       data: {image: imageUrl},
       panelClass: 'full-screen-dialog'
     });
+  }
+
+  loadHomizerStorage(id: string): void {
+    this.homizerDataService.loadHomizerStorage(id)
+      .then((storage: AxiosResponse<HomizerStorageDto, any>) => {
+        this.homizerStorage = storage.data
+      });
   }
 
 }
