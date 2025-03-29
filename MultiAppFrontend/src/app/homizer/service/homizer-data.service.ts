@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HomizerItemDto, HomizerStorageDto} from "./homizer.models";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {CookieService} from "ngx-cookie-service";
 
 @Injectable({providedIn: 'root'})

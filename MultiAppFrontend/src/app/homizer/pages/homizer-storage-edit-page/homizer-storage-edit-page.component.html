@@ -1,4 +1,4 @@
-<app-header title="Homizer-Item"></app-header>
+<app-header title="Homizer-Storage"></app-header>
 <div class="homizer-input" *ngIf="homizerStorage">
   <div>
     <img class="homizer-edit-image" src="{{homizerStorage.image}}" (click)="openImageDialog(homizerStorage.image)">
@@ -32,7 +32,7 @@
   </div>
 </div>
 
-<div class="homizer-item-and-storage-list" *ngIf="homizerItems && homizerItems.length > 0; else noItems">
+<div class="homizer-item-and-storage-list">
   <div class="homizer-item-and-storage" *ngFor="let homizerItem of homizerItems"
        [routerLink]="['/homizer-item-edit-page', homizerItem.id]">
 
@@ -51,12 +51,6 @@
 
   </div>
 </div>
-
-<ng-template #noItems>
-  <div class="empty-homizer-item-and-storage" *ngIf="showNoItemsMessage">
-    No items in this storage!
-  </div>
-</ng-template>
 
 <app-navigation-bar title="homizer-item"></app-navigation-bar>
 
