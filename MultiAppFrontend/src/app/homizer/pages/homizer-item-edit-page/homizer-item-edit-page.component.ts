@@ -20,6 +20,7 @@ export class HomizerItemEditPageComponent implements OnInit {
 
   homizerItem: HomizerItemDto
   homizerStorageDtos: HomizerStorageDto[] = [];
+  homizerStorage: HomizerStorageDto;
 
 
   constructor(
@@ -33,7 +34,12 @@ export class HomizerItemEditPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadHomizerItem(this.route.snapshot.paramMap.get('id'))
-    this.loadHomizerStorages()
+    this.loadHomizerStorages().then(() => {
+        if (null != this.homizerItem.homizerStorageId) {
+          this.loadHomizerStorage(this.homizerItem.homizerStorageId)
+        }
+      }
+    )
   }
 
   loadHomizerItem(id: string): void {
@@ -105,6 +111,13 @@ export class HomizerItemEditPageComponent implements OnInit {
       data: {image: imageUrl},
       panelClass: 'full-screen-dialog'
     });
+  }
+
+  loadHomizerStorage(id: string): void {
+    this.homizerDataService.loadHomizerStorage(id)
+      .then((storage: AxiosResponse<HomizerStorageDto, any>) => {
+        this.homizerStorage = storage.data
+      });
   }
 
 }

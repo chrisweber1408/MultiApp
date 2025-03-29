@@ -1,7 +1,5 @@
 package com.example.MultiAppBackend.homizer.homizerStorage;
 
-import com.example.MultiAppBackend.homizer.homizerItem.HomizerItem;
-import com.example.MultiAppBackend.homizer.homizerItem.HomizerItemDto;
 import com.example.MultiAppBackend.user.MyUser;
 import com.example.MultiAppBackend.user.MyUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -86,4 +84,18 @@ public class HomizerStorageService {
     return homizerStorageDto;
   }
 
+  public HomizerStorageDto getHomizerStorageForItem(String id) {
+    Optional<HomizerStorage> optionalHomizerStorage = homizerStorageRepo.findById(id);
+    HomizerStorageDto homizerStorageDto = new HomizerStorageDto();
+    if (optionalHomizerStorage.isPresent()) {
+      HomizerStorage homizerStorage = optionalHomizerStorage.get();
+      homizerStorageDto.setId(homizerStorage.getId());
+      homizerStorageDto.setName(homizerStorage.getName());
+      homizerStorageDto.setDescription(homizerStorage.getDescription());
+      if (null != homizerStorage.getImage()) {
+        homizerStorageDto.setImage(homizerStorage.getImage());
+      }
+    }
+    return homizerStorageDto;
+  }
 }

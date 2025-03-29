@@ -20,7 +20,6 @@ import imageCompression from "browser-image-compression";
 export class HomizerStorageEditPageComponent implements OnInit {
 
   homizerStorage: HomizerStorageDto
-  showNoItemsMessage = false;
   homizerItems: HomizerItemDto[]
 
   constructor(
