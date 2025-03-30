@@ -1,22 +1,22 @@
 package com.example.MultiAppBackend.homizer.homizerItem;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import com.example.MultiAppBackend.homizer.homizerStorage.HomizerStorage;
 import com.example.MultiAppBackend.homizer.homizerStorage.HomizerStorageRepo;
 import com.example.MultiAppBackend.user.MyUser;
 import com.example.MultiAppBackend.user.MyUserRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class HomizerItemServiceTest {
@@ -33,104 +33,104 @@ class HomizerItemServiceTest {
   @InjectMocks
   private HomizerItemService homizerItemService;
 
-  private MyUser myUser;
-  private HomizerStorage homizerStorage;
   private HomizerItem homizerItem;
+  private MyUser user;
+  private HomizerStorage storage;
   private HomizerItemDto homizerItemDto;
 
   @BeforeEach
   void setUp() {
-    myUser = new MyUser();
+    user = new MyUser();
 
-    homizerStorage = new HomizerStorage();
+    storage = new HomizerStorage();
 
     homizerItem = new HomizerItem();
-    homizerItem.setName("Test Item");
-    homizerItem.setUser(myUser);
-    homizerItem.setHomizerStorage(homizerStorage);
+    homizerItem.setName("Item Name");
+    homizerItem.setUser(user);
+    homizerItem.setHomizerStorage(storage);
 
     homizerItemDto = new HomizerItemDto();
-    homizerItemDto.setName("Updated Item");
-    homizerItemDto.setNumber(5);
-    homizerItemDto.setImage("image.png");
-    homizerItemDto.setDescription("Updated Description");
+    homizerItemDto.setId("item123");
+    homizerItemDto.setName("Item Name");
     homizerItemDto.setHomizerStorageId("storage123");
   }
 
   @Test
-  void shouldSaveNewHomizerItem() {
-    when(homizerStorageRepo.findById("storage123")).thenReturn(Optional.of(homizerStorage));
-    when(homizerItemRepo.save(any(HomizerItem.class))).thenReturn(homizerItem);
-    when(myUserRepository.save(any(MyUser.class))).thenReturn(myUser);
+  void saveHomizerItem_shouldSaveNewItem() {
+    when(homizerStorageRepo.findById("storage123")).thenReturn(Optional.of(storage));
+    when(homizerItemRepo.findById("item123")).thenReturn(Optional.empty());
 
-    homizerItemService.saveHomizerItem(homizerItemDto, myUser);
-
-    verify(homizerItemRepo, times(1)).save(any(HomizerItem.class));
-    verify(myUserRepository, times(1)).save(any(MyUser.class));
-  }
-
-  @Test
-  void shouldSaveHomizerItemWithoutStorage() {
-    homizerItemDto.setHomizerStorageId(null);
-
-    when(homizerItemRepo.save(any(HomizerItem.class))).thenReturn(homizerItem);
-    when(myUserRepository.save(any(MyUser.class))).thenReturn(myUser);
-
-    homizerItemService.saveHomizerItem(homizerItemDto, myUser);
+    homizerItemService.saveHomizerItem(homizerItemDto, user);
 
     verify(homizerItemRepo, times(1)).save(any(HomizerItem.class));
-    verify(myUserRepository, times(1)).save(any(MyUser.class));
+    verify(myUserRepository, times(1)).save(user);
   }
 
   @Test
-  void shouldReturnAllHomizerItemsFromUser() {
-    when(homizerItemRepo.findByUserId(myUser.getId())).thenReturn(List.of(homizerItem));
+  void getAllHomizerItemsFromUser_shouldReturnItems() {
+    when(homizerItemRepo.findByUserId(user.getId())).thenReturn(List.of(homizerItem));
 
-    List<HomizerItemDto> result = homizerItemService.getAllHomizerItemsFromUser(myUser);
+    List<HomizerItemDto> items = homizerItemService.getAllHomizerItemsFromUser(user);
 
-    assertFalse(result.isEmpty());
-    assertEquals(1, result.size());
-    assertEquals("Test Item", result.get(0).getName());
+    assertEquals(1, items.size());
+    assertEquals("Item Name", items.get(0).getName());
   }
 
   @Test
-  void shouldThrowExceptionWhenUserHasNoItems() {
-    when(homizerItemRepo.findByUserId(myUser.getId())).thenReturn(List.of());
+  void getAllHomizerItemsFromUser_shouldThrowExceptionIfNoItemsFound() {
+    when(homizerItemRepo.findByUserId(user.getId())).thenReturn(List.of());
 
-    assertThrows(NoSuchElementException.class, () -> homizerItemService.getAllHomizerItemsFromUser(myUser));
+    assertThrows(NoSuchElementException.class, () -> homizerItemService.getAllHomizerItemsFromUser(user));
   }
 
   @Test
-  void shouldFindHomizerItemById() {
+  void getHomizerItemById_shouldReturnItem() {
     when(homizerItemRepo.findById("item123")).thenReturn(Optional.of(homizerItem));
 
     HomizerItemDto result = homizerItemService.getHomizerItemById("item123");
 
-    assertNotNull(result);
-    assertEquals("Test Item", result.getName());
+    assertEquals("Item Name", result.getName());
   }
 
   @Test
-  void shouldThrowExceptionWhenHomizerItemNotFound() {
-    when(homizerItemRepo.findById("invalid-id")).thenReturn(Optional.empty());
+  void getHomizerItemById_shouldThrowExceptionIfNotFound() {
+    when(homizerItemRepo.findById("item123")).thenReturn(Optional.empty());
 
-    assertThrows(NoSuchElementException.class, () -> homizerItemService.getHomizerItemById("invalid-id"));
+    assertThrows(NoSuchElementException.class, () -> homizerItemService.getHomizerItemById("item123"));
   }
 
   @Test
-  void shouldDeleteHomizerItemById() {
+  @Transactional
+  void deleteHomizerItemById_shouldDeleteItem() {
     when(homizerItemRepo.findById("item123")).thenReturn(Optional.of(homizerItem));
-    doNothing().when(homizerItemRepo).deleteById("item123");
 
     homizerItemService.deleteHomizerItemById("item123");
 
-    verify(homizerItemRepo, times(1)).deleteById("item123");
+    verify(homizerItemRepo, times(1)).delete(homizerItem);
   }
 
   @Test
-  void shouldThrowExceptionWhenDeletingNonExistentHomizerItem() {
-    when(homizerItemRepo.findById("invalid-id")).thenReturn(Optional.empty());
+  void deleteHomizerItemById_shouldThrowExceptionIfNotFound() {
+    when(homizerItemRepo.findById("item123")).thenReturn(Optional.empty());
 
-    assertThrows(NoSuchElementException.class, () -> homizerItemService.deleteHomizerItemById("invalid-id"));
+    assertThrows(NoSuchElementException.class, () -> homizerItemService.deleteHomizerItemById("item123"));
   }
+
+  @Test
+  void getAllHomizerItemsInStorage_shouldReturnItems() {
+    when(homizerItemRepo.findByHomizerStorageId("storage123")).thenReturn(List.of(homizerItem));
+
+    List<HomizerItemDto> items = homizerItemService.getAllHomizerItemsInStorage("storage123");
+
+    assertEquals(1, items.size());
+    assertEquals("Item Name", items.get(0).getName());
+  }
+
+  @Test
+  void getAllHomizerItemsInStorage_shouldThrowExceptionIfNoItemsFound() {
+    when(homizerItemRepo.findByHomizerStorageId("storage123")).thenReturn(List.of());
+
+    assertThrows(NoSuchElementException.class, () -> homizerItemService.getAllHomizerItemsInStorage("storage123"));
+  }
+
 }
