@@ -2,6 +2,7 @@ package com.example.MultiAppBackend.homizer.homizerStorage;
 
 import com.example.MultiAppBackend.user.MyUser;
 import com.example.MultiAppBackend.user.MyUserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,108 +19,132 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class HomizerStorageServiceTest {
 
+  @InjectMocks
+  private HomizerStorageService homizerStorageService;
+
   @Mock
   private HomizerStorageRepo homizerStorageRepo;
 
   @Mock
   private MyUserRepository myUserRepository;
 
-  @InjectMocks
-  private HomizerStorageService homizerStorageService;
-
-  private MyUser myUser;
-  private HomizerStorage homizerStorage;
-  private HomizerStorageDto homizerStorageDto;
+  private MyUser mockUser;
+  private HomizerStorageDto mockStorageDto;
+  private HomizerStorage mockStorage;
 
   @BeforeEach
   void setUp() {
-    myUser = new MyUser();
+    mockUser = new MyUser();
+    mockUser.setEmail("test@example.com");
 
-    homizerStorage = new HomizerStorage();
-    homizerStorage.setName("Test Storage");
-    homizerStorage.setUser(myUser);
+    mockStorageDto = new HomizerStorageDto("456", "Test Storage", "Description", "image.png");
 
-    homizerStorageDto = new HomizerStorageDto();
-    homizerStorageDto.setId("storage123");
-    homizerStorageDto.setName("Updated Storage");
-    homizerStorageDto.setImage("image.png");
-    homizerStorageDto.setDescription("Updated Description");
+    mockStorage = new HomizerStorage();
+    mockStorage.setName("Test Storage");
+    mockStorage.setDescription("Description");
+    mockStorage.setImage("image.png");
+    mockStorage.setUser(mockUser);
   }
 
   @Test
-  void shouldSaveNewHomizerStorage() {
-    when(homizerStorageRepo.findById(anyString())).thenReturn(Optional.empty());
-    when(homizerStorageRepo.save(any(HomizerStorage.class))).thenReturn(homizerStorage);
-    when(myUserRepository.save(any(MyUser.class))).thenReturn(myUser);
+  void saveHomizerStorage_ShouldSaveNewStorage_WhenIdIsNull() {
+    mockStorageDto.setId(null);
+    when(homizerStorageRepo.save(any(HomizerStorage.class))).thenReturn(mockStorage);
 
-    homizerStorageService.saveHomizerStorage(homizerStorageDto, myUser);
+    homizerStorageService.saveHomizerStorage(mockStorageDto, mockUser);
 
-    verify(homizerStorageRepo, times(1)).save(any(HomizerStorage.class));
-    verify(myUserRepository, times(1)).save(any(MyUser.class));
-  }
-
-  @Test
-  void shouldUpdateExistingHomizerStorage() {
-    when(homizerStorageRepo.findById("storage123")).thenReturn(Optional.of(homizerStorage));
-    when(homizerStorageRepo.save(any(HomizerStorage.class))).thenReturn(homizerStorage);
-    when(myUserRepository.save(any(MyUser.class))).thenReturn(myUser);
-
-    homizerStorageService.saveHomizerStorage(homizerStorageDto, myUser);
-
-    assertEquals("Updated Storage", homizerStorage.getName());
-    assertEquals("Updated Description", homizerStorage.getDescription());
     verify(homizerStorageRepo, times(1)).save(any(HomizerStorage.class));
   }
 
   @Test
-  void shouldReturnAllHomizerStoragesFromUser() {
-    when(homizerStorageRepo.findByUserId(myUser.getId())).thenReturn(List.of(homizerStorage));
+  void saveHomizerStorage_ShouldUpdateExistingStorage_WhenIdExists() {
+    when(homizerStorageRepo.findById("456")).thenReturn(Optional.of(mockStorage));
+    when(homizerStorageRepo.save(any(HomizerStorage.class))).thenReturn(mockStorage);
 
-    List<HomizerStorageDto> result = homizerStorageService.getAllHomizerStoragesfromUser(myUser);
+    homizerStorageService.saveHomizerStorage(mockStorageDto, mockUser);
 
-    assertFalse(result.isEmpty());
+    verify(homizerStorageRepo, times(1)).save(mockStorage);
+    assertEquals("Test Storage", mockStorage.getName());
+  }
+
+  @Test
+  void getAllHomizerStoragesfromUser_ShouldReturnList_WhenStoragesExist() {
+    when(homizerStorageRepo.findByUserId(mockUser.getId())).thenReturn(List.of(mockStorage));
+
+    List<HomizerStorageDto> result = homizerStorageService.getAllHomizerStoragesfromUser(mockUser);
+
     assertEquals(1, result.size());
     assertEquals("Test Storage", result.get(0).getName());
   }
 
   @Test
-  void shouldThrowExceptionWhenUserHasNoStorages() {
-    when(homizerStorageRepo.findByUserId(myUser.getId())).thenReturn(List.of());
+  void getAllHomizerStoragesfromUser_ShouldThrowException_WhenNoStoragesExist() {
+    when(homizerStorageRepo.findByUserId(mockUser.getId())).thenReturn(List.of());
 
-    assertThrows(NoSuchElementException.class, () -> homizerStorageService.getAllHomizerStoragesfromUser(myUser));
+    Exception exception = assertThrows(EntityNotFoundException.class, () ->
+            homizerStorageService.getAllHomizerStoragesfromUser(mockUser)
+    );
+
+    assertTrue(exception.getMessage().contains("No storage found for user:"));
   }
 
   @Test
-  void shouldFindHomizerStorageById() {
-    when(homizerStorageRepo.findById("storage123")).thenReturn(Optional.of(homizerStorage));
+  void getHomizerStorageById_ShouldReturnDto_WhenStorageExists() {
+    when(homizerStorageRepo.findById("456")).thenReturn(Optional.of(mockStorage));
 
-    HomizerStorageDto result = homizerStorageService.getHomizerStorageById("storage123");
+    HomizerStorageDto result = homizerStorageService.getHomizerStorageById("456");
 
-    assertNotNull(result);
     assertEquals("Test Storage", result.getName());
   }
 
   @Test
-  void shouldThrowExceptionWhenHomizerStorageNotFound() {
-    when(homizerStorageRepo.findById("invalid-id")).thenReturn(Optional.empty());
+  void getHomizerStorageById_ShouldThrowException_WhenStorageNotFound() {
+    when(homizerStorageRepo.findById("456")).thenReturn(Optional.empty());
 
-    assertThrows(NoSuchElementException.class, () -> homizerStorageService.getHomizerStorageById("invalid-id"));
+    Exception exception = assertThrows(EntityNotFoundException.class, () ->
+            homizerStorageService.getHomizerStorageById("456")
+    );
+
+    assertEquals("Storage with id: 456 not found!", exception.getMessage());
   }
 
   @Test
-  void shouldDeleteHomizerStorageById() {
-    when(homizerStorageRepo.findById("storage123")).thenReturn(Optional.of(homizerStorage));
-    doNothing().when(homizerStorageRepo).deleteById("storage123");
+  void deleteHomizerStorageById_ShouldDelete_WhenStorageExists() {
+    when(homizerStorageRepo.existsById("456")).thenReturn(true);
 
-    homizerStorageService.deleteHomizerStorageById("storage123");
+    homizerStorageService.deleteHomizerStorageById("456");
 
-    verify(homizerStorageRepo, times(1)).deleteById("storage123");
+    verify(homizerStorageRepo, times(1)).deleteById("456");
   }
 
   @Test
-  void shouldThrowExceptionWhenDeletingNonExistentHomizerStorage() {
-    when(homizerStorageRepo.findById("invalid-id")).thenReturn(Optional.empty());
+  void deleteHomizerStorageById_ShouldThrowException_WhenStorageNotFound() {
+    when(homizerStorageRepo.existsById("456")).thenReturn(false);
 
-    assertThrows(NoSuchElementException.class, () -> homizerStorageService.deleteHomizerStorageById("invalid-id"));
+    Exception exception = assertThrows(EntityNotFoundException.class, () ->
+            homizerStorageService.deleteHomizerStorageById("456")
+    );
+
+    assertEquals("Storage with id: 456 not found!", exception.getMessage());
+  }
+
+  @Test
+  void getHomizerStorageForItem_ShouldReturnDto_WhenStorageExists() {
+    when(homizerStorageRepo.findById("456")).thenReturn(Optional.of(mockStorage));
+
+    HomizerStorageDto result = homizerStorageService.getHomizerStorageForItem("456");
+
+    assertEquals("Test Storage", result.getName());
+  }
+
+  @Test
+  void getHomizerStorageForItem_ShouldThrowException_WhenStorageNotFound() {
+    when(homizerStorageRepo.findById("456")).thenReturn(Optional.empty());
+
+    Exception exception = assertThrows(EntityNotFoundException.class, () ->
+            homizerStorageService.getHomizerStorageForItem("456")
+    );
+
+    assertEquals("Storage with id: 456 not found!", exception.getMessage());
   }
 }

@@ -7,6 +7,7 @@ import com.example.MultiAppBackend.homizer.homizerStorage.HomizerStorage;
 import com.example.MultiAppBackend.homizer.homizerStorage.HomizerStorageRepo;
 import com.example.MultiAppBackend.user.MyUser;
 import com.example.MultiAppBackend.user.MyUserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -96,7 +97,7 @@ class HomizerItemServiceTest {
   void getHomizerItemById_shouldThrowExceptionIfNotFound() {
     when(homizerItemRepo.findById("item123")).thenReturn(Optional.empty());
 
-    assertThrows(NoSuchElementException.class, () -> homizerItemService.getHomizerItemById("item123"));
+    assertThrows(EntityNotFoundException.class, () -> homizerItemService.getHomizerItemById("item123"));
   }
 
   @Test

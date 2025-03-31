@@ -2,12 +2,10 @@ package com.example.MultiAppBackend.homizer.homizerStorage;
 
 import com.example.MultiAppBackend.user.MyUser;
 import com.example.MultiAppBackend.user.MyUserRepository;
+import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,85 +15,58 @@ public class HomizerStorageService {
   private final MyUserRepository myUserRepository;
 
   public void saveHomizerStorage(HomizerStorageDto homizerStorageDto, MyUser myUser) {
-    HomizerStorage homizerStorage = new HomizerStorage();
-    if (null != homizerStorageDto.getId()){
-      Optional<HomizerStorage> optionalHomizerStorage = homizerStorageRepo.findById(homizerStorageDto.getId());
-      if (optionalHomizerStorage.isPresent()) {
-        homizerStorage = optionalHomizerStorage.get();
-        homizerStorage.setName(homizerStorageDto.getName());
-        homizerStorage.setImage(homizerStorageDto.getImage());
-        homizerStorage.setUser(myUser);
-        homizerStorage.setDescription(homizerStorageDto.getDescription());
-      }
-    } else  {
-      homizerStorage.setName(homizerStorageDto.getName());
-      homizerStorage.setImage(homizerStorageDto.getImage());
-      homizerStorage.setUser(myUser);
-      homizerStorage.setDescription(homizerStorageDto.getDescription());
-    }
-    myUserRepository.save(myUser);
+    HomizerStorage homizerStorage =
+        homizerStorageDto.getId() != null
+            ? homizerStorageRepo.findById(homizerStorageDto.getId()).orElse(new HomizerStorage())
+            : new HomizerStorage();
+
+    updateHomizerStorageFromDto(homizerStorage, homizerStorageDto, myUser);
+
     homizerStorageRepo.save(homizerStorage);
   }
 
   public List<HomizerStorageDto> getAllHomizerStoragesfromUser(MyUser myUser) {
     List<HomizerStorage> homizerStorages = homizerStorageRepo.findByUserId(myUser.getId());
-    if (!homizerStorages.isEmpty()) {
-      List<HomizerStorageDto> allHomizerItemDtoFromUser = new java.util.ArrayList<>(List.of());
-      for (HomizerStorage homizerStorage : homizerStorages) {
-        HomizerStorageDto homizerStorageDto = createHomizerStorageDto(homizerStorage);
-        allHomizerItemDtoFromUser.add(homizerStorageDto);
-      }
-      return allHomizerItemDtoFromUser;
-    } else {
-      throw new NoSuchElementException("List is empty");
+    if (homizerStorages.isEmpty()) {
+      throw new EntityNotFoundException("No storage found for user: " + myUser.getId());
     }
+    return homizerStorages.stream().map(this::createHomizerStorageDto).toList();
   }
 
   public HomizerStorageDto getHomizerStorageById(String id) {
-    Optional<HomizerStorage> optionalHomizerStorage = homizerStorageRepo.findById(id);
-    if (optionalHomizerStorage.isPresent()) {
-      HomizerStorage homizerStorage = optionalHomizerStorage.get();
-      HomizerStorageDto homizerStorageDto = new HomizerStorageDto();
-      homizerStorageDto.setId(homizerStorage.getId());
-      homizerStorageDto.setName(homizerStorage.getName());
-      homizerStorageDto.setDescription(homizerStorage.getDescription());
-      homizerStorageDto.setImage(homizerStorage.getImage());
-      return homizerStorageDto;
-    } else {
-      throw new NoSuchElementException("Storage with id: " + id + " not found!");
-    }
+    return homizerStorageRepo
+        .findById(id)
+        .map(this::createHomizerStorageDto)
+        .orElseThrow(() -> new EntityNotFoundException("Storage with id: " + id + " not found!"));
   }
 
   public void deleteHomizerStorageById(String id) {
-    Optional<HomizerStorage> homizerStorage = homizerStorageRepo.findById(id);
-    if (homizerStorage.isPresent()) {
-      homizerStorageRepo.deleteById(id);
-    } else {
-      throw new NoSuchElementException("Storage with id: " + id + " not found!");
+    if (!homizerStorageRepo.existsById(id)) {
+      throw new EntityNotFoundException("Storage with id: " + id + " not found!");
     }
-  }
-
-  private static HomizerStorageDto createHomizerStorageDto(HomizerStorage homizerStorage) {
-    HomizerStorageDto homizerStorageDto = new HomizerStorageDto();
-    homizerStorageDto.setId(homizerStorage.getId());
-    homizerStorageDto.setName(homizerStorage.getName());
-    homizerStorageDto.setDescription(homizerStorage.getDescription());
-    homizerStorageDto.setImage(homizerStorage.getImage());
-    return homizerStorageDto;
+    homizerStorageRepo.deleteById(id);
   }
 
   public HomizerStorageDto getHomizerStorageForItem(String id) {
-    Optional<HomizerStorage> optionalHomizerStorage = homizerStorageRepo.findById(id);
-    HomizerStorageDto homizerStorageDto = new HomizerStorageDto();
-    if (optionalHomizerStorage.isPresent()) {
-      HomizerStorage homizerStorage = optionalHomizerStorage.get();
-      homizerStorageDto.setId(homizerStorage.getId());
-      homizerStorageDto.setName(homizerStorage.getName());
-      homizerStorageDto.setDescription(homizerStorage.getDescription());
-      if (null != homizerStorage.getImage()) {
-        homizerStorageDto.setImage(homizerStorage.getImage());
-      }
-    }
-    return homizerStorageDto;
+    return homizerStorageRepo
+        .findById(id)
+        .map(this::createHomizerStorageDto)
+        .orElseThrow(() -> new EntityNotFoundException("Storage with id: " + id + " not found!"));
+  }
+
+  private void updateHomizerStorageFromDto(
+      HomizerStorage storage, HomizerStorageDto dto, MyUser user) {
+    storage.setName(dto.getName());
+    storage.setImage(dto.getImage());
+    storage.setUser(user);
+    storage.setDescription(dto.getDescription());
+  }
+
+  private HomizerStorageDto createHomizerStorageDto(HomizerStorage homizerStorage) {
+    return new HomizerStorageDto(
+        homizerStorage.getId(),
+        homizerStorage.getName(),
+        homizerStorage.getDescription(),
+        homizerStorage.getImage());
   }
 }
