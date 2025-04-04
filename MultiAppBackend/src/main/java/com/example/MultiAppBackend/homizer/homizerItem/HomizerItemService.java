@@ -7,7 +7,6 @@ import com.example.MultiAppBackend.user.MyUserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -57,16 +56,18 @@ public class HomizerItemService {
     List<HomizerItem> homizerItems = homizerItemRepo.findByUserId(myUser.getId());
 
     if (homizerItems.isEmpty()) {
-      throw new NoSuchElementException("No HomizerItems found for user with ID: " + myUser.getId());
+      throw new EntityNotFoundException(
+          "No HomizerItems found for user with ID: " + myUser.getId());
     }
 
     return homizerItems.stream().map(this::createHomizerItemDto).toList();
   }
 
   public HomizerItemDto getHomizerItemById(String id) {
-    return homizerItemRepo.findById(id)
-            .map(this::convertToDto)
-            .orElseThrow(() -> new EntityNotFoundException("Item with id: " + id + " not found!"));
+    return homizerItemRepo
+        .findById(id)
+        .map(this::convertToDto)
+        .orElseThrow(() -> new EntityNotFoundException("Item with id: " + id + " not found!"));
   }
 
   private HomizerItemDto convertToDto(HomizerItem homizerItem) {
@@ -82,13 +83,12 @@ public class HomizerItemService {
     return dto;
   }
 
-
   @Transactional
   public void deleteHomizerItemById(String id) {
     HomizerItem homizerItem =
         homizerItemRepo
             .findById(id)
-            .orElseThrow(() -> new NoSuchElementException("Item with id: " + id + " not found!"));
+            .orElseThrow(() -> new EntityNotFoundException("Item with id: " + id + " not found!"));
 
     homizerItemRepo.delete(homizerItem);
   }
@@ -96,7 +96,7 @@ public class HomizerItemService {
   public List<HomizerItemDto> getAllHomizerItemsInStorage(String id) {
     List<HomizerItem> homizerItemsInStorage = homizerItemRepo.findByHomizerStorageId(id);
     if (homizerItemsInStorage.isEmpty()) {
-      throw new NoSuchElementException("No HomizerItems found for storage with id: " + id);
+      throw new EntityNotFoundException("No HomizerItems found for storage with id: " + id);
     }
     return homizerItemsInStorage.stream()
         .map(this::createHomizerItemDto)

@@ -81,7 +81,7 @@ class HomizerItemServiceTest {
   void getAllHomizerItemsFromUser_shouldThrowExceptionIfNoItemsFound() {
     when(homizerItemRepo.findByUserId(user.getId())).thenReturn(List.of());
 
-    assertThrows(NoSuchElementException.class, () -> homizerItemService.getAllHomizerItemsFromUser(user));
+    assertThrows(EntityNotFoundException.class, () -> homizerItemService.getAllHomizerItemsFromUser(user));
   }
 
   @Test
@@ -114,7 +114,7 @@ class HomizerItemServiceTest {
   void deleteHomizerItemById_shouldThrowExceptionIfNotFound() {
     when(homizerItemRepo.findById("item123")).thenReturn(Optional.empty());
 
-    assertThrows(NoSuchElementException.class, () -> homizerItemService.deleteHomizerItemById("item123"));
+    assertThrows(EntityNotFoundException.class, () -> homizerItemService.deleteHomizerItemById("item123"));
   }
 
   @Test
@@ -131,7 +131,7 @@ class HomizerItemServiceTest {
   void getAllHomizerItemsInStorage_shouldThrowExceptionIfNoItemsFound() {
     when(homizerItemRepo.findByHomizerStorageId("storage123")).thenReturn(List.of());
 
-    assertThrows(NoSuchElementException.class, () -> homizerItemService.getAllHomizerItemsInStorage("storage123"));
+    assertThrows(EntityNotFoundException.class, () -> homizerItemService.getAllHomizerItemsInStorage("storage123"));
   }
 
 }

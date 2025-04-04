@@ -46,6 +46,6 @@ public class HomizerStorageController {
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<Void> deleteHomizerStorageById(@PathVariable String id) {
     homizerStorageService.deleteHomizerStorageById(id);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.status(HttpStatus.OK).build();
   }
 }
