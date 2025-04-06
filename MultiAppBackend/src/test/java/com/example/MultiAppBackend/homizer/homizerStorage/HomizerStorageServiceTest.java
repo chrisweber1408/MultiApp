@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,11 +32,19 @@ class HomizerStorageServiceTest {
   private MyUser mockUser;
   private HomizerStorageDto mockStorageDto;
   private HomizerStorage mockStorage;
+  private Principal principal;
 
   @BeforeEach
   void setUp() {
     mockUser = new MyUser();
     mockUser.setEmail("test@example.com");
+
+    principal = new Principal() {
+      @Override
+      public String getName() {
+        return "testUser";
+      }
+    };
 
     mockStorageDto = new HomizerStorageDto("456", "Test Storage", "Description", "image.png");
 
@@ -50,18 +59,20 @@ class HomizerStorageServiceTest {
   void saveHomizerStorage_ShouldSaveNewStorage_WhenIdIsNull() {
     mockStorageDto.setId(null);
     when(homizerStorageRepo.save(any(HomizerStorage.class))).thenReturn(mockStorage);
+    when(myUserRepository.findByEmail(principal.getName())).thenReturn(Optional.ofNullable(mockUser));
 
-    homizerStorageService.saveHomizerStorage(mockStorageDto, mockUser);
+    homizerStorageService.saveHomizerStorage(mockStorageDto, principal);
 
     verify(homizerStorageRepo, times(1)).save(any(HomizerStorage.class));
   }
 
   @Test
   void saveHomizerStorage_ShouldUpdateExistingStorage_WhenIdExists() {
-    when(homizerStorageRepo.findById("456")).thenReturn(Optional.of(mockStorage));
+    when(homizerStorageRepo.findByIdAndUserId("456", mockUser.getId())).thenReturn(Optional.of(mockStorage));
     when(homizerStorageRepo.save(any(HomizerStorage.class))).thenReturn(mockStorage);
+    when(myUserRepository.findByEmail(principal.getName())).thenReturn(Optional.ofNullable(mockUser));
 
-    homizerStorageService.saveHomizerStorage(mockStorageDto, mockUser);
+    homizerStorageService.saveHomizerStorage(mockStorageDto, principal);
 
     verify(homizerStorageRepo, times(1)).save(mockStorage);
     assertEquals("Test Storage", mockStorage.getName());
@@ -70,8 +81,9 @@ class HomizerStorageServiceTest {
   @Test
   void getAllHomizerStoragesfromUser_ShouldReturnList_WhenStoragesExist() {
     when(homizerStorageRepo.findByUserId(mockUser.getId())).thenReturn(List.of(mockStorage));
+    when(myUserRepository.findByEmail(principal.getName())).thenReturn(Optional.ofNullable(mockUser));
 
-    List<HomizerStorageDto> result = homizerStorageService.getAllHomizerStoragesfromUser(mockUser);
+    List<HomizerStorageDto> result = homizerStorageService.getAllHomizerStoragesfromUser(principal);
 
     assertEquals(1, result.size());
     assertEquals("Test Storage", result.get(0).getName());
@@ -80,9 +92,10 @@ class HomizerStorageServiceTest {
   @Test
   void getAllHomizerStoragesfromUser_ShouldThrowException_WhenNoStoragesExist() {
     when(homizerStorageRepo.findByUserId(mockUser.getId())).thenReturn(List.of());
+    when(myUserRepository.findByEmail(principal.getName())).thenReturn(Optional.ofNullable(mockUser));
 
     Exception exception = assertThrows(EntityNotFoundException.class, () ->
-            homizerStorageService.getAllHomizerStoragesfromUser(mockUser)
+            homizerStorageService.getAllHomizerStoragesfromUser(principal)
     );
 
     assertTrue(exception.getMessage().contains("No storage found for user:"));
@@ -90,19 +103,21 @@ class HomizerStorageServiceTest {
 
   @Test
   void getHomizerStorageById_ShouldReturnDto_WhenStorageExists() {
-    when(homizerStorageRepo.findById("456")).thenReturn(Optional.of(mockStorage));
+    when(homizerStorageRepo.findByIdAndUserId("456", mockUser.getId())).thenReturn(Optional.of(mockStorage));
+    when(myUserRepository.findByEmail(principal.getName())).thenReturn(Optional.ofNullable(mockUser));
 
-    HomizerStorageDto result = homizerStorageService.getHomizerStorageById("456");
+    HomizerStorageDto result = homizerStorageService.getHomizerStorageById("456", principal);
 
     assertEquals("Test Storage", result.getName());
   }
 
   @Test
   void getHomizerStorageById_ShouldThrowException_WhenStorageNotFound() {
-    when(homizerStorageRepo.findById("456")).thenReturn(Optional.empty());
+    when(homizerStorageRepo.findByIdAndUserId("456", mockUser.getId())).thenReturn(Optional.empty());
+    when(myUserRepository.findByEmail(principal.getName())).thenReturn(Optional.ofNullable(mockUser));
 
     Exception exception = assertThrows(EntityNotFoundException.class, () ->
-            homizerStorageService.getHomizerStorageById("456")
+            homizerStorageService.getHomizerStorageById("456", principal)
     );
 
     assertEquals("Storage with id: 456 not found!", exception.getMessage());
@@ -110,19 +125,21 @@ class HomizerStorageServiceTest {
 
   @Test
   void deleteHomizerStorageById_ShouldDelete_WhenStorageExists() {
-    when(homizerStorageRepo.existsById("456")).thenReturn(true);
+    when(homizerStorageRepo.existsByIdAndUserId("456", mockUser.getId())).thenReturn(true);
+    when(myUserRepository.findByEmail(principal.getName())).thenReturn(Optional.ofNullable(mockUser));
 
-    homizerStorageService.deleteHomizerStorageById("456");
+    homizerStorageService.deleteHomizerStorageById("456", principal);
 
     verify(homizerStorageRepo, times(1)).deleteById("456");
   }
 
   @Test
   void deleteHomizerStorageById_ShouldThrowException_WhenStorageNotFound() {
-    when(homizerStorageRepo.existsById("456")).thenReturn(false);
+    when(homizerStorageRepo.existsByIdAndUserId("456", mockUser.getId())).thenReturn(false);
+    when(myUserRepository.findByEmail(principal.getName())).thenReturn(Optional.ofNullable(mockUser));
 
     Exception exception = assertThrows(EntityNotFoundException.class, () ->
-            homizerStorageService.deleteHomizerStorageById("456")
+            homizerStorageService.deleteHomizerStorageById("456", principal)
     );
 
     assertEquals("Storage with id: 456 not found!", exception.getMessage());
