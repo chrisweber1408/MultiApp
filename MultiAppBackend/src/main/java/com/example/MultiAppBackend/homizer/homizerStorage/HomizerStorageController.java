@@ -22,30 +22,23 @@ public class HomizerStorageController {
   @PostMapping
   public ResponseEntity<Void> saveHomizerStorage(
       @RequestBody HomizerStorageDto homizerStorageDto, Principal principal) {
-    MyUser myUser = myUserRepository.findByEmail(principal.getName())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-
-    homizerStorageService.saveHomizerStorage(homizerStorageDto, myUser);
+    homizerStorageService.saveHomizerStorage(homizerStorageDto, principal);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @GetMapping
-  public ResponseEntity<List<HomizerStorageDto>> getAllHomizerStoragesFromUser(
-      Principal principal) {
-    return myUserRepository
-        .findByEmail(principal.getName())
-        .map(user -> ResponseEntity.ok(homizerStorageService.getAllHomizerStoragesfromUser(user)))
-        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+  public ResponseEntity<List<HomizerStorageDto>> getAllHomizerStoragesFromUser(Principal principal) {
+    return ResponseEntity.ok(homizerStorageService.getAllHomizerStoragesfromUser(principal));
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<HomizerStorageDto> getHomizerStorageById(@PathVariable String id) {
-    return ResponseEntity.ok(homizerStorageService.getHomizerStorageById(id));
+  public ResponseEntity<HomizerStorageDto> getHomizerStorageById(@PathVariable String id, Principal principal) {
+    return ResponseEntity.ok(homizerStorageService.getHomizerStorageById(id, principal));
   }
 
   @DeleteMapping("/delete/{id}")
-  public ResponseEntity<Void> deleteHomizerStorageById(@PathVariable String id) {
-    homizerStorageService.deleteHomizerStorageById(id);
+  public ResponseEntity<Void> deleteHomizerStorageById(@PathVariable String id, Principal principal) {
+    homizerStorageService.deleteHomizerStorageById(id, principal);
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 }

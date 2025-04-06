@@ -9,39 +9,39 @@ import com.example.MultiAppBackend.user.MyUser;
 import com.example.MultiAppBackend.user.MyUserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class HomizerItemServiceTest {
 
-  @Mock
-  private HomizerItemRepo homizerItemRepo;
+  @Mock private HomizerItemRepo homizerItemRepo;
 
-  @Mock
-  private HomizerStorageRepo homizerStorageRepo;
+  @Mock private HomizerStorageRepo homizerStorageRepo;
 
-  @Mock
-  private MyUserRepository myUserRepository;
+  @Mock private MyUserRepository myUserRepository;
 
-  @InjectMocks
-  private HomizerItemService homizerItemService;
+  @InjectMocks private HomizerItemService homizerItemService;
 
   private HomizerItem homizerItem;
   private MyUser user;
   private HomizerStorage storage;
   private HomizerItemDto homizerItemDto;
+  private Principal principal;
 
   @BeforeEach
   void setUp() {
     user = new MyUser();
+    user.setEmail("testUser");
+
+    principal = () -> "testUser";
 
     storage = new HomizerStorage();
 
@@ -60,8 +60,9 @@ class HomizerItemServiceTest {
   void saveHomizerItem_shouldSaveNewItem() {
     when(homizerStorageRepo.findById("storage123")).thenReturn(Optional.of(storage));
     when(homizerItemRepo.findById("item123")).thenReturn(Optional.empty());
+    when(myUserRepository.findByEmail("testUser")).thenReturn(Optional.of(user));
 
-    homizerItemService.saveHomizerItem(homizerItemDto, user);
+    homizerItemService.saveHomizerItem(homizerItemDto, principal);
 
     verify(homizerItemRepo, times(1)).save(any(HomizerItem.class));
     verify(myUserRepository, times(1)).save(user);
@@ -70,8 +71,9 @@ class HomizerItemServiceTest {
   @Test
   void getAllHomizerItemsFromUser_shouldReturnItems() {
     when(homizerItemRepo.findByUserId(user.getId())).thenReturn(List.of(homizerItem));
+    when(myUserRepository.findByEmail("testUser")).thenReturn(Optional.of(user));
 
-    List<HomizerItemDto> items = homizerItemService.getAllHomizerItemsFromUser(user);
+    List<HomizerItemDto> items = homizerItemService.getAllHomizerItemsFromUser(principal);
 
     assertEquals(1, items.size());
     assertEquals("Item Name", items.get(0).getName());
@@ -80,48 +82,64 @@ class HomizerItemServiceTest {
   @Test
   void getAllHomizerItemsFromUser_shouldThrowExceptionIfNoItemsFound() {
     when(homizerItemRepo.findByUserId(user.getId())).thenReturn(List.of());
+    when(myUserRepository.findByEmail("testUser")).thenReturn(Optional.of(user));
 
-    assertThrows(EntityNotFoundException.class, () -> homizerItemService.getAllHomizerItemsFromUser(user));
+    assertThrows(
+        EntityNotFoundException.class,
+        () -> homizerItemService.getAllHomizerItemsFromUser(principal));
   }
 
   @Test
   void getHomizerItemById_shouldReturnItem() {
-    when(homizerItemRepo.findById("item123")).thenReturn(Optional.of(homizerItem));
+    when(homizerItemRepo.findByIdAndUserId("item123", user.getId()))
+        .thenReturn(Optional.of(homizerItem));
+    when(myUserRepository.findByEmail("testUser")).thenReturn(Optional.of(user));
 
-    HomizerItemDto result = homizerItemService.getHomizerItemById("item123");
+    HomizerItemDto result = homizerItemService.getHomizerItemById("item123", principal);
 
     assertEquals("Item Name", result.getName());
   }
 
   @Test
   void getHomizerItemById_shouldThrowExceptionIfNotFound() {
-    when(homizerItemRepo.findById("item123")).thenReturn(Optional.empty());
+    when(homizerItemRepo.findByIdAndUserId("item123", user.getId())).thenReturn(Optional.empty());
+    when(myUserRepository.findByEmail("testUser")).thenReturn(Optional.of(user));
 
-    assertThrows(EntityNotFoundException.class, () -> homizerItemService.getHomizerItemById("item123"));
+    assertThrows(
+        EntityNotFoundException.class,
+        () -> homizerItemService.getHomizerItemById("item123", principal));
   }
 
   @Test
   @Transactional
   void deleteHomizerItemById_shouldDeleteItem() {
-    when(homizerItemRepo.findById("item123")).thenReturn(Optional.of(homizerItem));
+    when(homizerItemRepo.findByIdAndUserId("item123", user.getId()))
+        .thenReturn(Optional.of(homizerItem));
+    when(myUserRepository.findByEmail("testUser")).thenReturn(Optional.of(user));
 
-    homizerItemService.deleteHomizerItemById("item123");
+    homizerItemService.deleteHomizerItemById("item123", principal);
 
     verify(homizerItemRepo, times(1)).delete(homizerItem);
   }
 
   @Test
   void deleteHomizerItemById_shouldThrowExceptionIfNotFound() {
-    when(homizerItemRepo.findById("item123")).thenReturn(Optional.empty());
+    when(homizerItemRepo.findByIdAndUserId("item123", user.getId())).thenReturn(Optional.empty());
+    when(myUserRepository.findByEmail("testUser")).thenReturn(Optional.of(user));
 
-    assertThrows(EntityNotFoundException.class, () -> homizerItemService.deleteHomizerItemById("item123"));
+    assertThrows(
+        EntityNotFoundException.class,
+        () -> homizerItemService.deleteHomizerItemById("item123", principal));
   }
 
   @Test
   void getAllHomizerItemsInStorage_shouldReturnItems() {
-    when(homizerItemRepo.findByHomizerStorageId("storage123")).thenReturn(List.of(homizerItem));
+    when(homizerItemRepo.findByHomizerStorageIdAndUserId("storage123", user.getId()))
+        .thenReturn(List.of(homizerItem));
+    when(myUserRepository.findByEmail("testUser")).thenReturn(Optional.of(user));
 
-    List<HomizerItemDto> items = homizerItemService.getAllHomizerItemsInStorage("storage123");
+    List<HomizerItemDto> items =
+        homizerItemService.getAllHomizerItemsInStorage("storage123", principal);
 
     assertEquals(1, items.size());
     assertEquals("Item Name", items.get(0).getName());
@@ -129,9 +147,12 @@ class HomizerItemServiceTest {
 
   @Test
   void getAllHomizerItemsInStorage_shouldThrowExceptionIfNoItemsFound() {
-    when(homizerItemRepo.findByHomizerStorageId("storage123")).thenReturn(List.of());
+    when(homizerItemRepo.findByHomizerStorageIdAndUserId("storage123", user.getId()))
+        .thenReturn(List.of());
+    when(myUserRepository.findByEmail("testUser")).thenReturn(Optional.of(user));
 
-    assertThrows(EntityNotFoundException.class, () -> homizerItemService.getAllHomizerItemsInStorage("storage123"));
+    assertThrows(
+        EntityNotFoundException.class,
+        () -> homizerItemService.getAllHomizerItemsInStorage("storage123", principal));
   }
-
 }

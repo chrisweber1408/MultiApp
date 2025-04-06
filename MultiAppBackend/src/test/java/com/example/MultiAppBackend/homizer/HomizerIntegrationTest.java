@@ -256,7 +256,7 @@ class HomizerIntegrationTest {
             String.class);
 
     assertThat(responseDeleted.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-    assertThat(responseDeleted.getBody()).contains("Item with id: " + homizerItemId + " not found");
+    assertThat(responseDeleted.getBody()).contains("Item with id: " + homizerItemId + "for user: ");
 
     // Delete storage
     ResponseEntity<Void> responseDeleteStorage =
@@ -270,14 +270,15 @@ class HomizerIntegrationTest {
 
     // Try to get deleted storage
     ResponseEntity<String> responseDeletedStorage =
-            testRestTemplate.exchange(
-                    "/api/homizer/storage/" + homizerStorageId,
-                    HttpMethod.GET,
-                    new HttpEntity<>(createHeader(token)),
-                    String.class);
+        testRestTemplate.exchange(
+            "/api/homizer/storage/" + homizerStorageId,
+            HttpMethod.GET,
+            new HttpEntity<>(createHeader(token)),
+            String.class);
 
     assertThat(responseDeletedStorage.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-    assertThat(responseDeletedStorage.getBody()).contains("Storage with id: " + homizerStorageId + " not found");
+    assertThat(responseDeletedStorage.getBody())
+        .contains("Storage with id: " + homizerStorageId + " not found");
   }
 
   private HttpHeaders createHeader(String token) {

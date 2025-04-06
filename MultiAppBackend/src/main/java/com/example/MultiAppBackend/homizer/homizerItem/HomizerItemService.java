@@ -6,11 +6,14 @@ import com.example.MultiAppBackend.user.MyUser;
 import com.example.MultiAppBackend.user.MyUserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +24,8 @@ public class HomizerItemService {
   private final MyUserRepository myUserRepository;
 
   @Transactional
-  public void saveHomizerItem(HomizerItemDto homizerItemDto, MyUser myUser) {
+  public void saveHomizerItem(HomizerItemDto homizerItemDto, Principal principal) {
+    MyUser myUser = findUser(principal);
     HomizerItem homizerItem =
         homizerItemDto.getId() != null
             ? homizerItemRepo.findById(homizerItemDto.getId()).orElse(new HomizerItem())
@@ -52,7 +56,8 @@ public class HomizerItemService {
     myUserRepository.save(myUser);
   }
 
-  public List<HomizerItemDto> getAllHomizerItemsFromUser(MyUser myUser) {
+  public List<HomizerItemDto> getAllHomizerItemsFromUser(Principal principal) {
+    MyUser myUser = findUser(principal);
     List<HomizerItem> homizerItems = homizerItemRepo.findByUserId(myUser.getId());
 
     if (homizerItems.isEmpty()) {
@@ -63,11 +68,15 @@ public class HomizerItemService {
     return homizerItems.stream().map(this::createHomizerItemDto).toList();
   }
 
-  public HomizerItemDto getHomizerItemById(String id) {
+  public HomizerItemDto getHomizerItemById(String id, Principal principal) {
+    MyUser myUser = findUser(principal);
     return homizerItemRepo
-        .findById(id)
+        .findByIdAndUserId(id, myUser.getId())
         .map(this::convertToDto)
-        .orElseThrow(() -> new EntityNotFoundException("Item with id: " + id + " not found!"));
+        .orElseThrow(
+            () ->
+                new EntityNotFoundException(
+                    "Item with id: " + id + "for user: " + myUser.getId() + " not found!"));
   }
 
   private HomizerItemDto convertToDto(HomizerItem homizerItem) {
@@ -84,17 +93,23 @@ public class HomizerItemService {
   }
 
   @Transactional
-  public void deleteHomizerItemById(String id) {
+  public void deleteHomizerItemById(String id, Principal principal) {
+    MyUser myUser = findUser(principal);
     HomizerItem homizerItem =
         homizerItemRepo
-            .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Item with id: " + id + " not found!"));
+            .findByIdAndUserId(id, myUser.getId())
+            .orElseThrow(
+                () ->
+                    new EntityNotFoundException(
+                        "Item with id: " + id + "for user: " + myUser.getId() + " not found!"));
 
     homizerItemRepo.delete(homizerItem);
   }
 
-  public List<HomizerItemDto> getAllHomizerItemsInStorage(String id) {
-    List<HomizerItem> homizerItemsInStorage = homizerItemRepo.findByHomizerStorageId(id);
+  public List<HomizerItemDto> getAllHomizerItemsInStorage(String id, Principal principal) {
+    MyUser myUser = findUser(principal);
+    List<HomizerItem> homizerItemsInStorage =
+        homizerItemRepo.findByHomizerStorageIdAndUserId(id, myUser.getId());
     if (homizerItemsInStorage.isEmpty()) {
       throw new EntityNotFoundException("No HomizerItems found for storage with id: " + id);
     }
@@ -116,5 +131,11 @@ public class HomizerItemService {
             homizerStorage -> homizerItemDto.setHomizerStorageName(homizerStorage.getName()));
 
     return homizerItemDto;
+  }
+
+  private MyUser findUser(Principal principal) {
+    return myUserRepository
+        .findByEmail(principal.getName())
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
   }
 }
