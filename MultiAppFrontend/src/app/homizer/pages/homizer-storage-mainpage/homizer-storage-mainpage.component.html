@@ -7,28 +7,39 @@
   </mat-form-field>
 </div>
 
-<div class="homizer-item-and-storage-list" *ngIf="homizerStorages && homizerStorages.length > 0; else noItems">
-  <div class="homizer-item-and-storage" *ngFor="let homizerStorage of filteredHomizerStorages"
-       [routerLink]="['/homizer-storage-edit-page', homizerStorage.id]">
-
-    <div class="homizer-item-and-storage-content">
-      <div class="homizer-item-and-storage-text">
-        <p>Name: {{ homizerStorage.name }}</p>
-        <p>Description: {{ homizerStorage.description }}</p>
-      </div>
-
-      <div class="homizer-storage-image" *ngIf="homizerStorage.image">
-        <img [src]="homizerStorage.image" alt="Homizer Storage Image">
-      </div>
-    </div>
-
-  </div>
+<div *ngIf="isLoading" class="loading-spinner">
+  <mat-spinner></mat-spinner>
 </div>
 
-<ng-template #noItems>
-  <div class="empty-homizer-item-and-storage" *ngIf="showNoStoragesMessage">
-    Homizer-Storage-List is empty!
+<div *ngIf="!isLoading">
+
+  <div *ngIf="showNoStoragesMessage; else storageList">
+    <div class="empty-homizer-item-and-storage">
+
+      No Homizer-Storages found!
+
+    </div>
   </div>
-</ng-template>
+
+  <ng-template #storageList>
+    <div class="homizer-item-and-storage-list">
+      <div class="homizer-item-and-storage" *ngFor="let homizerStorage of filteredHomizerStorages"
+           [routerLink]="['/homizer-storage-edit-page', homizerStorage.id]">
+
+        <div class="homizer-item-and-storage-content">
+          <div class="homizer-item-and-storage-text">
+            <p>Name: {{ homizerStorage.name }}</p>
+            <p>Description: {{ homizerStorage.description }}</p>
+          </div>
+
+          <div class="homizer-storage-image" *ngIf="homizerStorage.image">
+            <img [src]="homizerStorage.image" alt="Homizer Storage Image">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </ng-template>
+</div>
 
 <app-navigation-bar title="homizer-storage"></app-navigation-bar>
