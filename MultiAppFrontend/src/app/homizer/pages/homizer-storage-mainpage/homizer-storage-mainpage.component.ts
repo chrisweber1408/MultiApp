@@ -13,38 +13,46 @@ import {Router} from "@angular/router";
   ]
 })
 export class HomizerStorageMainpageComponent implements OnInit {
-  homizerStorages: HomizerStorageDto[];
+  homizerStorages: HomizerStorageDto[] = [];
   showNoStoragesMessage = false;
-  filterText: string;
-  filteredHomizerStorages: HomizerStorageDto[];
+  filterText: string = '';
+  filteredHomizerStorages: HomizerStorageDto[] = [];
+  isLoading: boolean = true;
 
   constructor(private dataStorage: HomizerDataService, private router: Router) {
   }
 
   ngOnInit() {
-    this.loadHomizerStorages()
-    if (!this.homizerStorages) {
-      setTimeout(() => {
-        this.showNoStoragesMessage = true;
-      }, 250);
-    }
+    this.loadHomizerStorages().then(() => {
+      this.isLoading = false;
+    });
   }
 
-  async loadHomizerStorages(): Promise<HomizerStorageDto[]> {
-    const storages = await this.dataStorage.loadHomizerStorages()
-      .catch(error => {
-        if (error.response?.status === 403) {
-          this.router.navigate(['/login']);
-        }
-      })
-    this.homizerStorages = storages;
-    this.filteredHomizerStorages = storages;
-    return storages;
+  async loadHomizerStorages(): Promise<void> {
+    try {
+      this.homizerStorages = await this.dataStorage.loadHomizerStorages();
+      if (!this.homizerStorages || this.homizerStorages.length === 0) {
+        this.showNoStoragesMessage = true;
+        this.filteredHomizerStorages = [];
+        return;
+      }
+      this.filteredHomizerStorages = [...this.homizerStorages];
+    } catch (error) {
+      if (error?.response?.status === 403) {
+        await this.router.navigate(['/login']);
+      } else {
+        console.error('Error while loading storages: ', error);
+      }
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   applyFilter(): void {
     this.filteredHomizerStorages = this.homizerStorages.filter(storage =>
-      storage.name.toLowerCase().includes(this.filterText.toLowerCase()))
+      storage.name.toLowerCase().includes(this.filterText.toLowerCase()));
+    this.showNoStoragesMessage = this.filteredHomizerStorages.length === 0;
   }
 
 }
+
