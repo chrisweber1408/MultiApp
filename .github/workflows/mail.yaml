@@ -1,90 +1,86 @@
-name: CI/CD Pipeline
+name: 🚀 CI/CD Pipeline
 
 on:
   push:
     branches:
-      - main
+      - '**'
 
 jobs:
+  # 🛠️ Build Job – Läuft immer
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up JDK 17
+      - name: ☕ Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-
-      - name: Grant execute permission to gradlew
+      - name: 🔓 Make Gradle Executable
         working-directory: MultiAppBackend
         run: chmod +x ./gradlew
 
-      - name: Run Tests
+      - name: ✅ Run Backend Tests
         working-directory: MultiAppBackend
         run: ./gradlew test
 
-      - name: Build Spring Boot app with Gradle
+      - name: 🛠️ Build Backend (without tests)
         working-directory: MultiAppBackend
-        run: |
-          ./gradlew build -x test
+        run: ./gradlew build -x test
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
-      - name: Speichere JAR-File als Artefakt
+      - name: 📦 Upload JAR as Artifact
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4
         with:
           name: backend-jar
           path: MultiAppBackend/build/libs/MultiAppBackend-0.0.1-SNAPSHOT.jar
 
-
-      - name: Install Dependencies
+      - name: 📦 Install Frontend Dependencies
+        if: github.ref == 'refs/heads/main'
         working-directory: MultiAppFrontend
         run: npm install
 
-      - name: Build Angular app
+      - name: 🧱 Build Angular Frontend
+        if: github.ref == 'refs/heads/main'
         working-directory: MultiAppFrontend
         run: npm run build --omit=dev
 
+  # 🐳 Docker Job – Nur auf main
   docker:
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: 📥 Checkout Code
         uses: actions/checkout@v3
 
-      - name: Log in to DockerHub
+      - name: 🔐 Log in to DockerHub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Debugging - Print working directory
-        run: pwd
-
-      - name: Lade JAR-File herunter
+      - name: 📦 Download JAR Artifact
         uses: actions/download-artifact@v4
         with:
           name: backend-jar
           path: MultiAppBackend/build/libs/
 
-      - name: Debugging - List files
-        run: |
-          ls -l MultiAppBackend
-
-      - name: Build & Push Spring Boot Image
+      - name: 🐳 Build & Push Backend Image
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-app-backend:latest -f MultiAppBackend/deployment/Dockerfile .
           docker push ${{ secrets.DOCKER_USERNAME }}/multi-app-backend:latest
 
-      - name: Build & Push Angular Image
+      - name: 🐳 Build & Push Frontend Image
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-app-frontend:latest -f MultiAppFrontend/deployment/Dockerfile MultiAppFrontend
           docker push ${{ secrets.DOCKER_USERNAME }}/multi-app-frontend:latest
 
-      - name: Build & Push PostgreSQL Image
+      - name: 🐳 Build & Push PostgreSQL Image
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/multi-app-postgres:latest \
             --build-arg POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
@@ -93,22 +89,24 @@ jobs:
             -f Postgres/Dockerfile Postgres
           docker push ${{ secrets.DOCKER_USERNAME }}/multi-app-postgres:latest
 
+  # 🚀 Deploy Job – Nur auf main
   deploy:
+    if: github.ref == 'refs/heads/main'
     needs: docker
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: 📥 Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up kubectl
+      - name: 🔧 Set up kubectl
         uses: azure/setup-kubectl@v3
         with:
           version: 'latest'
 
-      - name: Configure Kubeconfig
+      - name: 🛡️ Configure kubeconfig
         run: |
-          mkdir ${HOME}/.kube
+          mkdir -p ${HOME}/.kube
           echo "${{ secrets.KUBECONFIG }}" | base64 --decode > ${HOME}/.kube/config
           kubectl cluster-info
 
@@ -117,48 +115,58 @@ jobs:
           kubectl cluster-info
           kubectl get nodes
 
-      - name: Create Kubernetes Secret for DockerHub
+      - name: 🛡️ Create DockerHub Pull Secret
         run: |
           kubectl create secret docker-registry dockerhub-secret \
-          --docker-server=https://index.docker.io/v1/ \
-          --docker-username=${{ secrets.DOCKER_USERNAME }} \
-          --docker-password=${{ secrets.DOCKER_PASSWORD }} \
-          --docker-email=${{ secrets.DOCKER_EMAIL }} \
-          --dry-run=client -o yaml | kubectl apply -f -
+            --docker-server=https://index.docker.io/v1/ \
+            --docker-username=${{ secrets.DOCKER_USERNAME }} \
+            --docker-password=${{ secrets.DOCKER_PASSWORD }} \
+            --docker-email=${{ secrets.DOCKER_EMAIL }} \
+            --dry-run=client -o yaml | kubectl apply -f -
 
-      - name: Replace Docker Username in Deployment YAML
+      - name: 🧾 Replace Image Placeholders in YAMLs
         run: |
           sed -i "s|DOCKER_USERNAME_PLACEHOLDER|${{ secrets.DOCKER_USERNAME }}|g" Postgres/multi-postgres-deployment.yaml
           sed -i "s|DOCKER_USERNAME_PLACEHOLDER|${{ secrets.DOCKER_USERNAME }}|g" MultiAppBackend/deployment/multi-backend-deployment.yaml
           sed -i "s|DOCKER_USERNAME_PLACEHOLDER|${{ secrets.DOCKER_USERNAME }}|g" MultiAppFrontend/deployment/multi-frontend-deployment.yaml
 
-      - name: Deploy Namespace
+      - name: 🧱 Create Namespace
         run: kubectl apply -f manifests/namespace.yaml
 
-      - name: Update Kubernetes Secret
+      - name: 🛡️ Create Secrets (Postgres + JWT)
         run: |
           kubectl create secret generic postgres-secret --dry-run=client -o yaml \
             --from-literal=POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
             --from-literal=POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
             --from-literal=POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
-          | kubectl apply -f - -n multi-app
+            | kubectl apply -f - -n multi-app
+          
           kubectl create secret generic jwt-secret --dry-run=client -o yaml \
-          --from-literal=JWT_SECRET="${{ secrets.JWT_SECRET }}" \
-          -n multi-app | kubectl replace -f - -n multi-app
+            --from-literal=JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+            | kubectl apply -f - -n multi-app
 
-      - name: Deploy to Kubernetes
+      - name: 🚀 Deploy All Services to Kubernetes
         run: |
           set -e
+
+          # PostgreSQL
           kubectl apply -f Postgres/multi-postgres-deployment.yaml
           kubectl rollout status deployment/postgres -n multi-app --timeout=60s
+
+          # Backend
           kubectl apply -f MultiAppBackend/deployment/multi-backend-deployment.yaml
           kubectl rollout status deployment/multi-app-backend -n multi-app --timeout=60s
+
+          # Frontend
           kubectl apply -f MultiAppFrontend/deployment/multi-frontend-deployment.yaml
           kubectl rollout status deployment/multi-frontend -n multi-app --timeout=60s
-          kubectl rollout restart deployment/postgres -n multi-app
-          kubectl rollout status deployment/postgres -n multi-app --timeout=60s
-          kubectl rollout restart deployment/multi-app-backend -n multi-app
-          kubectl rollout status deployment/multi-app-backend -n multi-app --timeout=60s
-          kubectl rollout restart deployment/multi-frontend -n multi-app
-          kubectl rollout status deployment/multi-frontend -n multi-app --timeout=60s
-          kubectl apply -f manifests/ingress.yaml
+
+      - name: 🔄 Restart All Deployments
+        run: |
+          for deployment in postgres multi-app-backend multi-frontend; do
+            kubectl rollout restart deployment/$deployment -n multi-app
+            kubectl rollout status deployment/$deployment -n multi-app --timeout=60s
+          done
+
+      - name: 🌐 Apply Ingress Controller
+        run: kubectl apply -f manifests/ingress.yaml
