@@ -12,7 +12,7 @@ import {HomizerItemAddPageComponent} from './homizer/pages/homizer-item-add-page
 import {HomizerItemEditPageComponent} from './homizer/pages/homizer-item-edit-page/homizer-item-edit-page.component';
 import {HomeHeaderComponent} from './home/components/app-header/app-header.component';
 import {HomeLoginComponent} from './home/pages/login-page/home-login.component';
-import {HomeRegisterComponent} from './home/pages/home-register/home-register.component';
+import {RegisterPageComponent} from './home/pages/register-page/register-page.component';
 import {CookieService} from 'ngx-cookie-service';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {NavigationItemComponent} from './home/components/navigation-item/navigation-item.component';
@@ -35,7 +35,7 @@ import {MatIcon} from "@angular/material/icon";
 import {
   HomizerStorageEditPageComponent
 } from './homizer/pages/homizer-storage-edit-page/homizer-storage-edit-page.component';
-import { ImageViewDialogComponent } from './homizer/components/image-view-dialog/image-view-dialog.component';
+import {ImageViewDialogComponent} from './homizer/components/image-view-dialog/image-view-dialog.component';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @NgModule({
@@ -48,7 +48,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     HomizerItemEditPageComponent,
     HomeHeaderComponent,
     HomeLoginComponent,
-    HomeRegisterComponent,
+    RegisterPageComponent,
     NavigationBarComponent,
     HomizerStorageMainpageComponent,
     HomizerStorageAddPageComponent,

@@ -5,7 +5,7 @@ import {HomizerItemMainpageComponent} from './homizer/pages/homizer-item-mainpag
 import {HomizerItemAddPageComponent} from './homizer/pages/homizer-item-add-page/homizer-item-add-page.component';
 import {HomizerItemEditPageComponent} from './homizer/pages/homizer-item-edit-page/homizer-item-edit-page.component';
 import {HomeLoginComponent} from './home/pages/login-page/home-login.component';
-import {HomeRegisterComponent} from './home/pages/home-register/home-register.component';
+import {RegisterPageComponent} from './home/pages/register-page/register-page.component';
 import {
   HomizerStorageMainpageComponent
 } from "./homizer/pages/homizer-storage-mainpage/homizer-storage-mainpage.component";
@@ -20,7 +20,7 @@ const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {path: 'login', component: HomeLoginComponent},
-  {path: 'register', component: HomeRegisterComponent},
+  {path: 'register', component: RegisterPageComponent},
   {path: 'homizer-item', component: HomizerItemMainpageComponent},
   {path: 'homizer-item-add-page', component: HomizerItemAddPageComponent},
   {path: 'homizer-item-edit-page/:id', component: HomizerItemEditPageComponent},

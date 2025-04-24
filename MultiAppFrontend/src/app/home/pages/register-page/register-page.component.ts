@@ -4,12 +4,12 @@ import { UserDataStorageService } from '../../service/user-data-storage.service'
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-home-register',
-    templateUrl: './home-register.component.html',
-    styleUrl: './home-register.component.css',
+    selector: 'app-register-page',
+    templateUrl: './register-page.component.html',
+    styleUrl: './register-page.component.css',
     standalone: false
 })
-export class HomeRegisterComponent {
+export class RegisterPageComponent {
 
   registerData: RegisterData;
 
