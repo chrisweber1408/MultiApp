@@ -29,3 +29,15 @@ export class HomizerStorageDto {
     this.image = image;
   }
 }
+
+export class UserInfosDto {
+  public email: string;
+  public itemCount: number;
+  public storageCount: number;
+
+  constructor(email: string, itemCount: number, storageCount: number) {
+    this.email = email;
+    this.itemCount = itemCount;
+    this.storageCount = storageCount;
+  }
+}

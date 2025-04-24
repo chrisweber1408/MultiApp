@@ -18,8 +18,6 @@ export class HomizerDataService {
     }
   }
 
-  // Homizer-Item
-
   saveHomizerItem(item: HomizerItemDto) {
     return axios.post('/api/homizer/item/', item, this.requestConfig())
   }
