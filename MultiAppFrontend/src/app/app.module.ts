@@ -37,6 +37,7 @@ import {
 } from './homizer/pages/homizer-storage-edit-page/homizer-storage-edit-page.component';
 import {ImageViewDialogComponent} from './homizer/components/image-view-dialog/image-view-dialog.component';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {UserPageComponent} from './home/pages/user-page/user-page.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     HomizerStorageAddPageComponent,
     HomizerStorageEditPageComponent,
     ImageViewDialogComponent,
+    UserPageComponent,
 
   ],
   bootstrap: [

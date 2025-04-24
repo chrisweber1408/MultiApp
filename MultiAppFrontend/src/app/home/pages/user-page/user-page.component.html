@@ -1,0 +1,30 @@
+<app-header title="Multiapp"></app-header>
+
+<div class="section">
+  <div class="user-info">
+    <h1>Welcome,  {{ email }}  👋</h1>
+
+    <div class="user-info-text">
+      <h2>Homizer</h2>
+      <p>You have <strong> {{ itemCount }} </strong> items.</p>
+      <p>You are using <strong> {{ storageCount }} </strong> storages.</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="button">
+      <button mat-raised-button>
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </div>
+    <div class="button">
+      <button mat-raised-button>
+        <mat-icon>delete</mat-icon>
+        Delete Account
+      </button>
+    </div>
+  </div>
+
+</div>
+<app-navigation-bar title="multi-app"></app-navigation-bar>

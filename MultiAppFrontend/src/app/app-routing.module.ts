@@ -15,10 +15,12 @@ import {
 import {
   HomizerStorageEditPageComponent
 } from "./homizer/pages/homizer-storage-edit-page/homizer-storage-edit-page.component";
+import {UserPageComponent} from "./home/pages/user-page/user-page.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
+  {path: 'user', component: UserPageComponent},
   {path: 'login', component: HomeLoginComponent},
   {path: 'register', component: RegisterPageComponent},
   {path: 'homizer-item', component: HomizerItemMainpageComponent},

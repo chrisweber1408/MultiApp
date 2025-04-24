@@ -46,6 +46,7 @@ export class HomizerItemAddPageComponent implements OnInit {
   }
 
   onSaveHomizerItem(name: string, description: string, image: string, number: number, homizerStorageId?: string) {
+    console.log(homizerStorageId)
     this.homizerItem.name = name
     this.homizerItem.description = description
     this.homizerItem.image = image

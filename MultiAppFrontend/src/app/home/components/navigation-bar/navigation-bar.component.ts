@@ -21,6 +21,7 @@ export class NavigationBarComponent implements OnInit {
         case 'homizer-item': {
           this.navigationItems = [
             {icon: 'home', link: '/home'},
+            {icon: 'person', link: '/user'},
             {icon: 'category', link: '/homizer-item'},
             {icon: 'folder', link: '/homizer-storage'},
             {icon: 'add_circle', link: '/homizer-item-add-page'},
@@ -30,6 +31,7 @@ export class NavigationBarComponent implements OnInit {
         case 'homizer-storage': {
           this.navigationItems = [
             {icon: 'home', link: '/home'},
+            {icon: 'person', link: '/user'},
             {icon: 'category', link: '/homizer-item'},
             {icon: 'folder', link: '/homizer-storage'},
             {icon: 'add_circle', link: '/homizer-storage-add-page'},
@@ -39,6 +41,13 @@ export class NavigationBarComponent implements OnInit {
         case 'home': {
           this.navigationItems = [
             {icon: 'home', link: '/home'},
+          ]
+          break
+        }
+        case 'multi-app': {
+          this.navigationItems = [
+            {icon: 'home', link: '/home'},
+            {icon: 'person', link: '/user'},
           ]
           break
         }
