@@ -23,7 +23,7 @@
       <mat-label>Storage</mat-label>
       <mat-select [(ngModel)]="selectedHomizerStorageId">
         @for (storage of homizerStorage; track storage) {
-          <mat-option [value]="storage.name">{{ storage.name }}</mat-option>
+          <mat-option [value]="storage.id">{{ storage.name }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
