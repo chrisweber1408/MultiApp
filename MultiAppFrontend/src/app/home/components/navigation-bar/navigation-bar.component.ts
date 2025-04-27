@@ -36,6 +36,12 @@ export class NavigationBarComponent implements OnInit {
           ]
           break
         }
+        case 'home': {
+          this.navigationItems = [
+            {icon: 'home', link: '/home'},
+          ]
+          break
+        }
       }
     })
   }
