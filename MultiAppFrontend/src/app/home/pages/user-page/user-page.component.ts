@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {UserInfosDto} from "../../../homizer/service/homizer.models";
 import {UserDataStorageService} from "../../service/user-data-storage.service";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-user-page',
@@ -18,7 +19,7 @@ export class UserPageComponent implements OnInit {
   storageCount: number;
   isLoading: boolean = true;
 
-  constructor(private userDataStorageService: UserDataStorageService, private router: Router) {
+  constructor(private userDataStorageService: UserDataStorageService, private router: Router, private cookieService: CookieService) {
   }
 
   ngOnInit() {
@@ -45,6 +46,12 @@ export class UserPageComponent implements OnInit {
     } finally {
       this.isLoading = false;
     }
+  }
+
+  onLogout(): void {
+    this.router.navigate(['/login']).then(r =>
+      this.cookieService.set("jwt", "")
+    );
   }
 
 }
