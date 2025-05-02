@@ -1,13 +1,11 @@
-package com.example.MultiAppBackend.homizer;
+package com.example.MultiAppBackend;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.example.MultiAppBackend.homizer.homizerItem.HomizerItemDto;
 import com.example.MultiAppBackend.homizer.homizerStorage.HomizerStorageDto;
-import com.example.MultiAppBackend.user.LoginResponse;
-import com.example.MultiAppBackend.user.MyUser;
-import com.example.MultiAppBackend.user.UserLoginDto;
-import com.example.MultiAppBackend.user.UserRegisterDto;
+import com.example.MultiAppBackend.user.*;
+
 import java.util.Arrays;
 import java.util.Objects;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,7 +25,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integrationTest")
-class HomizerIntegrationTest {
+class IntegrationTest {
 
   @Autowired TestRestTemplate testRestTemplate = new TestRestTemplate();
 
@@ -237,6 +235,21 @@ class HomizerIntegrationTest {
     assertThat(Objects.requireNonNull(responseUpdatedStorage.getBody()).getName())
         .isEqualTo("updatedStorage");
 
+    // Get user infos
+
+    ResponseEntity<UserInfosDto> userInfoResponse =
+            testRestTemplate.exchange(
+                    "/api/user/infos",
+                    HttpMethod.GET,
+                    new HttpEntity<>(createHeader(token)),
+                    UserInfosDto.class
+            );
+
+    assertThat(userInfoResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(Objects.requireNonNull(userInfoResponse.getBody()).getItemCount()).isEqualTo(2);
+    assertThat(Objects.requireNonNull(userInfoResponse.getBody()).getStorageCount()).isEqualTo(2);
+    assertThat(Objects.requireNonNull(userInfoResponse.getBody()).getEmail()).isEqualTo("test@mail.com");
+
     // Delete item
     ResponseEntity<Void> responseDeleteItem =
         testRestTemplate.exchange(
@@ -279,6 +292,16 @@ class HomizerIntegrationTest {
     assertThat(responseDeletedStorage.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     assertThat(responseDeletedStorage.getBody())
         .contains("Storage with id: " + homizerStorageId + " not found");
+
+    // Delete user
+    ResponseEntity<Void> responseDeleteUser =
+            testRestTemplate.exchange(
+                    "/api/user/delete",
+                    HttpMethod.DELETE,
+                    new HttpEntity<>(createHeader(token)),
+                    Void.class);
+
+    assertThat(responseDeleteUser.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 
   private HttpHeaders createHeader(String token) {
