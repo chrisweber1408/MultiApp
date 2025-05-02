@@ -1,4 +1,4 @@
-package com.example.MultiAppBackend.home;
+package com.example.MultiAppBackend.user;
 
 import lombok.Data;
 

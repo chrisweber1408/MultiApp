@@ -31,6 +31,7 @@ export class HomizerStorageMainpageComponent implements OnInit {
   async loadHomizerStorages(): Promise<void> {
     try {
       this.homizerStorages = await this.dataStorage.loadHomizerStorages();
+      console.log(this.homizerStorages.length)
       if (!this.homizerStorages || this.homizerStorages.length === 0) {
         this.showNoStoragesMessage = true;
         this.filteredHomizerStorages = [];
