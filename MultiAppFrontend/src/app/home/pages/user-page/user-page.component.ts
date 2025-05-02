@@ -49,9 +49,18 @@ export class UserPageComponent implements OnInit {
   }
 
   onLogout(): void {
-    this.router.navigate(['/login']).then(r =>
+    this.router.navigate(['/login']).then(() =>
       this.cookieService.set("jwt", "")
     );
+  }
+
+  onDeleteUser(): void {
+    this.userDataStorageService.deleteUser().then(
+      () => {
+        this.router.navigate(['/login'])
+          .then(() => this.cookieService.set("jwt", ""));
+      }
+    )
   }
 
 }

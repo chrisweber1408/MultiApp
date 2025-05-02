@@ -23,7 +23,11 @@ export class UserDataStorageService {
   // User
 
   async loadUserInfos() {
-    return (await axios.get('/api/home/user/infos', this.requestConfig())).data
+    return (await axios.get('/api/user/infos', this.requestConfig())).data
+  }
+
+  async deleteUser() {
+    await axios.delete('api/user/delete', this.requestConfig())
   }
 
 
