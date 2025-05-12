@@ -3,6 +3,8 @@ import {Router} from "@angular/router";
 import {UserInfosDto} from "../../../homizer/service/homizer.models";
 import {UserDataStorageService} from "../../service/user-data-storage.service";
 import {CookieService} from "ngx-cookie-service";
+import {MatDialog} from "@angular/material/dialog";
+import {ConfirmDialogComponent} from "../../components/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-user-page',
@@ -19,7 +21,12 @@ export class UserPageComponent implements OnInit {
   storageCount: number;
   isLoading: boolean = true;
 
-  constructor(private userDataStorageService: UserDataStorageService, private router: Router, private cookieService: CookieService) {
+  constructor(
+    private userDataStorageService: UserDataStorageService,
+    private router: Router,
+    private cookieService: CookieService,
+    private dialog: MatDialog
+  ) {
   }
 
   ngOnInit() {
@@ -54,13 +61,34 @@ export class UserPageComponent implements OnInit {
     );
   }
 
-  onDeleteUser(): void {
-    this.userDataStorageService.deleteUser().then(
-      () => {
-        this.router.navigate(['/login'])
-          .then(() => this.cookieService.set("jwt", ""));
+  onDeleteUser() {
+    const dialogRef1 = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirm Deletion',
+        message: 'Are you sure you want to delete your account?'
       }
-    )
+    });
+
+    dialogRef1.afterClosed().subscribe(result1 => {
+      if (!result1) return;
+
+      const dialogRef2 = this.dialog.open(ConfirmDialogComponent, {
+        data: {
+          title: 'Really Delete?',
+          message: 'This action is irreversible. Do you want to proceed?'
+        }
+      });
+
+      dialogRef2.afterClosed().subscribe(result2 => {
+        if (result2) {
+          this.userDataStorageService.deleteUser().then(() => {
+            this.router.navigate(['/login']).then(() =>
+              this.cookieService.set("jwt", "")
+            );
+          })
+        }
+      });
+    });
   }
 
 }

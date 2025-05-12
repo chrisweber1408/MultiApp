@@ -38,6 +38,8 @@ import {
 import {ImageViewDialogComponent} from './homizer/components/image-view-dialog/image-view-dialog.component';
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {UserPageComponent} from './home/pages/user-page/user-page.component';
+import {ConfirmDialogComponent} from './home/components/confirm-dialog/confirm-dialog.component';
+import {MatDialogActions, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -56,6 +58,7 @@ import {UserPageComponent} from './home/pages/user-page/user-page.component';
     HomizerStorageEditPageComponent,
     ImageViewDialogComponent,
     UserPageComponent,
+    ConfirmDialogComponent,
 
   ],
   bootstrap: [
@@ -75,7 +78,10 @@ import {UserPageComponent} from './home/pages/user-page/user-page.component';
     MatOption,
     MatIcon,
     MatIconButton,
-    MatProgressSpinner
+    MatProgressSpinner,
+    MatDialogActions,
+    MatDialogContent,
+    MatDialogTitle
   ],
   providers: [
     HomizerService,
